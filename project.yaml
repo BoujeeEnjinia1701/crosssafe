@@ -1,0 +1,17 @@
+# Card metadata consumed by https://designmolecule.com
+name: CrossSafe
+slug: crosssafe
+area: Smart Cities
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
+problem: >-
+  Pedestrians die at unsignalized crossings, and full traffic signals are costly and slow to approve.
+budget_usd: 350
+difficulty: 3  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [smart-cities, open-hardware, cern-ohl-s]
