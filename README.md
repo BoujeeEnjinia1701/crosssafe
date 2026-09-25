@@ -1,6 +1,8 @@
 # CrossSafe
 
-**Area:** Smart Cities · **Status:** Concept · **Prototype budget:** about $350 USD · **Difficulty:** 3 of 5
+![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+
+**Area:** Smart Cities · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $350 USD · **Difficulty:** 3 of 5
 
 A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
 
@@ -67,6 +69,10 @@ The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 | `firmware/` | Microcontroller code |
 | `media/` | Renders, perspectives and photos |
 | `build-log/` | Dated prototyping notes |
+
+## Documentation
+
+Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (CRS-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `CRS-PRC-001/v1.0`.
 
 ## Licenses
 
