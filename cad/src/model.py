@@ -1,12 +1,13 @@
-"""CrossSafe parametric model (build123d), TRL 3, massing-plus level of detail.
+"""CrossSafe parametric model (build123d), TRL 3, massing-plus level of detail. Sun shield, keyed sign
+saddles and the new-post anti-rotation bolt added under CRS-DDR-002.
 
 Run from the repo root:  python cad/src/model.py
 Exports STEP and STL into cad/step and cad/stl:
     crosssafe-assembly.step / .stl       one beacon assembly on its own 114.3 mm post, with footing
-    crosssafe-existing-pole.step / .stl  the same assembly without post and footing (existing-pole kit, the
+    crosssafe-existing-pole.step / .stl  the same assembly without post, footing and anti-rotation bolt (existing-pole kit, the
                                          prototype that budget_usd covers, CRS-DDR-001 D1)
     sign-and-light-bar.step / .stl       sign, light bar, LED heads and pilot light
-    pole-top-enclosure.step / .stl       enclosure with battery, charger, controller and antenna
+    pole-top-enclosure.step / .stl       enclosure with battery, charger, controller, antenna and sun shield
 
 Axes (local frame): the post axis is the Z axis, Z is up with the sidewalk top at z = 0. Traffic runs
 along X and the sign faces approaching traffic on +X. The kerb and the waiting zone are on +Y; the solar
@@ -46,12 +47,19 @@ PARAMS = {
     "antenna": (8.0, 220.0),
     # 13 clamps: band thickness and width
     "band_t": 8.0, "band_w": 30.0,
+    # 18 ventilated sun shield over the enclosure (CRS-DDR-002): air gap to the enclosure, sheet thickness
+    "shield_gap": 25.0, "shield_t": 2.0,
+    # 20 keyed sign saddles (two, at the sign clamps): Y width, Z height
+    "saddle": (80.0, 60.0),
+    # 19 anti-rotation bolt, new posts only: diameter
+    "bolt_d": 10.0,
 }
 
 BOM = {1: "Crossing warning sign", 2: "Light bar housing", 3: "Amber LED heads", 4: "Push-button station",
        5: "Presence radar", 6: "Solar panel", 7: "Panel bracket", 8: "Enclosure", 9: "LiFePO4 battery",
        10: "MPPT charge controller", 11: "Controller and radio board", 12: "Antenna", 13: "Pole clamps",
-       14: "Post", 16: "PIR wake sensor", 17: "Pedestrian pilot light"}
+       14: "Post", 16: "PIR wake sensor", 17: "Pedestrian pilot light", 18: "Sun shield",
+       19: "Anti-rotation bolt", 20: "Keyed sign saddles"}
 
 
 def derived(p=PARAMS):
@@ -66,6 +74,8 @@ def derived(p=PARAMS):
     tilt = math.radians(p["panel_tilt"])
     panel_zc = p["post_h"] + p["panel_rise"]
     panel_top = panel_zc + py / 2 * math.sin(tilt) + pt / 2 * math.cos(tilt)
+    g, st = p["shield_gap"], p["shield_t"]
+    shx, shy, shz = ex + g + st, ey + 2 * (g + st), ez + g + st   # shield envelope (open front and bottom)
     return {
         "post_r": r,
         "bar_xc": r + bx / 2 + 16.0,                   # bar just in front of the post, clear of the clamps
@@ -74,10 +84,11 @@ def derived(p=PARAMS):
         "sign_zc": sign_zc, "sign_bot": sign_zc - half_diag, "sign_top": sign_zc + half_diag,
         "sign_area_m2": p["sign_side"] ** 2 / 1e6,
         "enc_xc": -(r + p["enc_gap"]), "enc_bot": p["enc_z"] - ez / 2, "enc_top": p["enc_z"] + ez / 2,
+        "shield": (shx, shy, shz), "sign_clamp_z": (sign_zc - 250.0, sign_zc + 250.0),
         "panel_zc": panel_zc, "overall_h": panel_top,
         "panel_area_m2": px * py / 1e6,
         # wind areas (m2) normal to X (traffic direction) and to Y (across the road)
-        "area_x": {"sign": p["sign_side"] ** 2 / 1e6, "bar": by * bz / 1e6, "enc": ey * ez / 1e6,
+        "area_x": {"sign": p["sign_side"] ** 2 / 1e6, "bar": by * bz / 1e6, "enc": shy * shz / 1e6,
                    "panel": py * pt / 1e6,                     # panel edge-on to X wind
                    "button": p["button"][1] * p["button"][2] / 1e6, "radar": p["radar"] ** 2 / 1e6,
                    "post": p["post_od"] * p["post_h"] / 1e6},
@@ -150,14 +161,37 @@ def build_parts(p=PARAMS, own_post=True):
     parts[11] = Pos(xc + ex / 2 - w - c[0] / 2 - 4, 0, p["enc_z"] + 60) * Box(*c)
     ad, al = p["antenna"]
     parts[12] = Pos(xc, 90, D["enc_top"] + al / 2) * Cylinder(ad, al)
+    # 18 ventilated sun shield: roof and three walls with an air gap, open at the bottom and toward the post
+    g, st = p["shield_gap"], p["shield_t"]
+    shx, shy, shz = D["shield"]
+    x_front = xc + ex / 2                       # enclosure face toward the post
+    x_back = x_front - shx
+    z_top = D["enc_top"] + g
+    roof = Pos(x_front - shx / 2, 0, z_top + st / 2) * Box(shx, shy, st)
+    back = Pos(x_back + st / 2, 0, z_top - shz / 2 + st / 2) * Box(st, shy, shz)
+    walls = [Pos(x_front - shx / 2, sy * (shy / 2 - st / 2), z_top - shz / 2 + st / 2) * Box(shx, st, shz)
+             for sy in (-1, 1)]
+    shield = roof + back + walls[0] + walls[1]
+    parts[18] = shield - Pos(xc, 90, z_top) * Cylinder(ad + 3, 3 * st)   # hole for the antenna
+    # 20 keyed saddles between the post and the sign back at the two sign clamps (serrated grip face)
+    sw, sh = p["saddle"]
+    sx0, sx1 = r, D["sign_xc"] - p["sign_t"] / 2
+    sad = None
+    for zz in D["sign_clamp_z"]:
+        b_ = Pos((sx0 + sx1) / 2, 0, zz) * Box(sx1 - sx0, sw, sh)
+        sad = b_ if sad is None else sad + b_
+    parts[20] = sad
     # 13 clamps: bar, sign (two), enclosure (two), button
-    zs = [D["bar_zc"], D["sign_zc"] - 250, D["sign_zc"] + 250, p["enc_z"] - 100, p["enc_z"] + 100, p["button_z"],
+    zs = [D["bar_zc"], *D["sign_clamp_z"], p["enc_z"] - 100, p["enc_z"] + 100, p["button_z"],
           p["radar_z"]]
     cl = None
     for zz in zs:
         cl = band(zz) if cl is None else cl + band(zz)
     parts[13] = cl
     if own_post:
+        # 19 anti-rotation bolt through the upper sign saddle and the post (new posts only)
+        zb = D["sign_clamp_z"][1]
+        parts[19] = rod((-r - 15, 0, zb), (D["sign_xc"] - p["sign_t"] / 2 - 2, 0, zb), p["bolt_d"] / 2)
         parts[14] = Pos(0, 0, (p["post_h"] - p["embed"]) / 2) * (
             Cylinder(r, p["post_h"] + p["embed"]) - Cylinder(r - p["post_wall"], p["post_h"] + p["embed"] + 2))
         parts["footing"] = Pos(0, 0, -p["embed"] / 2 - 50) * (Cylinder(p["footing_d"] / 2, p["embed"] + 100) - Cylinder(r, p["embed"] + 102))
@@ -170,9 +204,9 @@ def assembly(own_post=True, p=PARAMS):
 
 
 def clash_check(p=PARAMS):
-    """Pairs of BOM parts whose solids overlap by more than 1 cm3 (clamps and saddles excluded)."""
+    """Pairs of BOM parts whose solids overlap by more than 1 cm3 (clamps, post and the through-bolt excluded)."""
     parts = build_parts(p, True)
-    keys = [k for k in parts if k not in (13, "footing", 14)]
+    keys = [k for k in parts if k not in (13, "footing", 14, 19)]
     hits = []
     for i, a in enumerate(keys):
         for bk in keys[i + 1:]:
@@ -192,9 +226,9 @@ if __name__ == "__main__":
     full = build_parts(PARAMS, True)
     groups = {
         "crosssafe-assembly": list(full.values()),
-        "crosssafe-existing-pole": [v for k, v in full.items() if k not in (14, "footing")],
+        "crosssafe-existing-pole": [v for k, v in full.items() if k not in (14, 19, "footing")],
         "sign-and-light-bar": [full[k] for k in (1, 2, 3, 17)],
-        "pole-top-enclosure": [full[k] for k in (8, 9, 10, 11, 12)],
+        "pole-top-enclosure": [full[k] for k in (8, 9, 10, 11, 12, 18)],
     }
     for name, shapes in groups.items():
         c = Compound(children=shapes)

@@ -48,7 +48,7 @@ The problem is concentrated away from signals and after dark. In the United Stat
 
 ## What sparked the idea
 
-It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. The real-world trigger is the gap between the evidence and the rollout: FHWA already counts pedestrian-activated beacons among its proven safety countermeasures ([FHWA](https://highways.dot.gov/safety/proven-safety-countermeasures/rectangular-rapid-flashing-beacons-rrfb)), yet pedestrian deaths worldwide rose between 2010 and 2021 while the UN aims to halve road deaths by 2030 ([WHO, 2023](https://www.who.int/news/item/13-12-2023-despite-notable-progress-road-safety-remains-urgent-global-issue)).
+The starting point was a lapse in the rulebook. On December 21, 2017, FHWA terminated Interim Approval 11, which had allowed US agencies to install rectangular rapid flashing beacons, because the device had been patented and patented traffic control devices cannot be included in the MUTCD. The patents were then expressly abandoned, the RRFB concept passed into the public domain, and FHWA reinstated the device as Interim Approval 21 on March 20, 2018 ([FHWA IA-21](https://mutcd.fhwa.dot.gov/resources/interim_approval/ia21/index.htm)). A proven safety device had been off the list for three months over who owned it, and it came back only once it belonged to no one. CrossSafe takes that at its word: a beacon to the IA-21 pattern whose drawings, parts list and firmware are published so that any town, school or workshop can build and repair it.
 
 ## Problem
 
@@ -60,9 +60,9 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
 
-One assembly stands on each side of the road: a crossing warning sign with a double-sided amber light bar and a pedestrian pilot light, a push button, a presence radar woken by a PIR sensor, and a pole-top enclosure with the battery, charger and controller under a 20 W panel. Both sides flash together for about 13 s per activation on a 7 m road. Only activation counts and faults are logged; no images or audio are recorded.
+One assembly stands on each side of the road: a crossing warning sign with a double-sided amber light bar and a pedestrian pilot light, a push button, a presence radar woken by a PIR sensor, and a pole-top enclosure with the battery, charger and controller under a ventilated sun shield and a 20 W panel. Both sides flash together for about 13 s per activation on a 7 m road. Only activation counts and faults are logged; no images or audio are recorded.
 
-TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 300 activations, 7.7 days without sun, energy neutral at 1.05 peak sun hours, a 114.3 mm post at 42 % of yield in a 40 m/s gust, and $318 in parts per assembly on an existing pole ($636 per crossing). Enclosure heat in full sun and slip of the sign clamps are at risk. See the [design precis](docs/02-concept.md), [requirements](docs/03-requirements.md) and [general arrangement](cad/drawings/CRS-DWG-001.pdf).
+TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 300 activations, 7.7 days without sun, energy neutral at 1.05 peak sun hours, a 114.3 mm post at 44 % of yield in a 40 m/s gust, 53.9 °C inside the sun-shielded enclosure at 50 °C ambient, and $332 in parts per assembly on an existing pole ($664 per crossing). Sign rotation on existing poles under about 70 mm is still at risk. Design decisions are recorded in [CRS-DDR-001](docs/decisions/0001-trl2-review-decisions.md) and [CRS-DDR-002](docs/decisions/0002-recommendations-accepted.md). See the [design precis](docs/02-concept.md), [requirements](docs/03-requirements.md) and [general arrangement](cad/drawings/CRS-DWG-001.pdf).
 
 ## Key components
 
@@ -70,7 +70,8 @@ TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 3
 - Accessible push button, a pedestrian pilot light, and a 24 GHz presence radar (presence only) switched on by a PIR sensor
 - 20 W solar panel, MPPT charger and 12.8 V 12 Ah LiFePO4 battery
 - Controller on the FieldNode radio core, with LED drivers and a LoRa link that keeps both sides in step
-- IP65 pole-top enclosure and band clamps for an existing pole, or a 114.3 mm post where none exists
+- IP65 pole-top enclosure under a ventilated sun shield
+- Band clamps and keyed sign saddles for an existing pole, or a 114.3 mm post with an anti-rotation bolt where none exists
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
@@ -101,4 +102,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-A project of the [Design Molecule](https://designmolecule.com) lab. Smart cities set.
+A project of the [Design Molecule](https://designmolecule.com) lab.

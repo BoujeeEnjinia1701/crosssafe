@@ -6,11 +6,11 @@ R4,Flash duration,12.8 s for 7 m; energy case 20 s,"L/0.9 + 5 s, 10 to 40 s",Met
 R5,Detection quality,PIR wakes radar; 1 s dwell,"5 % false, 2 % missed",Not verifiable at TRL 3
 R6,Autonomy,7.7 days (5.4 at -20 C; 6.2 at end of life),5 days or more,Met on paper
 R7,Energy balance,break-even 1.05 PSH; recovery 2.1 days,neutral at 2.5 PSH; 3 days or fewer,Met on paper
-R8,Environment,interior 64.7 C at 50 C (dusty); no charge above 35.4 C ambient,IP65; -20 to +50 C; charge 0 to 45 C,At risk
-R9,Structure,42 % of yield on 114.3 mm; clamp torsion 175 N m against 144 N m,60 % of yield or less,At risk
+R8,Environment,"interior 53.9 C at 50 C (dusty, shielded); no charge above 41.1 C ambient",IP65; -20 to +50 C; charge 0 to 45 C,Met on paper
+R9,Structure,44 % of yield on 114.3 mm; bolt 12 % of bearing; keyed saddles hold on poles of 70 mm and up,60 % of yield or less,At risk
 R10,Mounting,60 to 114.3 mm poles; bar at 2.1 m; about 120 min estimate,fit; 2.1 m; 2 h,Not verifiable at TRL 3
 R11,Accessibility,"button 1.05 m; piezo; tone, tactile arrow, pilot light",0.9 to 1.1 m; 22 N or less,Met by design
 R12,Fail-safe,timer-limited flashing; local flashing without link; fault log,never continuous,Met by design
 R13,Privacy,presence and counts only,no images or audio,Met by design
 R14,Theft and vandal resistance,enclosure bottom 2.85 m; lowest arm part 2.52 m,2.8 m; no cables below 2.5 m,Met by design
-R15,Affordable,$318.00 per assembly; $636.00 per crossing (existing poles),$350; $700 per crossing,Met on paper
+R15,Affordable,$332.00 per assembly; $664.00 per crossing (existing poles),$350; $700 per crossing,Met on paper

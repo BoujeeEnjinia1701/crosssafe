@@ -1,4 +1,4 @@
-"""CrossSafe sizing calculations, CRS-CAL-001 v0.1 (TRL 3).
+"""CrossSafe sizing calculations, CRS-CAL-001 v0.2 (TRL 3, with the CRS-DDR-002 sun shield and anti-rotation detail).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md (tags in brackets, for example [B3]) and
@@ -84,10 +84,14 @@ FY = 235.0                         # MPa, S235
 STRESS_LIMIT = 0.60                # R9
 E_STEEL = 210e3                    # MPa
 ECC = 0.25                         # gust eccentricity as a fraction of sign width, for torsion
-BAND_T, MU = 1000.0, 0.2           # N band tension (assumed), friction coefficient
+BAND_T, MU = 1000.0, 0.2           # N band tension (assumed), friction coefficient of a plain saddle
+MU_KEY = 0.4                       # serrated keyed saddle grip friction (assumed, to be measured; CRS-DDR-002)
+BOLT_D, BOLT_AS, BOLT_FUB = 10.0, 58.0, 700.0   # M10 A4-70 through-bolt: mm, tensile stress area mm2, MPa
+FU_POST, GAMMA_M2 = 360.0, 1.25    # S235 ultimate strength MPa; partial factor (EN 1993-1-8 form)
+ALPHA_B = 0.5                      # bearing factor, low-end value for a screening check
 LAT_BEAR = 100.0                   # psf per ft of depth, clay (screening value, IBC Table 1806.2 class 5)
 # cost
-BUDGET_REC = 750.0                 # recommended budget before a site trial (proposed, awaiting Amish)
+BUDGET_REC = 750.0                 # site-trial budget, decided by Amish 2026-09-25 (CRS-DDR-002), on hold with TRL 4
 
 
 # =============================================================== A. flash time and pattern (R1, R4)
@@ -173,8 +177,13 @@ for name, alpha, f in (("clean", ALPHA_CLEAN, 1.0), ("dusty", ALPHA_DUSTY, 1.0),
     out("C1", f"{name}: solar gain {q - p_int:.1f} W + internal {p_int:.1f} W; rise {dt:.1f} K; interior "
               f"{45 + dt:.1f} C at 45 C and {50 + dt:.1f} C at 50 C ambient; charging stops above {CHG_MAX - dt:.1f} C ambient")
 out("C2", f"enclosure area {a_tot:.3f} m2, sunlit projection {a_proj:.4f} m2 at {SUN_EL:.0f} deg elevation")
-res("R8", "Environment", f"interior {50 + therm['dusty']:.1f} C at 50 C (dusty); no charge above "
-    f"{CHG_MAX - therm['clean']:.1f} C ambient", f"IP65; -20 to +50 C; charge 0 to 45 C", "At risk")
+dt_d = therm["dusty, shielded"]          # design case: the sun shield is fitted (CRS-DDR-002)
+out("C3", f"design case with the sun shield (CRS-DDR-002): interior {50 + dt_d:.1f} C at 50 C ambient against the "
+          f"{CELL_DIS_MAX:.0f} C discharge limit; charging stops above {CHG_MAX - dt_d:.1f} C ambient "
+          f"(unshielded, dusty: {50 + therm['dusty']:.1f} C and {CHG_MAX - therm['dusty']:.1f} C)")
+res("R8", "Environment", f"interior {50 + dt_d:.1f} C at 50 C (dusty, shielded); no charge above "
+    f"{CHG_MAX - dt_d:.1f} C ambient", f"IP65; -20 to +50 C; charge 0 to 45 C",
+    "Met on paper" if 50 + dt_d <= CELL_DIS_MAX else "At risk")
 
 # =============================================================== D. radio link and latency (R3)
 tsym = 2 ** SF / BW
@@ -214,7 +223,7 @@ radar_low = P["radar_z"] - P["radar"] / 2 - P["pir_d"]
 out("F1", f"button centre {P['button_z']:.0f} mm; bar bottom {P['bar_bottom']:.0f} mm; enclosure bottom {enc_bot:.0f} mm; "
           f"radar arm {P['radar_z']:.0f} mm (PIR underside {radar_low:.0f} mm); overall height {D['overall_h']:.0f} mm")
 out("F2", f"band clamps fit {P['pole_min_od']:.0f} to {P['pole_max_od']:.1f} mm poles; post {P['post_od']} x {P['post_wall']} mm")
-install = {"clamps and bar with sign": 30, "enclosure, battery and wiring": 35, "panel and bracket": 20,
+install = {"clamps, saddles and bar with sign": 30, "enclosure (shield fitted on the ground), battery and wiring": 35, "panel and bracket": 20,
            "button, radar, PIR and cable cover": 20, "setup and radio pairing": 15}
 t_inst = sum(install.values())
 out("F3", f"installation estimate, two-person crew on an existing pole: {t_inst} min ({', '.join(f'{k} {v}' for k, v in install.items())})")
@@ -288,22 +297,35 @@ for _ in range(50):
     d = 0.5 * A * (1 + math.sqrt(1 + 4.36 * h_ft / A))
 out("G7", f"footing: lateral {Pl:.0f} lbf at {h_ft:.1f} ft; required depth {d:.2f} ft ({d * 304.8:.0f} mm) for a "
           f"{P['footing_d']:.0f} mm footing in clay; modeled {P['embed']:.0f} mm")
+# anti-rotation (CRS-DDR-002): through-bolt on new posts, keyed saddles on existing poles
+f_bear = t_sign / (P["post_od"] / 1000)           # couple on the two post walls, N
+v_rd = 0.6 * BOLT_FUB * BOLT_AS / GAMMA_M2
+b_rd = 2.5 * ALPHA_B * FU_POST * BOLT_D * P["post_wall"] / GAMMA_M2
+out("G6b", f"new post, M10 through-bolt: {f_bear:.0f} N per wall; bolt shear {v_rd:,.0f} N per plane "
+           f"({f_bear / v_rd * 100:.0f} %); wall bearing {b_rd:,.0f} N ({f_bear / b_rd * 100:.0f} %)")
+key_tq = lambda od: 2 * MU_KEY * 2 * math.pi * BAND_T * od / 2000
+od_min = t_sign / (2 * MU_KEY * 2 * math.pi * BAND_T) * 2000
+out("G6c", f"existing poles, keyed saddles at friction {MU_KEY}: two bands resist {key_tq(P['pole_max_od']):.0f} N m on "
+           f"114.3 mm and {key_tq(P['pole_min_od']):.0f} N m on 60 mm against {t_sign:.0f} N m; holds on poles of "
+           f"{od_min:.0f} mm and up")
 added = mx - Mx["post"]
 out("G8", f"moment added to an existing pole at the sidewalk: {added:.0f} N m")
 st9 = "Met on paper" if ratios[P["post_od"]] <= STRESS_LIMIT else "Not met"
-res("R9", "Structure", f"{ratios[P['post_od']] * 100:.0f} % of yield on 114.3 mm; clamp torsion {t_sign:.0f} N m "
-    f"against {2 * t_band:.0f} N m", "60 % of yield or less", "At risk" if 2 * t_band < t_sign else st9)
+ok_rot = f_bear < min(v_rd, b_rd) and key_tq(P["pole_min_od"]) >= t_sign
+res("R9", "Structure", f"{ratios[P['post_od']] * 100:.0f} % of yield on 114.3 mm; bolt {f_bear / b_rd * 100:.0f} % of "
+    f"bearing; keyed saddles hold on poles of {od_min:.0f} mm and up", "60 % of yield or less",
+    st9 if ok_rot else "At risk")
 
 # =============================================================== H. cost (R15)
 bom = list(csv.DictReader((ROOT / "bom/bom.csv").open()))
 tot = sum(float(r["qty"]) * float(r["unit_cost_usd"]) for r in bom)
-var = sum(float(r["qty"]) * float(r["unit_cost_usd"]) for r in bom if r["notes"].startswith("Variant only"))
+var = sum(float(r["qty"]) * float(r["unit_cost_usd"]) for r in bom if r["notes"].startswith("Variant only"))  # new-post lines 14, 19
 base = tot - var
 budget = float(yaml.safe_load((ROOT / "project.yaml").read_text())["budget_usd"])
 out("H1", f"{len(bom)} BOM lines, all priced; one assembly on an existing pole ${base:.2f}; with its own post ${tot:.2f}")
 out("H2", f"against budget_usd ${budget:.0f}: existing pole {base - budget:+.2f}; own post {tot - budget:+.2f}")
-out("H3", f"two-sided crossing: existing poles ${2 * base:.2f}, new posts ${2 * tot:.2f}; against the recommended "
-          f"${BUDGET_REC:.0f} (awaiting Amish): {2 * base - BUDGET_REC:+.2f} and {2 * tot - BUDGET_REC:+.2f}")
+out("H3", f"two-sided crossing: existing poles ${2 * base:.2f}, new posts ${2 * tot:.2f}; against the "
+          f"decided ${BUDGET_REC:.0f} site-trial budget (on hold with TRL 4): {2 * base - BUDGET_REC:+.2f} and {2 * tot - BUDGET_REC:+.2f}")
 res("R15", "Affordable", f"${base:.2f} per assembly; ${2 * base:.2f} per crossing (existing poles)",
     "$350; $700 per crossing", "Met on paper" if base <= budget and 2 * base <= 700 else "Not met")
 

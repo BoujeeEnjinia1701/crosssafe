@@ -3,7 +3,7 @@ doc_id: CRS-PRC-001
 title: CrossSafe design precis
 project: CrossSafe
 doc_type: Design precis
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,13 +21,17 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: TRL 3 update; design choices adopted for TRL 3 work (CRS-DDR-001), PIR gating, pilot light, 114.3 mm post, numbers from CRS-CAL-001, model and drawing CRS-DWG-001
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # CrossSafe design precis
 
 ## Summary
 
-CrossSafe is a pair of pole-mounted, solar-powered warning beacons, one on each side of an unsignalized crossing. When a pedestrian presses the button or a small radar sensor sees someone waiting at the kerb, both assemblies flash two amber lights per face under the crossing warning sign for about 13 s, and a small pilot light confirms to the pedestrian that the warning is on. Each assembly runs from a 20 W panel and a 12.8 V 12 Ah LiFePO4 battery, a low-power PIR sensor switches the radar on only when something moves nearby, and the two sides stay in step over a short LoRa link, so no trench or cable across the road is needed. The TRL 3 calculations (CRS-CAL-001) give 16.0 Wh/day of use at 300 activations, 7.7 days without sun, and $318.00 in parts for one assembly on an existing pole. Heat in the enclosure and slip of the sign clamps are the open risks.
+CrossSafe is a pair of pole-mounted, solar-powered warning beacons, one on each side of an unsignalized crossing. When a pedestrian presses the button or a small radar sensor sees someone waiting at the kerb, both assemblies flash two amber lights per face under the crossing warning sign for about 13 s, and a small pilot light confirms to the pedestrian that the warning is on. Each assembly runs from a 20 W panel and a 12.8 V 12 Ah LiFePO4 battery, a low-power PIR sensor switches the radar on only when something moves nearby, and the two sides stay in step over a short LoRa link, so no trench or cable across the road is needed. The TRL 3 calculations (CRS-CAL-001) give 16.0 Wh/day of use at 300 activations, 7.7 days without sun, and $332.00 in parts for one assembly on an existing pole. A ventilated sun shield keeps the battery below its discharge limit, and an anti-rotation bolt (new posts) or keyed saddles (existing poles) stop the sign turning in a storm; only poles under about 70 mm remain at risk.
 
 The concept follows the rectangular rapid flashing beacon (RRFB), which FHWA lists as a proven safety countermeasure ([FHWA](https://highways.dot.gov/safety/proven-safety-countermeasures/rectangular-rapid-flashing-beacons-rrfb)), and uses the US Interim Approval IA-21 as its reference for light size, flash pattern, night dimming and the optional pilot light ([FHWA IA-21](https://mutcd.fhwa.dot.gov/resources/interim_approval/ia21/index.htm)). It is an open reference design, not a certified traffic control device.
 
@@ -69,12 +73,15 @@ Table 1. Components of one assembly. Numbers match the exploded view and `bom/bo
 | 14 | Post | Existing pole first; where a new post is needed, 114.3 x 3.6 mm galvanized steel, 3.7 m above the sidewalk, 1.8 m in a 500 mm footing |
 | 16 | PIR wake sensor | Low-power passive infrared sensor under the radar; switches the radar on |
 | 17 | Pedestrian pilot light | Small amber light on the kerb end of the light bar, where local rules allow |
+| 18 | Sun shield | Ventilated white aluminium shield over the enclosure roof and three walls, 25 mm air gap, open at the bottom |
+| 19 | Anti-rotation bolt | M10 stainless through-bolt in the upper sign saddle; new posts only |
+| 20 | Keyed sign saddles | Two stainless saddles with serrated grip faces at the sign clamps, for 60 to 114.3 mm poles |
 
-![Figure 4. Cutaway of the pole-top enclosure: battery low, charger and controller above, antenna on the roof.](../media/cutaway.png)
+![Figure 4. Cutaway of the pole-top enclosure and sun shield: battery low, charger and controller above, antenna through the shield roof.](../media/cutaway.png)
 
 ## Key design choices
 
-Each choice below is adopted for TRL 3 work under Amish's 2026-09-25 instruction, open for his review (CRS-DDR-001).
+Each choice below was decided by Amish on 2026-09-25 by accepting the recommendations (CRS-DDR-001 and CRS-DDR-002).
 
 - **RRFB-style amber beacons, not a signal (D4).** Amber warning lights with the standard sign ask drivers to yield; they do not claim to stop traffic, which keeps the device in a simpler approval class in most places. IA-21 is the baseline; the flash pattern is configurable for other jurisdictions.
 - **Button plus passive detection, gated by a PIR (D2, D5).** The button is the reliable, accessible trigger; radar catches people who do not press it and can be switched off where passive detection is not allowed. The PIR keeps the radar off when nothing moves, which is what brings autonomy above 5 days. The radar reports presence only, which keeps images and audio off the device.
@@ -82,6 +89,8 @@ Each choice below is adopted for TRL 3 work under Amish's 2026-09-25 instruction
 - **Own 12 V power system, FieldNode radio core (D7).** The LED load (up to about 26 W at the instant all four heads are lit) is far beyond the FieldNode power stage (6 W panel, 3.2 V cell), so CrossSafe uses a 12.8 V LiFePO4 battery with a built-in BMS. The controller reuses FieldNode's STM32WL-class radio and logging design. CellGuard, the lab's open BMS for 4 to 16 LiFePO4 cells, is a later option in place of the drop-in battery's closed BMS.
 - **Existing poles first; 114.3 mm where a new post is needed (D3).** Band clamps fit 60 to 114.3 mm poles; the new-post variant meets the wind target with margin.
 - **Pedestrian pilot light (D8).** IA-21 permits a small pilot light on the beacon or push button; it is included where local rules allow.
+- **Sun shield on the enclosure (CRS-DDR-002).** A ventilated white shield cuts the enclosure's rise in full sun from 14.7 to 3.9 K when dusty, so the battery stays below its discharge limit and keeps charging on hot days. Placing the enclosure in the panel's shadow is to be considered when the bracket is detailed.
+- **Anti-rotation detail (CRS-DDR-002).** An M10 through-bolt locks the sign saddle to a new post; on existing poles, where drilling needs the owner's consent, keyed saddles with serrated grip faces raise the clamp friction. Band tension and grip are to be measured at TRL 4, which is on hold.
 - **Electronics high on the pole.** The enclosure bottom at 2.85 m and the panel at the top deter theft and keep cables out of reach.
 
 ## Key numbers (CRS-CAL-001)
@@ -91,10 +100,10 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 - **Flash time.** 12.8 s for a 7 m crossing; the energy case uses 20 s, enough for crossings up to 13.5 m.
 - **Energy.** Each head is lit 25 % of each IA-21 sequence, so the LEDs use 10.99 Wh/day at 300 activations. Standby is 187 mW (4.49 Wh/day) with the PIR gating the radar. The daily load is 16.0 Wh, against 38.0 Wh stored in the worst month; break-even is 1.05 peak sun hours, and the battery refills from 20 % in 2.05 days at 5 peak sun hours.
 - **Autonomy.** 122.9 Wh usable gives 7.7 days without sun, 5.4 days at -20 °C and 6.2 days at end of life.
-- **Heat.** The enclosure runs 9.6 K (clean) to 14.7 K (dusty) above ambient in full sun, so charging stops above about 30 to 35 °C ambient and a dusty box reaches 64.7 °C at 50 °C ambient (R8 at risk). A ventilated shield would cut the rise to 3.9 K (proposed, awaiting Amish).
+- **Heat.** Unshielded, the enclosure would run 9.6 K (clean) to 14.7 K (dusty) above ambient in full sun and a dusty box would reach 64.7 °C at 50 °C ambient. With the sun shield the rise is 3.9 K: 53.9 °C inside at 50 °C ambient, and charging continues up to 41.1 °C ambient (R8 met on paper).
 - **Latency and link.** 48 ms side to side, 244 ms with two retries; about 60 dB of link margin across the road with a bus in the way.
-- **Wind.** A 40 m/s gust gives 3.35 kN·m at the base. The 114.3 x 3.6 mm post reaches 100 MPa, 42 % of S235 yield; an 88.9 x 4 mm post would reach 62 %. The sign clamps can slip in torsion at the assumed band tension (R9 at risk). A 500 mm footing needs about 1.8 m of embedment in clay (screening).
-- **Cost.** $318.00 per assembly on an existing pole ($350 budget) and $636.00 per crossing; $388.00 and $776.00 with new posts (see `bom/bom.csv`).
+- **Wind.** A 40 m/s gust gives 3.43 kN·m at the base. The 114.3 x 3.6 mm post reaches 102 MPa, 44 % of S235 yield; an 88.9 x 4 mm post would reach 63 %. The sign's 175 N·m of torsion is carried by the through-bolt on new posts (12 % of bearing) and by keyed saddles on existing poles of about 70 mm and larger; smaller poles remain at risk (R9). A 500 mm footing needs about 1.8 m of embedment in clay (screening).
+- **Cost.** $332.00 per assembly on an existing pole ($350 budget) and $664.00 per crossing; $405.00 and $810.00 with new posts (see `bom/bom.csv`). The $750 budget for a two-sided site trial is accepted and applies when a trial starts (on hold with TRL 4).
 
 ## Safety
 
@@ -102,7 +111,7 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 
 > **Safety:** Lithium cells can overheat, vent and burn. Use LiFePO4 with a BMS, fuse the battery output close to the terminal, charge only between 0 and 45 °C cell temperature, and shade the enclosure. Never charge a damaged or swollen battery.
 
-> **Safety:** Installing on a pole next to live traffic is work at height and work in the road. Use trained crews, traffic management and fall protection as local rules require, keep clear of overhead power lines, and mount only with the asset owner's permission. A post, sign or panel that falls can kill. CRS-CAL-001 is a screening check only: clamp torsion is at risk, and a qualified engineer must check the post, clamps, footing or host pole to the local code before installation.
+> **Safety:** Installing on a pole next to live traffic is work at height and work in the road. Use trained crews, traffic management and fall protection as local rules require, keep clear of overhead power lines, and mount only with the asset owner's permission. A post, sign or panel that falls can kill. CRS-CAL-001 is a screening check only: clamp torsion is at risk on poles under about 70 mm, and a qualified engineer must check the post, clamps, footing or host pole to the local code before installation.
 
 > **Safety:** Sign and panel edges are sharp and heavy; handle with gloves and a second person.
 
@@ -112,6 +121,6 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 - [ ] Measured LED head power and intensity for the chosen modules, and whether 6 W per head is enough in full sun.
 - [ ] Radar false-trigger rate with passing pedestrians, cyclists, animals and rain.
 - [ ] Radio range and reliability across the road with parked vehicles and buses in the path, and licence-free band rules in the pilot country.
-- [ ] Enclosure temperature in full sun: a sun shield, or moving the enclosure under the panel (CRS-CAL-001, section C).
-- [ ] Anti-rotation detail for the sign clamps and measured band tension (R9); host pole checks by the owner; local foundation design.
+- [ ] Measured enclosure temperature in full sun with the shield fitted, and whether the enclosure can sit in the panel's shadow (CRS-CAL-001, section C).
+- [ ] Measured band tension and keyed saddle grip, and the fix for poles under about 70 mm (R9; CRS-DDR-002, N1); host pole checks by the owner; local foundation design.
 - [ ] Whether the pedestrian-facing confirmation light is allowed locally.

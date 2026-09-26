@@ -46,6 +46,9 @@ parts = [
     Part("Post, 114.3 mm (or existing pole)", M[14], "#9CA3AF", 14, (0, 0, 0)),
     Part("PIR wake sensor", M[16], "#DB2777", 16, (-500, 300, -500)),
     Part("Pedestrian pilot light", M[17], "#EAB308", 17, (900, 500, -300)),
+    Part("Ventilated sun shield", M[18], "#F8FAFC", 18, (-600, 0, 900)),
+    Part("Anti-rotation bolt (new post)", M[19], "#111827", 19, (-700, 0, 0)),
+    Part("Keyed sign saddles", M[20], "#475569", 20, (300, 0, 0)),
 ]
 
 # ---------------- street context (hero and isometric only) ----------------
@@ -81,7 +84,8 @@ render_all(
                  "Two amber heads per face, 140 x 62 mm lens, IA-21 wig-wag flash",
                  "Button plus PIR-gated radar; LoRa link syncs both sides",
                  "20 W panel, 12.8 V 12 Ah LiFePO4; 16.0 Wh/day at 300 uses (CRS-CAL-001)",
-                 "7.7 days without sun; $318 per side on an existing pole"],
+                 "7.7 days without sun; sun shield keeps the battery below 60 C",
+                 "$332 per side on an existing pole (CRS-DDR-002)"],
     context=context,
     cut=False,
     flow={"title": "daily energy per assembly, Wh per day (CRS-CAL-001 estimates: 2.5 peak sun hours, 300 activations of 20 s)",
@@ -96,20 +100,21 @@ render_all(
 # A 700 mm length of post is drawn so the enclosure is not shown floating.
 stub = Pos(PX, PY, ENC_Z) * Cylinder(POLE_R, 700)
 ring = lambda z: Pos(PX, PY, z) * (Cylinder(POLE_R + MP["band_t"], MP["band_w"]) - Cylinder(POLE_R, MP["band_w"] + 2))
-zone = [p for p in parts if p.bom in (8, 9, 10, 11, 12)] + [Part("Post (section of)", stub, "#9CA3AF", 14),
+zone = [p for p in parts if p.bom in (8, 9, 10, 11, 12, 18)] + [Part("Post (section of)", stub, "#9CA3AF", 14),
                                                           Part("Pole clamps", ring(ENC_Z - 100) + ring(ENC_Z + 100), "#94A3B8", 13)]
 # cutaway_parts centres its cutter at X = Z = 0, so move the zone to the origin first
 zone = [Part(p.name, Pos(-PX, -PY, -ENC_Z) * p.shape, p.color, p.bom) for p in zone]
 _render(cutaway_parts(zone), Path.cwd() / "media" / "cutaway.png", azim=-90, elev=18, labels=True,
-        title="CrossSafe: cutaway of the pole-top enclosure",
-        note="Enclosure cut on the pole axis; battery low, charger and controller above, antenna on the roof")
+        title="CrossSafe: cutaway of the pole-top enclosure and sun shield",
+        note="Enclosure and shield cut on the pole axis; battery low, charger and controller above, antenna through the shield roof")
 
 # Exploded view, rebuilt so small parts stay readable: the post is shortened to its upper 2 m and
 # the push-button station is moved up 700 mm for this view only. Numbers match bom/bom.csv.
 EXPLODE = {1: (600, 0, 200), 2: (900, 0, -250), 3: (1500, 0, -500), 4: (0, -700, -100),
            5: (-600, 500, -200), 6: (0, -400, 700), 7: (0, 0, 350), 8: (-700, 0, 300),
            9: (-1500, 0, -500), 10: (-1500, 0, -100), 11: (-1500, 0, 300), 12: (-1500, 0, 800),
-           13: (1400, 900, 400), 14: (0, 0, 0), 16: (-900, 0, -900), 17: (1300, 0, 500)}
+           13: (1400, 900, 400), 14: (0, 0, 0), 16: (-900, 0, -900), 17: (1300, 0, 500),
+           18: (-700, 0, 1100), 19: (-300, 0, -500), 20: (500, -700, 0)}
 xp = []
 for p in parts:
     shape, name = p.shape, p.name
@@ -117,10 +122,14 @@ for p in parts:
         shape, name = Pos(PX, PY, 2700) * Cylinder(POLE_R, 2000), "Post, 114.3 mm (shortened in this view)"
     if p.bom == 4:
         shape = Pos(0, 0, 700) * shape
+    if p.bom == 19:  # rebuilt at three times size (scaling the located rod would move it)
+        c = shape.bounding_box().center()
+        bl = shape.bounding_box().size.X
+        shape = Pos(c.X, c.Y, c.Z) * Rot(0, 90, 0) * Cylinder(3 * MP["bolt_d"] / 2, 3 * bl)
     if p.bom in (16, 17):  # drawn at three times size so they show at this scale
         c = shape.bounding_box().center()
         shape = Pos(c.X, c.Y, c.Z) * (Pos(-c.X, -c.Y, -c.Z) * shape).scale(3.0)
     xp.append(Part(name, shape, p.color, p.bom, EXPLODE[p.bom]))
 _render(xp, Path.cwd() / "media" / "exploded.png", offsets=True, labels=True, size=(13, 8),
         title="CrossSafe: exploded view (one assembly)",
-        note="Post shortened, push button moved up, PIR (16) and pilot light (17) drawn at three times size for this view; numbers match bom/bom.csv")
+        note="Post shortened, push button moved up, PIR (16), pilot light (17) and bolt (19, new posts only) drawn at three times size; numbers match bom/bom.csv")

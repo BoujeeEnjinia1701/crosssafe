@@ -1,4 +1,4 @@
-"""CrossSafe general arrangement sheet CRS-DWG-001, Rev P1 (TRL 3).
+"""CrossSafe general arrangement sheet CRS-DWG-001, Rev P2 (TRL 3; sun shield and anti-rotation detail, CRS-DDR-002).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/CRS-DWG-001.svg, .pdf and .png from the parametric model in cad/src/model.py
@@ -94,10 +94,11 @@ def main():
     asm = assembly(own_post=True)
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="CrossSafe", title="General arrangement, one beacon assembly", dwg_no="CRS-DWG-001", rev="P1",
+    s = Sheet(project="CrossSafe", title="General arrangement, one beacon assembly", dwg_no="CRS-DWG-001", rev="P2",
               author="Amish Chadha", date=DATE, scale=None, theme="technical",
               material="Galvanized steel post; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
-              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC")])
+              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
+                         ("P2", "Sun shield, keyed saddles, anti-rotation bolt (DDR-002)", DATE, "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -149,8 +150,10 @@ def main():
         f"Pilot light on the kerb end of the bar; button centre {P['button_z']:.0f}",
         f"Radar and PIR on a {P['arm_l']:.0f} arm at {P['radar_z']:.0f}, toward the kerb",
         f"Enclosure IP65 {P['enc'][0]:.0f} x {P['enc'][1]:.0f} x {P['enc'][2]:.0f}, bottom {D['enc_bot']:.0f}, behind the post",
+        f"Ventilated sun shield, {P['shield_gap']:.0f} air gap, roof and three walls, open bottom",
+        f"Keyed saddles at both sign clamps; new post: M{P['bolt_d']:.0f} through-bolt at the upper saddle",
         f"Panel 20 W {P['panel'][0]:.0f} x {P['panel'][1]:.0f}, tilt {P['panel_tilt']:.0f} deg; top {D['overall_h']:,.0f}",
-        "Wind case 40 m/s gust: 42 % of S235 yield (CRS-CAL-001)",
+        "Wind case 40 m/s gust: 44 % of S235 yield (CRS-CAL-001 v0.2)",
         "Third-angle; front view from -Y; post on the Z axis",
     ], x=276, y=150, width=146)
     out = s.save(ROOT / "cad" / "drawings" / "CRS-DWG-001")

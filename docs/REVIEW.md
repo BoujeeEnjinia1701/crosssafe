@@ -37,6 +37,8 @@ Requirements not met or at risk:
 
 ### Proposed, awaiting Amish
 
+Update 2026-09-25: items 1 to 8 are now "Decided by Amish, 2026-09-25: go with recommendation" (CRS-DDR-002); item 9 has no recommendation and stays "Proposed, awaiting Amish".
+
 1. **Budget (pitch-level).** `budget_usd` is $350, but a working crossing needs two assemblies (about $722). Options: (a) keep $350 and define the prototype as one assembly on an existing pole (about $311), with the second side later; (b) raise `budget_usd` to $750 for a full two-sided prototype; (c) cut cost (one-sided light bar, smaller sign) to bring a pair near $600. Recommendation: (a) for TRL 3 and 4 bench work, then (b) before any site trial. `project.yaml` is unchanged.
 2. **Autonomy fix.** Options: gate the radar with a PIR sensor (about 6 days, about $3 more, adds detection logic), an 18 Ah battery (about 6.2 days, about $20 more), or relax R6 to 4 days. Recommendation: PIR gating, with the 18 Ah battery as fallback.
 3. **Post and sign size.** Options: 114.3 x 3.6 mm post, a 600 mm sign on the 89 mm post, or existing lighting poles only. Recommendation: design for existing poles first and specify 114.3 mm when a new post is needed.
@@ -97,9 +99,11 @@ Key numbers: daily load 16.0 Wh (TRL 2: 29.8), because IA-21 lights each head 25
 
 ### Decisions recorded (CRS-DDR-001)
 
-Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: D1 `budget_usd` covers one assembly on an existing pole (R15 redefined; `budget_usd` unchanged at $350); D2 PIR gating of the radar, 18 Ah battery as fallback only; D3 existing poles first, 114.3 x 3.6 mm where a new post is needed; D4 IA-21 baseline, configurable pattern; D5 button plus passive detection, switchable off; D6 LoRa side-to-side link; D7 FieldNode radio core, own 12 V power, CellGuard later, SwapCell not used; D8 pedestrian pilot light where allowed; D9 no change to pitch or problem.
+Decided by Amish, 2026-09-25: go with recommendation (previously adopted for TRL 3, open for his review): D1 `budget_usd` covers one assembly on an existing pole (R15 redefined; `budget_usd` unchanged at $350); D2 PIR gating of the radar, 18 Ah battery as fallback only; D3 existing poles first, 114.3 x 3.6 mm where a new post is needed; D4 IA-21 baseline, configurable pattern; D5 button plus passive detection, switchable off; D6 LoRa side-to-side link; D7 FieldNode radio core, own 12 V power, CellGuard later, SwapCell not used; D8 pedestrian pilot light where allowed; D9 no change to pitch or problem.
 
 ### Still awaiting Amish
+
+Update 2026-09-25: items 2 to 4 and the timed-trial suggestion are now "Decided by Amish, 2026-09-25: go with recommendation" (CRS-DDR-002); item 1 stays "Proposed, awaiting Amish".
 
 1. **O1, pilot partner, site and jurisdiction**, including a road authority. No preference stated.
 2. **O2, site-trial budget.** Recommended at TRL 2: raise `budget_usd` to $750 before any site trial. Not applied. Against $750 a crossing is $114.00 under on existing poles and $26.00 over with new posts ($776.00).
@@ -131,3 +135,50 @@ Suggestion only, not in the repo: a timed trial of the 2 h installation would se
 ### Recommended next step
 
 TRL 4 is on hold by Amish's instruction; this repo stops at TRL 3. Amish's review is needed on D1 to D9, O1, O2 and items 3 and 4 above. For the record only, TRL 4 would need: a bench build of one assembly on a pole stub; a lab test report (TST, `environment: lab`) covering LED head power and intensity against SAE J595, standby and energy per activation, radio latency and fault behavior, enclosure temperature in sun with and without a shield, and clamp torsion and band tension; and build log entries. None of this has been started.
+
+## Session 2026-09-25: recommendations accepted
+
+On 2026-09-25 Amish wrote: "i accept all your recommendations, go with them across all repos." Every CrossSafe item with a recommendation is now "Decided by Amish, 2026-09-25: go with recommendation", recorded in `docs/decisions/0002-recommendations-accepted.md` (CRS-DDR-002 v0.1). CRS-DDR-001 is revised to v0.2 with the new status.
+
+### Decisions applied and what changed
+
+- **D1 to D9 (CRS-DDR-001):** status wording only; the design already reflected them.
+- **O2, site-trial budget $750:** decided, on hold with TRL 4. The recommendation was staged ($350 for TRL 3 and bench work under D1, $750 before a site trial), so `budget_usd` stays **$350**. A crossing is now $664.00 on existing poles and $810.00 with new posts against $750.
+- **E1, enclosure heat (R8):** ventilated white sun shield added (model part 18, BOM line 18, $8.00). Dusty enclosure rise 14.7 K before, 3.9 K after; interior at 50 °C ambient 64.7 °C before, 53.9 °C after; charging cut-off ambient 30.3 °C before, 41.1 °C after. R8 at risk before, met on paper after.
+- **E2, sign clamp slip (R9):** M10 through-bolt on new posts (part 19, BOM line 19, $3.00, variant) and keyed saddles on existing poles (part 20, BOM line 20, 2 x $3.00). Torsion 175 N·m against 144 N·m of plain-saddle friction before; after, the bolt runs at 12 % of bearing and keyed saddles resist 287 N·m on 114.3 mm and 151 N·m on 60 mm poles (grip friction 0.4 assumed). R9 stays at risk, now only for poles under about 70 mm.
+- **E3, timed installation trial:** decided, on hold with TRL 4. The estimate stays 120 min with the shield fitted on the ground.
+- Knock-on numbers: the shield enlarges the enclosure's wind area, so the base moment rises from 3.35 to 3.43 kN·m and the 114.3 mm post from 42 % to 44 % of yield; embedment needed 1,776 mm (1,800 modeled); host pole moment 2.43 to 2.51 kN·m. Cost per assembly on an existing pole $318.00 before, $332.00 after; with a new post $388.00 before, $405.00 after.
+- Files: `cad/src/model.py` (parts 18 to 20; STEP and STL re-exported; clash check clean), `bom/bom.csv` (20 lines) and `bom/bom-notes.md`, `docs/04-calcs/sizing.py` and `01-sizing.md` (CRS-CAL-001 v0.2; checks C3, G6b, G6c), `cad/src/sheets.py` and CRS-DWG-001 at Rev P2, `cad/src/concept_media.py` and all of `media/`, CRS-PRC-001 v0.4, CRS-REQ-001 v0.4, `README.md`, `project.yaml` (evidence list only), PDFs in `docs/pdf/`.
+- `README.md`: "What sparked the idea" rewritten around FHWA's termination of IA-11 over the RRFB patents (December 21, 2017) and the reinstatement as IA-21 once the concept was in the public domain (March 20, 2018). All media and PDFs regenerated with the designmolecule.com footer.
+
+### Requirement status (CRS-CAL-001 v0.2, Table 5)
+
+None not met, 1 at risk, 3 not verifiable at TRL 3, 5 met on paper, 6 met by design.
+
+| ID | Status | Key number |
+| --- | --- | --- |
+| R9 Structure | **At risk** (poles under about 70 mm) | Post 44 % of yield; bolt 12 % of bearing; keyed saddles hold from about 70 mm |
+| R2 Visibility | Not verifiable at TRL 3 | About 3,939 cd per head (screening) |
+| R5 Detection quality | Not verifiable at TRL 3 | Needs a site trial |
+| R10 Mounting | Not verifiable at TRL 3 | Install estimate 120 min, at the 2 h limit |
+| R3, R6, R7, R8, R15 | Met on paper | 48 ms; 7.7 days; break-even 1.05 h; 53.9 °C inside at 50 °C ambient; $332.00 per assembly, $664.00 per crossing |
+| R1, R4, R11 to R14 | Met by design | 12.8 s flash for 7 m; button 1.05 m; enclosure bottom 2.85 m |
+
+### Still awaiting Amish
+
+1. **O1, pilot partner, site and jurisdiction.** No recommendation; no preference stated.
+2. **N1 (new), sign rotation on poles under about 70 mm.** Options: (a) a third band at the sign on poles under 76 mm; (b) limit the existing-pole range to 76 mm and up; (c) a through-bolt on existing poles where the owner allows drilling. Recommendation: (a). Not applied.
+
+### Cross-repo actions
+
+- **FieldNode:** note CrossSafe as a user of the FieldNode radio and logging core in LoRa point-to-point mode (D6, D7). No change to FieldNode's hardware is needed. Not edited from here.
+- **CellGuard:** later option in place of the drop-in battery's BMS (D7); no action now.
+
+### Safety concerns
+
+- Unchanged from the TRL 3 session, except that the sun shield removes the hot-battery concern on paper (the shield factor is not measured) and sign rotation is now a concern only on small existing poles.
+- The through-bolt hole must be drilled before galvanizing; drilling an existing pole needs the owner's consent.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. The site-trial budget, the timed installation trial and the measurement of band tension, saddle grip and shielded enclosure temperature are decided but not started. `trl: 3` and `trl_target: 3` are unchanged.
