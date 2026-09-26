@@ -6,13 +6,21 @@
 
 A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
 
+![CrossSafe concept](media/hero.png)
+
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+
 ## Concept rationale
 
-An affordable, self-powered beacon can make crossings safer where signals will never be funded.
+A driver yields when they see someone waiting, and a warning that appears only then is hard to ignore. CrossSafe copies the logic of the rectangular rapid flashing beacon (RRFB): two amber lights under the crossing sign that flash in a wig-wag pattern only when a pedestrian presses a button or a small radar sees someone waiting at the kerb. One assembly stands on each side of the road; each has its own 20 W panel and LiFePO4 battery, and the two stay in step over a short radio link, so there is no mains connection and no cable across the road.
+
+It is open and garage-buildable because the crossings that need it most are the ones no one will pay a signal contractor to fix. Every part is a standard sign, LED module, small solar kit, battery, IP65 box or common microcontroller, the firmware and wiring are published, and a local technician can repair it with hand tools. An open reference also lets road authorities, schools and researchers see exactly what the device does before they ask for approval to install it.
 
 ## Burning platform
 
-Pedestrians account for a large share of road deaths worldwide, concentrated in low- and middle-income countries.
+About 1.19 million people die on the world's roads each year, and pedestrian deaths rose to about 274,000 in 2021, 23 % of the total, with nine in ten road deaths in low- and middle-income countries ([WHO, 2023](https://www.who.int/news/item/13-12-2023-despite-notable-progress-road-safety-remains-urgent-global-issue)). The UN General Assembly's target is to halve road deaths and injuries by 2030 ([WHO fact sheet](https://www.who.int/news-room/fact-sheets/detail/road-traffic-injuries)), and progress on pedestrians has gone the wrong way.
+
+The problem is concentrated away from signals and after dark. In the United States, 74 % of the 7,314 pedestrians killed in 2023 died at locations that were not intersections, and 77 % died in the dark ([NHTSA, 2025](https://crashstats.nhtsa.dot.gov/Api/Public/ViewPublication/813727)). Pedestrian-activated beacons are one of the few low-cost measures with strong evidence: FHWA reports RRFBs can cut pedestrian crashes by up to 47 % and raise driver yielding to as high as 98 % ([FHWA](https://highways.dot.gov/safety/proven-safety-countermeasures/rectangular-rapid-flashing-beacons-rrfb)).
 
 ## Where it could be used
 
@@ -20,41 +28,55 @@ Pedestrians account for a large share of road deaths worldwide, concentrated in 
 
 | Industry | Use |
 | --- | --- |
-| _To be developed_ | |
+| Municipal roads and public works | Mid-block and uncontrolled crossings that do not qualify for a full signal |
+| Education | School crossings used at the start and end of the day, often by children crossing alone |
+| Markets and retail districts | Busy crossings on market days where traffic and pedestrian peaks coincide |
+| Public transport | Crossings to bus and minibus stops on arterial roads |
+| Hospitals, universities and campuses | Internal roads crossing between car parks, wards and buildings |
+| Industrial sites and ports | Pedestrian crossings on plant roads shared with trucks and forklifts, off the public road network |
 
 ### By country or region
 
 | Country or region | Why it matters there |
 | --- | --- |
-| _To be developed_ | |
+| Sub-Saharan Africa | The WHO African Region has 19 % of global road deaths with 15 % of the population and 3 % of the world's vehicles ([WHO Africa](https://www.afro.who.int/health-topics/road-safety)); walking is the main way many people travel and crossings rarely have signals |
+| India | India accounts for about 10 % of road crash deaths worldwide, and most who die are pedestrians, cyclists and motorcyclists ([WHO India](https://www.who.int/india/health-topics/road-safety)) |
+| South-East Asia | The WHO South-East Asia Region has the largest share of global road deaths, 28 % ([WHO, 2023](https://www.who.int/news/item/13-12-2023-despite-notable-progress-road-safety-remains-urgent-global-issue)) |
+| Latin America and the Caribbean | About 145,090 road deaths in the Americas in 2021, with pedestrians, cyclists and motorcyclists rising from 39 % to 47 % of deaths since 2009 ([PAHO](https://www.paho.org/en/topics/road-safety)) |
+| United States | 7,314 pedestrians killed in 2023, 74 % away from intersections ([NHTSA](https://crashstats.nhtsa.dot.gov/Api/Public/ViewPublication/813727)); RRFBs already have an FHWA interim approval ([IA-21](https://mutcd.fhwa.dot.gov/resources/interim_approval/ia21/index.htm)), so an open design could serve small towns and schools on tight budgets |
+| United Kingdom | Pedestrians were 25 % of the 1,624 road deaths in Great Britain in 2023 ([Department for Transport](https://www.gov.uk/government/statistics/reported-road-casualties-great-britain-annual-report-2023/reported-road-casualties-great-britain-annual-report-2023)); local rules differ from US practice, so the flash pattern and sign are configurable |
 
 ## What sparked the idea
 
-It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab.
+It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. The real-world trigger is the gap between the evidence and the rollout: FHWA already counts pedestrian-activated beacons among its proven safety countermeasures ([FHWA](https://highways.dot.gov/safety/proven-safety-countermeasures/rectangular-rapid-flashing-beacons-rrfb)), yet pedestrian deaths worldwide rose between 2010 and 2021 while the UN aims to halve road deaths by 2030 ([WHO, 2023](https://www.who.int/news/item/13-12-2023-despite-notable-progress-road-safety-remains-urgent-global-issue)).
 
 ## Problem
 
-Pedestrians die at unsignalized crossings, and full traffic signals are costly and slow to approve.
+Pedestrians die at unsignalized crossings, and full traffic signals are costly and slow to approve. Static signs fade into the background, beacons that flash all day are ignored, and many crossings have no mains power nearby.
+
+Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 ## Concept
 
 A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
 
-Full design precis: [docs/02-concept.md](docs/02-concept.md)
+One assembly stands on each side of the road: a crossing warning sign with a double-sided amber light bar, a push button and a presence radar, and a pole-top enclosure with the battery, charger and controller under a 20 W panel. Both sides flash together for about 13 s per activation on a 7 m road. Only activation counts and faults are logged; no images or audio are recorded.
+
+First-order estimates (to be checked at TRL 3): about 30 Wh/day at 300 activations, about 4.1 days without sun, energy neutral at about 2 peak sun hours, and about $361 in parts per assembly (about $722 per crossing). See the [design precis](docs/02-concept.md) and [requirements](docs/03-requirements.md), including the requirements not yet met.
 
 ## Key components
 
-- Presence sensor and push button
-- LED beacons
-- Solar panel and battery
-- Controller
-- Pole mount
+- Crossing warning sign, 750 mm, with a double-sided amber LED light bar (two heads per face)
+- Accessible push button and a 24 GHz presence radar (presence only)
+- 20 W solar panel, MPPT charger and 12.8 V 12 Ah LiFePO4 battery
+- Controller with LED drivers and a LoRa link that keeps both sides in step
+- IP65 pole-top enclosure, band clamps and an 89 mm post (or an existing pole)
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
 ## Safety
 
-> A research prototype; traffic control devices must meet local standards and road authority approval before use on a public road. Lithium cells can overheat, vent and burn. Use protected cells or LiFePO4, fuse every pack, charge only within the cell maker's limits and never leave a first build charging unattended. Street furniture and pole mounts must be installed only with the asset owner's permission, by trained crews, with fall protection and traffic management as local rules require.
+> A research prototype; traffic control devices must meet local standards and road authority approval before use on a public road. Pedestrians must still check that drivers have stopped. Lithium cells can overheat, vent and burn. Use protected cells or LiFePO4, fuse every pack, charge only within the cell maker's limits and never leave a first build charging unattended. Street furniture and pole mounts must be installed only with the asset owner's permission, by trained crews, with fall protection and traffic management as local rules require. The post, sign and panel must pass a wind load check before installation; sign and panel edges are sharp.
 
 ## Repository layout
 

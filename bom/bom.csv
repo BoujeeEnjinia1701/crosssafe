@@ -1,6 +1,16 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-Presence sensor and push button,,,,,,
-LED beacons,,,,,,
-Solar panel and battery,,,,,,
-Controller,,,,,,
-Pole mount,,,,,,
+1 Crossing warning sign,1,"750 mm diamond, aluminium, retroreflective sheeting, local sign design, with two mounting brackets",Regional sign maker,45.00,buy,Indicative price; a 600 mm sign reduces wind load (see CRS-PRC-001)
+2 Light bar housing,1,"Folded aluminium, double sided, about 720 x 130 x 70 mm, polycarbonate lenses, gasketed",Local fabricator,20.00,make,Indicative material cost
+3 Amber LED heads,4,"Amber LED modules, at least 127 x 51 mm lit area, about 6 W each, 12 V",LED module supplier,10.00,buy,Indicative price; two per face; photometry unverified
+4 Push-button station,1,"Vandal-resistant piezo button with acknowledgement tone, tactile arrow and LED; instruction plate",Electronics distributor,25.00,buy,Indicative price
+5 Presence radar,1,"24 GHz presence sensor module in a small weatherproof housing, presence output only",Electronics distributor,10.00,buy,Indicative price; no images or audio
+6 Solar panel,1,"20 W monocrystalline, about 500 x 360 x 25 mm, Vmp about 18 V",Regional solar distributor,25.00,buy,Indicative price
+7 Panel bracket,1,"Steel post-top bracket, tilt 20 to 40 degrees, security fasteners",Local fabricator,10.00,make,Indicative material cost
+8 Enclosure,1,"IP65 polycarbonate, about 260 x 300 x 150 mm, membrane vent, cable glands",Electronics distributor,22.00,buy,Indicative price
+9 LiFePO4 battery,1,"12.8 V 12 Ah (about 154 Wh), internal BMS with low-temperature charge protection",Battery distributor,45.00,buy,Indicative price; 18 Ah option about $20 more (proposed)
+10 MPPT charge controller,1,"12 V, 5 A class, LiFePO4 profile, low-temperature charge cut-off",Solar distributor,15.00,buy,Indicative price
+11 Controller and radio board,1,"Low-power microcontroller, LoRa module (regional band), four LED driver channels, real-time clock, fault indicator",Electronics distributor,22.00,buy,Indicative price; may reuse FieldNode radio core (proposed)
+12 Antenna,1,"Short whip for the LoRa band, bulkhead connector",Electronics distributor,5.00,buy,Indicative price
+13 Pole clamps,1,"Set of stainless band clamps with brackets for 60 to 114 mm poles",Hardware supplier,15.00,buy,Indicative price
+14 Post,1,"89 x 4 mm galvanized steel tube, 3.7 m above sidewalk plus embedment, with cap",Local steel stockist,50.00,buy,Indicative price; omit on an existing pole; 114.3 mm post proposed for wind load
+15 Wiring and protection,1,"Outdoor cable, inline fuse at the battery, glands, security fasteners",Local hardware shop,12.00,buy,Indicative price; no exploded-view callout
