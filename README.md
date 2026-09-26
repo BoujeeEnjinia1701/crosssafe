@@ -1,18 +1,18 @@
 # CrossSafe
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Smart Cities · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $350 USD · **Difficulty:** 3 of 5
+**Area:** Smart Cities · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $350 USD (one assembly on an existing pole) · **Difficulty:** 3 of 5
 
 A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
 
 ![CrossSafe concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CRS-DWG-001 (PDF)](cad/drawings/CRS-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
-A driver yields when they see someone waiting, and a warning that appears only then is hard to ignore. CrossSafe copies the logic of the rectangular rapid flashing beacon (RRFB): two amber lights under the crossing sign that flash in a wig-wag pattern only when a pedestrian presses a button or a small radar sees someone waiting at the kerb. One assembly stands on each side of the road; each has its own 20 W panel and LiFePO4 battery, and the two stay in step over a short radio link, so there is no mains connection and no cable across the road.
+A driver yields when they see someone waiting, and a warning that appears only then is hard to ignore. CrossSafe copies the logic of the rectangular rapid flashing beacon (RRFB): two amber lights under the crossing sign that flash in a wig-wag pattern only when a pedestrian presses a button or a small radar, woken by a motion sensor, sees someone waiting at the kerb. One assembly stands on each side of the road; each has its own 20 W panel and LiFePO4 battery, and the two stay in step over a short radio link, so there is no mains connection and no cable across the road.
 
 It is open and garage-buildable because the crossings that need it most are the ones no one will pay a signal contractor to fix. Every part is a standard sign, LED module, small solar kit, battery, IP65 box or common microcontroller, the firmware and wiring are published, and a local technician can repair it with hand tools. An open reference also lets road authorities, schools and researchers see exactly what the device does before they ask for approval to install it.
 
@@ -60,23 +60,23 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.
 
-One assembly stands on each side of the road: a crossing warning sign with a double-sided amber light bar, a push button and a presence radar, and a pole-top enclosure with the battery, charger and controller under a 20 W panel. Both sides flash together for about 13 s per activation on a 7 m road. Only activation counts and faults are logged; no images or audio are recorded.
+One assembly stands on each side of the road: a crossing warning sign with a double-sided amber light bar and a pedestrian pilot light, a push button, a presence radar woken by a PIR sensor, and a pole-top enclosure with the battery, charger and controller under a 20 W panel. Both sides flash together for about 13 s per activation on a 7 m road. Only activation counts and faults are logged; no images or audio are recorded.
 
-First-order estimates (to be checked at TRL 3): about 30 Wh/day at 300 activations, about 4.1 days without sun, energy neutral at about 2 peak sun hours, and about $361 in parts per assembly (about $722 per crossing). See the [design precis](docs/02-concept.md) and [requirements](docs/03-requirements.md), including the requirements not yet met.
+TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 300 activations, 7.7 days without sun, energy neutral at 1.05 peak sun hours, a 114.3 mm post at 42 % of yield in a 40 m/s gust, and $318 in parts per assembly on an existing pole ($636 per crossing). Enclosure heat in full sun and slip of the sign clamps are at risk. See the [design precis](docs/02-concept.md), [requirements](docs/03-requirements.md) and [general arrangement](cad/drawings/CRS-DWG-001.pdf).
 
 ## Key components
 
 - Crossing warning sign, 750 mm, with a double-sided amber LED light bar (two heads per face)
-- Accessible push button and a 24 GHz presence radar (presence only)
+- Accessible push button, a pedestrian pilot light, and a 24 GHz presence radar (presence only) switched on by a PIR sensor
 - 20 W solar panel, MPPT charger and 12.8 V 12 Ah LiFePO4 battery
-- Controller with LED drivers and a LoRa link that keeps both sides in step
-- IP65 pole-top enclosure, band clamps and an 89 mm post (or an existing pole)
+- Controller on the FieldNode radio core, with LED drivers and a LoRa link that keeps both sides in step
+- IP65 pole-top enclosure and band clamps for an existing pole, or a 114.3 mm post where none exists
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
 ## Safety
 
-> A research prototype; traffic control devices must meet local standards and road authority approval before use on a public road. Pedestrians must still check that drivers have stopped. Lithium cells can overheat, vent and burn. Use protected cells or LiFePO4, fuse every pack, charge only within the cell maker's limits and never leave a first build charging unattended. Street furniture and pole mounts must be installed only with the asset owner's permission, by trained crews, with fall protection and traffic management as local rules require. The post, sign and panel must pass a wind load check before installation; sign and panel edges are sharp.
+> A research prototype; traffic control devices must meet local standards and road authority approval before use on a public road. Pedestrians must still check that drivers have stopped. Lithium cells can overheat, vent and burn. Use protected cells or LiFePO4, fuse every pack, charge only within the cell maker's limits and never leave a first build charging unattended. Street furniture and pole mounts must be installed only with the asset owner's permission, by trained crews, with fall protection and traffic management as local rules require. The post, clamps, footing or host pole must pass a wind load check by a qualified engineer before installation; sign and panel edges are sharp.
 
 ## Repository layout
 

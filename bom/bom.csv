@@ -1,16 +1,18 @@
-item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1 Crossing warning sign,1,"750 mm diamond, aluminium, retroreflective sheeting, local sign design, with two mounting brackets",Regional sign maker,45.00,buy,Indicative price; a 600 mm sign reduces wind load (see CRS-PRC-001)
-2 Light bar housing,1,"Folded aluminium, double sided, about 720 x 130 x 70 mm, polycarbonate lenses, gasketed",Local fabricator,20.00,make,Indicative material cost
-3 Amber LED heads,4,"Amber LED modules, at least 127 x 51 mm lit area, about 6 W each, 12 V",LED module supplier,10.00,buy,Indicative price; two per face; photometry unverified
-4 Push-button station,1,"Vandal-resistant piezo button with acknowledgement tone, tactile arrow and LED; instruction plate",Electronics distributor,25.00,buy,Indicative price
-5 Presence radar,1,"24 GHz presence sensor module in a small weatherproof housing, presence output only",Electronics distributor,10.00,buy,Indicative price; no images or audio
-6 Solar panel,1,"20 W monocrystalline, about 500 x 360 x 25 mm, Vmp about 18 V",Regional solar distributor,25.00,buy,Indicative price
+Item,qty,spec,supplier,unit_cost_usd,make_buy,notes
+1 Crossing warning sign,1,"750 mm diamond, 3 mm aluminium, retroreflective sheeting, local sign design, with two mounting brackets",Regional traffic sign maker,45.00,buy,Indicative price; a 600 mm sign reduces wind load (CRS-CAL-001 section G)
+2 Light bar housing,1,"Folded aluminium, double sided, 720 x 70 x 130 mm, polycarbonate lenses, gasketed, post saddle",Local sheet metal fabricator,20.00,make,Indicative material cost
+3 Amber LED heads,4,"Amber LED modules, lens 140 x 62 mm (at least 127 x 51 mm lit), about 6 W each at 12 V, narrow beam optic, dimmable",LED signal module supplier,10.00,buy,Indicative price; two per face; photometry against SAE J595 Class 1 yellow unverified (R2)
+4 Push-button station,1,"Vandal-resistant piezo button with acknowledgement tone, tactile arrow and LED; instruction plate 230 x 300 mm",Electronics distributor,25.00,buy,Indicative price
+5 Presence radar,1,"24 GHz presence sensor module in a small weatherproof housing, presence output only, switched by the controller",Electronics distributor,10.00,buy,Indicative price; no images or audio; powered only when the PIR sees motion (CRS-DDR-001 D2)
+6 Solar panel,1,"20 W monocrystalline, 500 x 360 x 25 mm, Vmp about 18 V",Regional solar distributor,25.00,buy,Indicative price
 7 Panel bracket,1,"Steel post-top bracket, tilt 20 to 40 degrees, security fasteners",Local fabricator,10.00,make,Indicative material cost
-8 Enclosure,1,"IP65 polycarbonate, about 260 x 300 x 150 mm, membrane vent, cable glands",Electronics distributor,22.00,buy,Indicative price
-9 LiFePO4 battery,1,"12.8 V 12 Ah (about 154 Wh), internal BMS with low-temperature charge protection",Battery distributor,45.00,buy,Indicative price; 18 Ah option about $20 more (proposed)
-10 MPPT charge controller,1,"12 V, 5 A class, LiFePO4 profile, low-temperature charge cut-off",Solar distributor,15.00,buy,Indicative price
-11 Controller and radio board,1,"Low-power microcontroller, LoRa module (regional band), four LED driver channels, real-time clock, fault indicator",Electronics distributor,22.00,buy,Indicative price; may reuse FieldNode radio core (proposed)
+8 Enclosure,1,"IP65 polycarbonate, 150 x 260 x 300 mm, membrane vent, cable glands, back plate",Electronics distributor,22.00,buy,Indicative price
+9 LiFePO4 battery,1,"12.8 V 12 Ah (about 154 Wh), internal BMS with low-temperature charge protection",Battery distributor,45.00,buy,Indicative price; 18 Ah kept as a fallback only (CRS-DDR-001 D2)
+10 MPPT charge controller,1,"12 V, 5 A class, LiFePO4 profile, low-temperature charge cut-off, self-consumption 4 mA or less",Solar distributor,15.00,buy,Indicative price; low self-consumption is an assumption of CRS-CAL-001
+11 Controller and radio board,1,"STM32WL-class LoRa module (FieldNode radio core, FND-DDR-001 D2) in point-to-point mode, four LED driver channels with night dimming, real-time clock, fault indicator, 12 V to 3.3 V converter",Electronics distributor,22.00,buy,Indicative price; reuses the FieldNode radio and logging core design (CRS-DDR-001 D7)
 12 Antenna,1,"Short whip for the LoRa band, bulkhead connector",Electronics distributor,5.00,buy,Indicative price
-13 Pole clamps,1,"Set of stainless band clamps with brackets for 60 to 114 mm poles",Hardware supplier,15.00,buy,Indicative price
-14 Post,1,"89 x 4 mm galvanized steel tube, 3.7 m above sidewalk plus embedment, with cap",Local steel stockist,50.00,buy,Indicative price; omit on an existing pole; 114.3 mm post proposed for wind load
-15 Wiring and protection,1,"Outdoor cable, inline fuse at the battery, glands, security fasteners",Local hardware shop,12.00,buy,Indicative price; no exploded-view callout
+13 Pole clamps,1,"Set of seven stainless band clamps with brackets for 60 to 114.3 mm poles",Hardware supplier,15.00,buy,Indicative price; anti-rotation detail proposed (CRS-CAL-001 section G)
+14 Post,1,"114.3 x 3.6 mm galvanized steel tube, 3.7 m above sidewalk plus 1.8 m embedment in a 500 mm concrete footing (5.5 m cut length), with cap",Local steel stockist,70.00,buy,Variant only: new-post sites; excluded from the existing-pole prototype total (CRS-DDR-001 D1 and D3)
+15 Wiring and protection,1,"Outdoor cable, 5 A fuse at the battery terminal, glands, security fasteners, cable cover on existing poles",Local hardware shop,12.00,buy,Indicative price; no exploded-view callout
+16 PIR wake sensor,1,"Low-power passive infrared motion sensor, about 0.1 mA at 3.3 V, weatherproof lens",Electronics distributor,3.00,buy,Indicative price; gates the radar (CRS-DDR-001 D2)
+17 Pedestrian pilot light,1,"Small amber LED pilot light, about 0.3 W, on the kerb end of the light bar",LED signal module supplier,4.00,buy,Indicative price; subject to local rules (CRS-DDR-001 D8)

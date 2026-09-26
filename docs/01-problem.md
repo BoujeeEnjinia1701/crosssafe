@@ -3,7 +3,7 @@ doc_id: CRS-PRB-001
 title: CrossSafe problem statement
 project: CrossSafe
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (problem, users, context, constraints, out of scope, prior work)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: TRL 3 update; budget scope per CRS-DDR-001 D1, IA-21 details checked, open questions linked to CRS-DDR-001
 ---
 
 # CrossSafe problem statement
@@ -57,7 +61,7 @@ There is good evidence that an active, pedestrian-triggered warning works. The U
 
 ## Constraints
 
-- Garage-buildable prototype of one beacon assembly, about $350 USD in parts (`project.yaml`). A crossing needs two assemblies; see CRS-PRC-001 and `docs/REVIEW.md`.
+- Garage-buildable prototype of one beacon assembly on an existing pole, $350 USD in parts (`project.yaml`; scope adopted for TRL 3 in CRS-DDR-001 D1, open for Amish's review). A crossing needs two assemblies; a budget for a two-sided site trial is awaiting Amish (CRS-DDR-001 O2).
 - Built from off-the-shelf parts: standard signs, LED modules, a small solar kit, a LiFePO4 battery, an IP65 box and a common microcontroller.
 - Needs road authority approval before any use on a public road. Local rules on colors, flash patterns, sign design and mounting heights take precedence over anything in this repo.
 - Privacy: counts and activation events only; no images or audio are recorded or leave the device.
@@ -71,13 +75,13 @@ There is good evidence that an active, pedestrian-triggered warning works. The U
 
 ## Prior work
 
-- **RRFB.** Amber, rectangular, pedestrian-activated beacons mounted with the crossing warning sign. In the United States they are covered by FHWA Interim Approval IA-21 (20 March 2018), which sets the minimum indication size (at least 5 in wide by 2 in high), a wig-wag flash pattern at 75 flashing sequences per minute, pushbutton or passive detection, and use only at uncontrolled marked crosswalks ([FHWA IA-21](https://mutcd.fhwa.dot.gov/resources/interim_approval/ia21/index.htm)). Solar RRFBs are sold commercially; they are closed designs.
+- **RRFB.** Amber, rectangular, pedestrian-activated beacons mounted with the crossing warning sign. In the United States they are covered by FHWA Interim Approval IA-21 (20 March 2018), which sets the minimum indication size (at least 5 in wide by 2 in high), daytime intensity to the SAE J595 Class 1 yellow peak, a wig-wag flash pattern at 75 flashing sequences per minute, automatic night dimming, pushbutton or passive detection, an optional pilot light for pedestrians, and use only at uncontrolled marked crosswalks ([FHWA IA-21](https://mutcd.fhwa.dot.gov/resources/interim_approval/ia21/index.htm)). Solar RRFBs are sold commercially; they are closed designs.
 - **Evidence of effect.** FHWA's proven safety countermeasure summary for RRFBs (see above) gives the crash and yielding figures used in this repo.
-- **Sibling designs in the lab.** FieldNode (a sibling Design Molecule repo) is the lab's shared solar sensor node (6 W panel, 3.2 V LiFePO4 cell, LoRaWAN). Its radio and logging core could serve CrossSafe, but its power stage is too small for the LED load; see CRS-PRC-001.
+- **Sibling designs in the lab.** FieldNode (a sibling Design Molecule repo) is the lab's shared solar sensor node (6 W panel, 3.2 V LiFePO4 cell, LoRaWAN). Its radio and logging core (an STM32WL-class module) is reused for the CrossSafe controller, but its power stage is too small for the LED load; see CRS-PRC-001 and CRS-DDR-001 D7.
 
 ## Open questions
 
-- [ ] Which pilot country and road authority, and which rules apply there (colors, flash pattern, sign type, mounting height)?
+- [ ] Which pilot country and road authority, and which rules apply there (colors, flash pattern, sign type, mounting height)? Open, awaiting Amish (CRS-DDR-001 O1).
 - [ ] Is passive detection allowed and trusted locally, or should the button be the only trigger?
 - [ ] How many activations per day at the candidate sites, and how dark are they at the busy times?
 - [ ] How much theft and vandalism should the design expect, and at what mounting height is the battery safe?

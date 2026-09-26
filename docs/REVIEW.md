@@ -64,3 +64,70 @@ Requirements not met or at risk:
 ### Recommended next step
 
 Review this note and the media, then decide items 1 to 3. If approved, run `/advance-trl3` to check the energy, photometry, radio link and wind load estimates by calculation and produce the parametric model and drawing sheet.
+
+## Session 2026-09-25: TRL 3
+
+On 2026-09-25 Amish asked for this batch of repos to go through the usual process with the instruction "you know the drill, nothing gets past TRL 3". He has not reviewed this repo's TRL 2 items one by one, so every item that carried a recommendation is adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review. This session ran `/advance-trl3` on that basis and stopped at TRL 3.
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (CRS-DDR-001 v0.1, status proposed): nine items adopted as recommended for TRL 3, open for Amish's review (D1 to D9), and two left open (O1, O2).
+- `docs/04-calcs/01-sizing.md` (CRS-CAL-001 v0.1) and `docs/04-calcs/sizing.py`: flash timing, energy budget, autonomy and sensitivity, harvest and recovery, enclosure heat and charging window, radio time on air, latency, link budget and duty cycle, photometry screening, heights and installation, wind load on three posts, clamp torsion, footing embedment and cost, with a status for every requirement. The script imports the model, reads the BOM and `project.yaml`, prints every number the note quotes and writes `docs/04-calcs/results.csv`.
+- `cad/src/model.py`: parametric build123d model (sign, light bar, four heads, pilot light, button station, radar and PIR on an arm, panel and bracket, enclosure with battery, charger, controller and antenna, seven band clamps, 114.3 mm post and footing), clash check clean. Exports `cad/step/` and `cad/stl/` for `crosssafe-assembly`, `crosssafe-existing-pole`, `sign-and-light-bar` and `pole-top-enclosure`.
+- `cad/src/sheets.py` and `cad/drawings/CRS-DWG-001.svg`, `.pdf`, `.png`: general arrangement at Rev P1, 1:50, marked "CONCEPT, NOT FOR FABRICATION" and "PRELIMINARY, NOT FOR FABRICATION". CRS-DWG-001 was free because the concept blueprint is CRS-DWG-010.
+- `bom/bom.csv`: 17 lines, all priced with a supplier type. New lines 16 (PIR) and 17 (pilot light); the post line is the 114.3 mm new-post variant, excluded from the existing-pole total. `bom/bom-notes.md` updated.
+- `cad/src/concept_media.py` now builds from the model; all of `media/` was re-rendered and every image checked; temporary `media/_views*` folders deleted. The exploded view draws the PIR and pilot light at three times size so they show, and says so.
+- CRS-PRB-001, CRS-PRC-001 and CRS-REQ-001 revised to v0.3; `README.md` (TRL badge and line, links to the drawing and calculations, concept numbers, key components, safety) and `project.yaml` (`trl: 3`, `trl_target: 3`, evidence list) updated. PDFs rebuilt in `docs/pdf/`.
+
+### Requirement status (CRS-CAL-001, Table 5)
+
+None not met, 2 at risk, 3 not verifiable at TRL 3, 4 met on paper, 6 met by design.
+
+| ID | Status | Key number |
+| --- | --- | --- |
+| R8 Environment | **At risk** | Enclosure 9.6 K (clean) to 14.7 K (dusty) above ambient in sun; no charging above 30.3 to 35.4 °C ambient; 64.7 °C inside at 50 °C ambient, above the typical 60 °C LiFePO4 discharge limit |
+| R9 Structure | **At risk** | 114.3 x 3.6 mm post at 100 MPa, 42 % of yield (met); sign clamp torsion 175 N·m against 144 N·m of friction at an assumed 1,000 N band tension |
+| R2 Visibility | Not verifiable at TRL 3 | About 3,939 cd per head (screening); SAE J595 Class 1 yellow figures not available |
+| R5 Detection quality | Not verifiable at TRL 3 | Needs a site trial |
+| R10 Mounting | Not verifiable at TRL 3 | Fit met (60 to 114.3 mm); install estimate 120 min, exactly the 2 h limit |
+| R3, R6, R7, R15 | Met on paper | 48 ms (244 ms with retries); 7.7 days (5.4 at -20 °C); break-even 1.05 peak sun hours, recovery 2.05 days; $318.00 per assembly, $636.00 per crossing |
+| R1, R4, R11 to R14 | Met by design | 12.8 s flash for 7 m; button 1.05 m; enclosure bottom 2.85 m |
+
+Key numbers: daily load 16.0 Wh (TRL 2: 29.8), because IA-21 lights each head 25 % of the time (TRL 2 assumed 35 %) and the PIR gating cuts standby to 187 mW; base moment 3.35 kN·m in a 40 m/s gust; footing 500 mm by 1.8 m in clay (screening); 2.43 kN·m added to a host pole. R6 and R15, not met at TRL 2, are met on paper after D2 and D1.
+
+### Decisions recorded (CRS-DDR-001)
+
+Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: D1 `budget_usd` covers one assembly on an existing pole (R15 redefined; `budget_usd` unchanged at $350); D2 PIR gating of the radar, 18 Ah battery as fallback only; D3 existing poles first, 114.3 x 3.6 mm where a new post is needed; D4 IA-21 baseline, configurable pattern; D5 button plus passive detection, switchable off; D6 LoRa side-to-side link; D7 FieldNode radio core, own 12 V power, CellGuard later, SwapCell not used; D8 pedestrian pilot light where allowed; D9 no change to pitch or problem.
+
+### Still awaiting Amish
+
+1. **O1, pilot partner, site and jurisdiction**, including a road authority. No preference stated.
+2. **O2, site-trial budget.** Recommended at TRL 2: raise `budget_usd` to $750 before any site trial. Not applied. Against $750 a crossing is $114.00 under on existing poles and $26.00 over with new posts ($776.00).
+3. **New, enclosure heat (R8).** Options: (a) a ventilated white sun shield, about $8 (rise 3.9 K; charging to 41.1 °C ambient); (b) move the enclosure under the panel's shadow; (c) accept the loss of harvest on hot days. Recommendation: (a), with (b) considered when the bracket is detailed. Not applied.
+4. **New, sign clamp slip (R9).** Options: an anti-rotation bolt or tab through the sign saddle, or a specified higher band tension. Recommendation: an anti-rotation bolt on new posts and a keyed saddle on existing poles, with band tension measured later. Not applied.
+
+Suggestion only, not in the repo: a timed trial of the 2 h installation would settle R10 early.
+
+### Cross-repo consistency
+
+- FieldNode (FND-DDR-001) adopted an STM32WL-class module and LoRaWAN, and "LoRa point-to-point not used" for FieldNode itself. CrossSafe reuses the same module and logging design but runs the side-to-side link in LoRa point-to-point mode (D6), which the module supports. This is a firmware mode difference, not a hardware conflict; noted here, FieldNode not edited. CrossSafe does not use the FieldNode power stage or its $126.00 core cost.
+- CellGuard's review says CrossSafe does not use CellGuard at this stage; consistent with D7. No other shared component (MotionCore, ThermaCart, TwinKit, CalRig) is used.
+
+### Safety concerns
+
+- Road safety: a beacon that fails dark, false-triggers or gives pedestrians false confidence can cause harm. Photometry (R2) and detection (R5) are unproven, and road authority approval is essential.
+- Heat: in hot sun the battery may exceed its discharge limit; the 45 °C charge cut-off must never be defeated to recover energy.
+- Structure: the sign can rotate on band clamps in a storm at the assumed tension; the host pole of an existing-pole install carries about 2.4 kN·m more, which the owner must check; the footing is a screening size only.
+- LiFePO4 battery: 5 A fuse at the terminal, BMS with low-temperature charge protection.
+- Installation is work at height beside live traffic.
+
+### Gaps and notes
+
+- Citations: IA-21 was fetched again to confirm the flash sequence (each indication lit 200 ms of 800 ms), SAE J595 Class 1 yellow intensity, night dimming and the permitted pilot light; these are now in the docs. The older WHO India page was fetched and still states "about 10 %"; its date is not shown. SAE J595 itself, commercial RRFB prices and the other facts left out at TRL 2 remain unverified and are still left out. WebSearch was not used.
+- Assumptions only tests can settle: LED power and intensity, radar duty under PIR gating, charger self-consumption, band tension and the shield factor (borrowed from WWT-CAL-001).
+- Media: the kit's cutaway only cuts near the origin, so, as at TRL 2, the enclosure zone is moved to the origin before cutting; the exploded view shortens the post and moves the button up. Both images say so.
+- Existing material beyond TRL 3: `build-log/README.md` (scaffold) is present, untouched and not extended. `electronics/` and `firmware/` are empty. No test, build or firmware material exists.
+
+### Recommended next step
+
+TRL 4 is on hold by Amish's instruction; this repo stops at TRL 3. Amish's review is needed on D1 to D9, O1, O2 and items 3 and 4 above. For the record only, TRL 4 would need: a bench build of one assembly on a pole stub; a lab test report (TST, `environment: lab`) covering LED head power and intensity against SAE J595, standby and energy per activation, radio latency and fault behavior, enclosure temperature in sun with and without a shield, and clamp torsion and band tension; and build log entries. None of this has been started.
