@@ -182,3 +182,26 @@ None not met, 1 at risk, 3 not verifiable at TRL 3, 5 met on paper, 6 met by des
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction. The site-trial budget, the timed installation trial and the measurement of band tension, saddle grip and shielded enclosure temperature are decided but not started. `trl: 3` and `trl_target: 3` are unchanged.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose CrossSafe for the first batch of product renders on 2026-09-26. This session adds an appearance model for photoreal renders; it does not change the design, the calculations, the drawing or the BOM.
+
+### What was added
+
+- `cad/src/product_model.py`: `product_parts()` (74 parts in the groups shell, internal, accessory and context), `TITLE` and `RENDER_VIEWS` (hero, exploded and detail). It imports `PARAMS` and `derived()` from `cad/src/model.py` and keeps every main dimension, height and interface.
+- Finished-product detail: a 750 mm sign with rounded corners, fluorescent yellow-green retroreflective sheeting, a black border and a walking-figure symbol on an aluminium blank, with bracket nuts; a charcoal light bar with a parting line, head visors, bezels, clear lenses and amber LED arrays (the left head on each face lit, as in the wig-wag); a lit pilot light; a radar housing with radome and parting line on a round arm, and a PIR Fresnel dome; stainless band clamps with screw housings and serrated keyed saddles; a push-button station with a stainless piezo button, tactile arrow, lit acknowledgement ring, tone grille and a printed instruction plate with security fasteners; the white sun shield with louvre slots and security fasteners over the IP65 enclosure, glands and membrane vent; the battery, MPPT charger and controller board inside; the antenna; the 20 W panel with frame, cells, busbars and junction box on its bracket; and the M10 anti-rotation bolt.
+- Context (not in the BOM): a compact patch of sidewalk, kerb, road and crossing markings with tactile paving, and the shared clay mannequin (1.75 m, stand pose) waiting at the kerb.
+- `README.md`: the hero image now points to `media/render-hero.png`, with a link to `media/render-exploded.png`. The render files are produced separately.
+
+### Where the appearance model differs from model.py
+
+1. **Post split for framing only.** The one 3.7 m post is drawn as three touching sections in different render groups (lower section as context, sign zone as shell, top as accessory) so the detail view can frame the lamp head. The embedded length and footing are not drawn. No geometry change. No decision needed.
+2. **Head visors and bezels.** Visors 26 mm deep over each LED head and bezels 14 mm larger than the 140 x 62 mm lens are not in model.py; they add a little frontal area and depth to the light bar. Proposed, awaiting Amish. Recommendation: keep visors in the design intent and add them to model.py and the wind area in the next CRS-CAL-001 revision, since they cut sun phantom on the lenses.
+3. **Louvre slots in the sun shield.** model.py and the shield estimate in CRS-CAL-001 treat the shield walls as plain sheet. Proposed, awaiting Amish. Recommendation: keep the slots as appearance only until the shield factor is measured, then decide whether to adopt them.
+4. **Sign colour.** The model uses fluorescent yellow-green sheeting, common at school crossings. The BOM says "local sign design". Proposed, awaiting Amish. Recommendation: show fluorescent yellow-green in renders and leave the colour to the local road authority.
+5. **Small envelope changes.** The pilot light housing is 36 mm across (model.py 30 mm), the sign saddles carry a bracket flange at the sign back, and the band clamp screw housings are turned away from the enclosure and the anti-rotation bolt. Proposed, awaiting Amish. Recommendation: accept as appearance detail; no calculation is affected.
+
+### Status
+
+This is an appearance model only: no tolerances and no fabrication detail. `trl: 3` and `trl_target: 3` are unchanged, and TRL 4 remains on hold.
