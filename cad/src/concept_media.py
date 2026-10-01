@@ -1,4 +1,4 @@
-"""CrossSafe concept media (TRL 3), built from the parametric model in cad/src/model.py.
+"""CrossSafe concept media (TRL 3, constructable design CRS-DDR-003), built from the parametric model in cad/src/model.py.
 
 Run from the repo root:  python cad/src/concept_media.py
 Proportions and main parts only; not for fabrication.
@@ -42,13 +42,16 @@ parts = [
     Part("MPPT charge controller", M[10], "#16A34A", 10, (-1500, 500, 150)),
     Part("Controller and radio board", M[11], "#0F766E", 11, (-900, 200, 750)),
     Part("Antenna", M[12], "#111827", 12, (-400, 900, 500)),
-    Part("Pole clamps", M[13], "#94A3B8", 13, (500, 700, 0)),
+    Part("Band clamps (8)", M[13], "#94A3B8", 13, (500, 700, 0)),
     Part("Post, 114.3 mm (or existing pole)", M[14], "#9CA3AF", 14, (0, 0, 0)),
     Part("PIR wake sensor", M[16], "#DB2777", 16, (-500, 300, -500)),
     Part("Pedestrian pilot light", M[17], "#EAB308", 17, (900, 500, -300)),
     Part("Ventilated sun shield", M[18], "#F8FAFC", 18, (-600, 0, 900)),
     Part("Anti-rotation bolt (new post)", M[19], "#111827", 19, (-700, 0, 0)),
-    Part("Keyed sign saddles", M[20], "#475569", 20, (300, 0, 0)),
+    Part("Keyed pole saddles (8)", M[20], "#475569", 20, (300, 0, 0)),
+    Part("Enclosure mounting plate", M[21], "#94A3B8", 21, (-400, 0, 450)),
+    Part("Radar arm", M[22], "#64748B", 22, (-300, 300, -250)),
+    Part("Battery strap", M[23], "#A3A3A3", 23, (-1400, -700, 0)),
 ]
 
 # ---------------- street context (hero and isometric only) ----------------
@@ -85,7 +88,7 @@ render_all(
                  "Button plus PIR-gated radar; LoRa link syncs both sides",
                  "20 W panel, 12.8 V 12 Ah LiFePO4; 16.0 Wh/day at 300 uses (CRS-CAL-001)",
                  "7.7 days without sun; sun shield keeps the battery below 60 C",
-                 "$332 per side on an existing pole (CRS-DDR-002)"],
+                 "$360 per side on an existing pole (CRS-DDR-003)"],
     context=context,
     cut=False,
     flow={"title": "daily energy per assembly, Wh per day (CRS-CAL-001 estimates: 2.5 peak sun hours, 300 activations of 20 s)",
@@ -99,9 +102,12 @@ render_all(
 # Cutaway of the enclosure zone only (the full 3.7 m post would make the inside unreadable).
 # A 700 mm length of post is drawn so the enclosure is not shown floating.
 stub = Pos(PX, PY, ENC_Z) * Cylinder(POLE_R, 700)
-ring = lambda z: Pos(PX, PY, z) * (Cylinder(POLE_R + MP["band_t"], MP["band_w"]) - Cylinder(POLE_R, MP["band_w"] + 2))
-zone = [p for p in parts if p.bom in (8, 9, 10, 11, 12, 18)] + [Part("Post (section of)", stub, "#9CA3AF", 14),
-                                                          Part("Pole clamps", ring(ENC_Z - 100) + ring(ENC_Z + 100), "#94A3B8", 13)]
+from model import station  # noqa: E402
+_st = [station(n, MP) for n in ("enc_low", "enc_up")]
+zone = [p for p in parts if p.bom in (8, 9, 10, 11, 12, 18, 21, 23)] + [
+    Part("Post (section of)", stub, "#9CA3AF", 14),
+    Part("Keyed saddles", Pos(PX, PY, 0) * (_st[0]["saddle"] + _st[1]["saddle"]), "#475569", 20),
+    Part("Band clamps", Pos(PX, PY, 0) * (_st[0]["band"] + _st[1]["band"]), "#94A3B8", 13)]
 # cutaway_parts centres its cutter at X = Z = 0, so move the zone to the origin first
 zone = [Part(p.name, Pos(-PX, -PY, -ENC_Z) * p.shape, p.color, p.bom) for p in zone]
 _render(cutaway_parts(zone), Path.cwd() / "media" / "cutaway.png", azim=-90, elev=18, labels=True,
@@ -110,11 +116,12 @@ _render(cutaway_parts(zone), Path.cwd() / "media" / "cutaway.png", azim=-90, ele
 
 # Exploded view, rebuilt so small parts stay readable: the post is shortened to its upper 2 m and
 # the push-button station is moved up 700 mm for this view only. Numbers match bom/bom.csv.
-EXPLODE = {1: (600, 0, 200), 2: (900, 0, -250), 3: (1500, 0, -500), 4: (0, -700, -100),
-           5: (-600, 500, -200), 6: (0, -400, 700), 7: (0, 0, 350), 8: (-700, 0, 300),
+EXPLODE = {1: (600, 0, 200), 2: (900, 0, -250), 3: (1200, 0, -400), 4: (0, -700, -100),
+           5: (-500, 0, -750), 6: (0, -400, 700), 7: (0, 0, 350), 8: (-700, 0, 300),
            9: (-1500, 0, -500), 10: (-1500, 0, -100), 11: (-1500, 0, 300), 12: (-1500, 0, 800),
-           13: (1400, 900, 400), 14: (0, 0, 0), 16: (-900, 0, -900), 17: (1300, 0, 500),
-           18: (-700, 0, 1100), 19: (-300, 0, -500), 20: (500, -700, 0)}
+           13: (1400, 900, 400), 14: (0, 0, 0), 16: (-600, 0, -1600), 17: (800, 0, -1100),
+           18: (-700, 0, 1100), 19: (-300, 0, -500), 20: (500, -700, 0), 21: (-350, 0, 300),
+           22: (-900, 0, -900), 23: (-1200, -700, -700)}
 xp = []
 for p in parts:
     shape, name = p.shape, p.name
@@ -130,6 +137,6 @@ for p in parts:
         c = shape.bounding_box().center()
         shape = Pos(c.X, c.Y, c.Z) * (Pos(-c.X, -c.Y, -c.Z) * shape).scale(3.0)
     xp.append(Part(name, shape, p.color, p.bom, EXPLODE[p.bom]))
-_render(xp, Path.cwd() / "media" / "exploded.png", offsets=True, labels=True, size=(13, 8),
+_render(xp, Path.cwd() / "media" / "exploded.png", offsets=True, labels=True, size=(11, 11),
         title="CrossSafe: exploded view (one assembly)",
         note="Post shortened, push button moved up, PIR (16), pilot light (17) and bolt (19, new posts only) drawn at three times size; numbers match bom/bom.csv")

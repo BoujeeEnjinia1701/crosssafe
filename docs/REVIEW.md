@@ -211,3 +211,53 @@ This is an appearance model only: no tolerances and no fabrication detail. `trl:
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-09-30: design for construction and the prototype build plan (kit 1.7.0)
+
+Under Amish's 2026-09-30 approval of the build plan format ("this is the correct build plan ... Extend this across all the other repos") and his instruction to make each design physically buildable, kit 1.7.0 was installed (`.kit/`, `.claude/commands/`, `CLAUDE.md`) and `/build-plan` was carried out.
+
+### What was done
+
+- `cad/src/model.py`: rebuilt as a constructable model of 55 components (56 with the new post) with `build_components()`, `pole_context()` and `checks()`; `python cad/src/model.py --check` runs 101 checks on the existing-pole kit and 103 on the new-post variant (no overlaps, every joint touching, clearances, pole range, R14 heights). All pass.
+- `docs/decisions/0003-design-for-construction.md` (CRS-DDR-003, Draft): every change and its reason, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `bom/bom.csv` (23 lines) and `bom/bom-notes.md`; `docs/04-calcs/sizing.py` and `01-sizing.md` (CRS-CAL-001 v0.3); CRS-REQ-001 v0.5; CRS-PRC-001 v0.5; `README.md` (links line, "Building the prototype").
+- `cad/src/build_plan_media.py`: overview, making sketches CRS-DWG-101 to 109, 13 joint close-ups, 18 assembly step pictures, two drilling layouts and the wiring diagram, in `docs/05-build-plan/` and `cad/drawings/`.
+- `docs/05-build-plan.md` (CRS-BLD-001) and `docs/06-design-decisions.md` (CRS-DEC-001); both in `trl_evidence`; `design_state: constructable` in `project.yaml`.
+- CRS-DWG-001 at Rev P4; STEP and STL re-exported; concept media regenerated (`hero`, `concept-blueprint`, `model.glb`, `viewer.html`, `exploded`, `cutaway`, `flow`).
+
+### Design changes made for construction (CRS-DDR-003)
+
+1. Pole clamps: eight identical keyed pole saddles (80 x 40 x 60 mm aluminium, 120° keyed V, band groove, two tapped M8 holes) and 19 x 0.76 mm stainless bands replace the concept's rings, which passed through every bracket.
+2. Sign: bolted flat on its two saddles, 63.4 mm nearer the pole than the concept's 92 mm stand-off blocks; the light bar now stands 70 mm proud of the sign's plane, still directly under it.
+3. Light bar: folded 2 mm channel with lips, screwed bottom cover with a gland, riveted end caps; heads through 128 x 50 mm windows; bolted to its saddle from inside; 12.6 mm further from the pole.
+4. Enclosure: hung by its lug kit on a new 4 mm mounting plate with saddle tabs above and below; internal plate on the box's bosses; modules on stand-offs; battery on the floor under a new bent strap; 27.6 mm further from the pole.
+5. Enclosure saddles moved to the plate's tabs so their bolts are above the shield roof and below the box.
+6. Sun shield: side flanges screwed to the mounting plate; air gap and open bottom unchanged.
+7. Radar: on a new bent 40 x 5 mm arm on its own saddle, PIR underneath; PIR underside 2,515 mm (was 2,520 mm).
+8. Panel bracket: welded socket, cap and cheeks with a pivot hole and 20° tilt slot; two angle rails on the panel frame lip.
+9. Instruction plate on its own saddle (the eighth).
+10. Enclosure glands placed in two rows beside the battery; the vent at the lid end.
+11. Anti-rotation bolt (new posts): M10 x 160 through the sign, the upper saddle and the post, in place of one sign bolt.
+
+### Key results
+
+- Requirement status (CRS-CAL-001 v0.3): **R15 not met on paper**: $360.00 per assembly on an existing pole against $350, and $720.00 per crossing against $700 (was $332.00 and $664.00). R9 at risk on poles under about 70 mm (unchanged); R2, R5, R10 not verifiable at TRL 3; R3, R6, R7, R8 met on paper; R1, R4, R11 to R14 met by design.
+- Wind: base moment 3,521 N·m (was 3,434), 114.3 mm post at 45 % of yield (was 44 %), embedment 1,791 mm needed (1,800 modelled), 2,601 N·m added to an existing pole.
+
+### Proposed, awaiting Amish
+
+All listed in `docs/06-design-decisions.md`: (1) raise `budget_usd` to $375 (recommended) or accept R15 not met; (2) accept the CRS-DDR-003 changes; (3) panel mount for existing poles the socket does not fit (recommended: a side-of-pole arm, designed for the pilot site); and, carried over, N1 (third saddle and band on poles under 76 mm), O1 (pilot partner and jurisdiction) and the four appearance items of 2026-09-26.
+
+### Stale until regenerated on Amish's Mac
+
+The design changed visibly (sign nearer the pole, saddles and bands, mounting plate, radar arm, panel bracket), so `media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`, `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` are stale. They were not regenerated here.
+
+### Safety concerns
+
+- The build plan keeps the battery and its fuse out until safety stops S1 to S4, and stops before the 3.7 m post is stood up (S7) and before any roadside installation (S8).
+- The bracket welds and galvanizing need a competent welder; never weld galvanized steel indoors.
+- Band tension and keyed saddle grip are still assumptions; they decide whether the sign can turn on small poles.
+
+### Recommended next step
+
+Amish reviews the register, chiefly the budget (item 1) and the CRS-DDR-003 changes (item 2). TRL 4 stays on hold.

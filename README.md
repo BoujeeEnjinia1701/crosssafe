@@ -8,7 +8,7 @@ A solar crossing beacon that detects a waiting pedestrian and flashes high-visib
 
 ![CrossSafe: solar crossing beacon that warns drivers when a pedestrian waits, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CRS-DWG-001 (PDF)](cad/drawings/CRS-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CRS-DWG-001 (PDF)](cad/drawings/CRS-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -62,7 +62,7 @@ A solar crossing beacon that detects a waiting pedestrian and flashes high-visib
 
 One assembly stands on each side of the road: a crossing warning sign with a double-sided amber light bar and a pedestrian pilot light, a push button, a presence radar woken by a PIR sensor, and a pole-top enclosure with the battery, charger and controller under a ventilated sun shield and a 20 W panel. Both sides flash together for about 13 s per activation on a 7 m road. Only activation counts and faults are logged; no images or audio are recorded.
 
-TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 300 activations, 7.7 days without sun, energy neutral at 1.05 peak sun hours, a 114.3 mm post at 44 % of yield in a 40 m/s gust, 53.9 °C inside the sun-shielded enclosure at 50 °C ambient, and $332 in parts per assembly on an existing pole ($664 per crossing). Sign rotation on existing poles under about 70 mm is still at risk. Design decisions are recorded in [CRS-DDR-001](docs/decisions/0001-trl2-review-decisions.md) and [CRS-DDR-002](docs/decisions/0002-recommendations-accepted.md). See the [design precis](docs/02-concept.md), [requirements](docs/03-requirements.md) and [general arrangement](cad/drawings/CRS-DWG-001.pdf).
+TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 300 activations, 7.7 days without sun, energy neutral at 1.05 peak sun hours, a 114.3 mm post at 45 % of yield in a 40 m/s gust, 53.9 °C inside the sun-shielded enclosure at 50 °C ambient, and $360 in parts per assembly on an existing pole ($720 per crossing), $10 over the $350 budget after the parts that make the design buildable. Sign rotation on existing poles under about 70 mm is still at risk. Design decisions are recorded in [CRS-DDR-001](docs/decisions/0001-trl2-review-decisions.md), [CRS-DDR-002](docs/decisions/0002-recommendations-accepted.md) and [CRS-DDR-003](docs/decisions/0003-design-for-construction.md), and open ones in the [design decisions register](docs/06-design-decisions.md). See the [design precis](docs/02-concept.md), [requirements](docs/03-requirements.md) and [general arrangement](cad/drawings/CRS-DWG-001.pdf).
 
 ## Key components
 
@@ -71,9 +71,15 @@ TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 3
 - 20 W solar panel, MPPT charger and 12.8 V 12 Ah LiFePO4 battery
 - Controller on the FieldNode radio core, with LED drivers and a LoRa link that keeps both sides in step
 - IP65 pole-top enclosure under a ventilated sun shield
-- Band clamps and keyed sign saddles for an existing pole, or a 114.3 mm post with an anti-rotation bolt where none exists
+- Eight identical keyed pole saddles with stainless bands for an existing pole, or a 114.3 mm post with an anti-rotation bolt where none exists
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+
+## Building the prototype
+
+The [prototype build plan](docs/05-build-plan.md) (CRS-BLD-001) shows how to make and fit every component of one assembly, the existing-pole kit, on a 3.7 m test post, with a making sketch for each made part, close-ups of the joints and a picture for every assembly step. Every part on the pole is held the same way: an aluminium saddle with a keyed V sits on the pole, a stainless band runs round the pole and across the saddle's front, and the part bolts to the saddle over the band. The work is sawing, drilling, tapping and folding aluminium bar and sheet, one small steel weldment, and wiring bought modules. It is a plan, not yet built; building to it is TRL 4 work.
+
+![CrossSafe prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
 ## Safety
 

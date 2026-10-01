@@ -1,4 +1,4 @@
-"""CrossSafe sizing calculations, CRS-CAL-001 v0.2 (TRL 3, with the CRS-DDR-002 sun shield and anti-rotation detail).
+"""CrossSafe sizing calculations, CRS-CAL-001 v0.3 (TRL 3, constructable design of CRS-DDR-003, with the CRS-DDR-002 sun shield and anti-rotation detail).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md (tags in brackets, for example [B3]) and
@@ -219,7 +219,7 @@ res("R5", "Detection quality", "PIR wakes radar; 1 s dwell", "5 % false, 2 % mis
 
 # =============================================================== F. heights and mounting (R10, R11, R14)
 enc_bot = D["enc_bot"]
-radar_low = P["radar_z"] - P["radar"] / 2 - P["pir_d"]
+radar_low = D["pir_bot"]
 out("F1", f"button centre {P['button_z']:.0f} mm; bar bottom {P['bar_bottom']:.0f} mm; enclosure bottom {enc_bot:.0f} mm; "
           f"radar arm {P['radar_z']:.0f} mm (PIR underside {radar_low:.0f} mm); overall height {D['overall_h']:.0f} mm")
 out("F2", f"band clamps fit {P['pole_min_od']:.0f} to {P['pole_max_od']:.1f} mm poles; post {P['post_od']} x {P['post_wall']} mm")
