@@ -52,8 +52,9 @@ def ortho_cells(sheet, views, names=("front", "top", "right")):
     dims = {n: _viewbox(Path(views[n]).read_text())[2:] for n in names}
     fw, fh = dims["front"]; tw, th = dims["top"]; rw, rh = dims["right"]
     k = sheet.scale
-    ax += (aw - (k * (max(fw, tw) + rw) + gap)) / 2
-    ay += (ah - (k * (th + max(fh, rh)) + gap + 2 * lab)) / 2
+    dl = 11  # room the kit leaves left of and above the views for overall dimensions
+    ax += (aw - (k * (max(fw, tw) + rw) + gap + dl)) / 2 + dl
+    ay += (ah - (k * (th + max(fh, rh)) + gap + 2 * lab + dl)) / 2 + dl
     colw = k * max(fw, tw)
     front_y = ay + k * th + lab + gap
     row_h = k * max(fh, rh)
@@ -61,21 +62,22 @@ def ortho_cells(sheet, views, names=("front", "top", "right")):
             "right": (ax + colw + gap, front_y, k * rw, row_h)}
 
 
-def dim_h(x1, x2, y, text):
+def dim_h(x1, x2, y, text, right=False):
     a = 1.4
     return [f'<line x1="{x1:.2f}" y1="{y:.2f}" x2="{x2:.2f}" y2="{y:.2f}" stroke="{INK}" stroke-width="0.18"/>',
             f'<path d="M{x1:.2f} {y:.2f} l{a} -0.5 l0 1 Z" fill="{INK}"/>',
             f'<path d="M{x2:.2f} {y:.2f} l{-a} -0.5 l0 1 Z" fill="{INK}"/>',
-            _t((x1 + x2) / 2, y - 1.0, text, 2.3, 400, INK, "middle", mono=True)]
+            (_t(x2 + 2.0, y + 0.8, text, 2.3, 400, INK, "start", mono=True) if right
+             else _t((x1 + x2) / 2, y - 1.0, text, 2.3, 400, INK, "middle", mono=True))]
 
 
-def dim_v(x, y1, y2, text, side=-1):
+def dim_v(x, y1, y2, text, side=-1, low=False):
     a = 1.4
-    cx, cy = x + side * 1.0, (y1 + y2) / 2
+    cx, cy = x + (3.4 if side > 0 else -1.0), (max(y1, y2) - 1.5 if low else (y1 + y2) / 2)
     return [f'<line x1="{x:.2f}" y1="{y1:.2f}" x2="{x:.2f}" y2="{y2:.2f}" stroke="{INK}" stroke-width="0.18"/>',
             f'<path d="M{x:.2f} {y1:.2f} l-0.5 {a} l1 0 Z" fill="{INK}"/>',
             f'<path d="M{x:.2f} {y2:.2f} l-0.5 {-a} l1 0 Z" fill="{INK}"/>',
-            f'<g transform="rotate(-90 {cx:.2f} {cy:.2f})">{_t(cx, cy, text, 2.3, 400, INK, "middle", mono=True)}</g>']
+            f'<g transform="rotate(-90 {cx:.2f} {cy:.2f})">{_t(cx, cy, text, 2.3, 400, INK, "start" if low else "middle", mono=True)}</g>']
 
 
 def ext(x1, y1, x2, y2):
@@ -94,11 +96,12 @@ def main():
     asm = assembly(own_post=True)
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="CrossSafe", title="General arrangement, one beacon assembly", dwg_no="CRS-DWG-001", rev="P2",
+    s = Sheet(project="CrossSafe", title="General arrangement, one beacon assembly", dwg_no="CRS-DWG-001", rev="P3",
               author="Amish Chadha", date=DATE, scale=None, theme="technical",
               material="Galvanized steel post; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
-                         ("P2", "Sun shield, keyed saddles, anti-rotation bolt (DDR-002)", DATE, "AC")])
+                         ("P2", "Sun shield, keyed saddles, anti-rotation bolt (DDR-002)", DATE, "AC"),
+                         ("P3", "Layout and labels tidied", DATE, "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -110,36 +113,35 @@ def main():
     Z = lambda mz: y + h - (mz - bb.min.Z) * k
     zg = Z(0)
     L.append(f'<line x1="{x - 30:.2f}" y1="{zg:.2f}" x2="{x + w + 6:.2f}" y2="{zg:.2f}" stroke="{INK}" stroke-width="0.35"/>')
-    L.append(_t(x + w + 6, zg - 1, "SIDEWALK", 2.0, 600, MUTED, "end"))
-    xl = X(bb.min.X) - 4
+    L.append(_t(x + w + 7, zg - 1, "SIDEWALK", 2.0, 600, MUTED, "start"))
+    xl = X(bb.min.X) - 12
     marks = ((P["button_z"], f"{P['button_z']:.0f} button"), (P["bar_bottom"], f"{P['bar_bottom']:.0f} bar"),
              (D["sign_bot"], f"{D['sign_bot']:.0f} sign"), (D["enc_bot"], f"{D['enc_bot']:.0f} encl."),
              (D["overall_h"], f"{D['overall_h']:,.0f} overall"))
     for i, (zz, label) in enumerate(marks):
-        xd = xl - 5 * i
+        xd = xl - 6 * i
         L += [ext(X(0), Z(zz), xd - 1, Z(zz))]
-        L += dim_v(xd, Z(zz), zg, label)
-    xr = X(bb.max.X) + 4
+        L += dim_v(xd, Z(zz), zg, label, low=(i == 0))
+    xr = X(P["footing_d"] / 2) + 11
     L += [ext(X(P["footing_d"] / 2), Z(-P["embed"]), xr + 1, Z(-P["embed"]))]
     L += dim_v(xr, zg, Z(-P["embed"]), f"{P['embed']:.0f} embed", side=1)
-    L += dim_h(X(-P["footing_d"] / 2), X(P["footing_d"] / 2), zg + 5, f"{P['footing_d']:.0f} footing")
+    L += dim_h(X(-P["footing_d"] / 2), X(P["footing_d"] / 2), zg + 5, f"{P['footing_d']:.0f}", right=True)
 
     # top view (from +Z): X to the right, Y up the sheet
     x, y, w, h = c["top"]
     Xt = lambda mx: x + (mx - bb.min.X) * k
     Yt = lambda my: y + h - (my - bb.min.Y) * k
-    L.append(_t(Xt(0), Yt(bb.max.Y) - 2, "KERB AND WAITING ZONE (+Y)", 1.9, 400, MUTED, "middle"))
-    L.append(_t(Xt(bb.min.X) - 3, Yt(bb.min.Y) - 1, "PANEL FACES THE EQUATOR (-Y)", 1.9, 400, MUTED, "end"))
-    L.append(_t(Xt(bb.max.X) + 3, Yt(0), "TRAFFIC SIDE (+X)", 1.9, 400, MUTED))
-    L += dim_h(Xt(-P["panel"][0] / 2), Xt(P["panel"][0] / 2), Yt(bb.max.Y) + 6 - 12, f"{P['panel'][0]:.0f}")
+    L.append(_t(Xt(0), Yt(bb.max.Y) - 18, "KERB AND WAITING ZONE (+Y)", 1.9, 400, MUTED, "middle"))
+    L.append(_t(Xt(bb.max.X) + 14, Yt(bb.min.Y) + 1, "PANEL FACES THE EQUATOR (-Y)", 1.9, 400, MUTED))
+    L.append(_t(Xt(bb.max.X) + 14, Yt(0) - 2, "TRAFFIC SIDE (+X)", 1.9, 400, MUTED))
 
     # right view (from +X): Y to the right
     x, y, w, h = c["right"]
     Yr = lambda my: x + (my - bb.min.Y) * k
     Zr = lambda mz: y + h - (mz - bb.min.Z) * k
-    L += dim_h(Yr(-P["sign_side"] / 2 ** 0.5), Yr(P["sign_side"] / 2 ** 0.5), Zr(D["sign_top"]) - 4,
+    L += dim_h(Yr(-P["sign_side"] / 2 ** 0.5), Yr(P["sign_side"] / 2 ** 0.5), Zr(D["sign_top"]) - 9,
                f"{P['sign_side'] * 2 ** 0.5:,.0f} ({P['sign_side']:.0f} sq. sign)")
-    L += dim_h(Yr(-P["bar"][1] / 2), Yr(P["bar"][1] / 2), Zr(P["bar_bottom"]) + 5, f"{P['bar'][1]:.0f} bar")
+    L += dim_h(Yr(-P["bar"][1] / 2), Yr(P["bar"][1] / 2), Zr(P["bar_bottom"]) + 9, f"{P['bar'][1]:.0f} bar", right=True)
     s._layers += L
     s.add_svg(views["iso"], 276, 32, 140, 96, label="Isometric view", sublabel="Not to scale")
     s.add_notes("Main dimensions and interfaces (mm)", [
