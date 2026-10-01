@@ -3,9 +3,9 @@ doc_id: CRS-REQ-001
 title: CrossSafe requirements
 project: CrossSafe
 doc_type: Requirements
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: Status from CRS-CAL-001 v0.3 for the constructable design (CRS-DDR-003); R15 now not met on paper
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target
 ---
 
 # CrossSafe requirements
@@ -37,7 +41,7 @@ These requirements are checked by calculation in CRS-CAL-001 at TRL 3. Targets a
 
 The **design case** is a marked crossing on a two-lane road 7 m kerb to kerb, one CrossSafe assembly on each side, 300 activations of 20 s per day, 2.5 peak sun hours per day in the worst month, and an ambient range of -20 to +50 °C.
 
-Table 1. Requirements and status at TRL 3 (CRS-CAL-001 v0.3, Table 5).
+Table 1. Requirements and status at TRL 3 (CRS-CAL-001 v0.4, Table 5).
 
 | ID | Requirement | Target | Verification (TRL 3 or later) | Status at TRL 3 |
 | --- | --- | --- | --- | --- |
@@ -55,13 +59,13 @@ Table 1. Requirements and status at TRL 3 (CRS-CAL-001 v0.3, Table 5).
 | R12 | Fail-safe behavior | Never flashes continuously; a fault (low battery, open LED, lost radio link) is shown on a maintenance indicator and logged; with the link lost, each side still flashes on a local trigger | Firmware review; fault injection later | Met by design |
 | R13 | Privacy | No images or audio are recorded or leave the device; only activation counts, faults and battery state are logged or sent | Design review | Met by design |
 | R14 | Theft and vandal resistance | Battery, charger and controller 2.8 m or more above the walking surface; security fasteners; no exposed cables below 2.5 m | Design review | Met by design (enclosure bottom 2.85 m; sensing head 2.515 m and up) |
-| R15 | Affordable | Parts for one assembly on an existing pole $350 or less (the prototype `budget_usd` covers, CRS-DDR-001 D1); parts for a two-sided crossing on existing poles $700 or less. Crossings that need new posts are costed and reported, not held to this target | Priced BOM (`bom/bom.csv`) | **Not met on paper ($360.00 per assembly, $10.00 over; $720.00 per crossing, $20.00 over)**; new posts $433.00 and $866.00 |
+| R15 | Affordable | Parts for one assembly on an existing pole $350 or less (the prototype `budget_usd` covers, CRS-DDR-001 D1); parts for a two-sided crossing on existing poles $700 or less. Crossings that need new posts are costed and reported, not held to this target | Priced BOM (`bom/bom.csv`) | **Over the value-engineering target by $10.00 per assembly ($360.00 against $350) and $20.00 per crossing ($720.00 against $700)**; new posts $433.00 and $866.00 |
 
 ## Requirements at risk or not verifiable
 
-One requirement is not met on paper (R15, cost), one is at risk and three need evidence that a paper study cannot give.
+One requirement is over its value-engineering target on paper (R15, cost), one is at risk and three need evidence that a paper study cannot give.
 
-- **R15 not met on paper after the design for construction (CRS-DDR-003).** The saddles, mounting plate, panel bracket, radar arm, battery strap and fixings that make every part buildable and fixed add $28.00: one assembly on an existing pole is $360.00 against $350, and a crossing $720.00 against $700. Raising `budget_usd` to $375 is proposed, awaiting Amish (design decisions register, item 1).
+- **R15 over the value-engineering target after the design for construction (CRS-DDR-003).** The saddles, mounting plate, panel bracket, radar arm, battery strap and fixings that make every part buildable and fixed add $28.00: the estimated cost of one assembly on an existing pole is $360.00 against the $350 target ($10.00 over), and of a crossing $720.00 against $700 ($20.00 over). The target is a hypothetical control target, not a limit; cost drivers and savings worth trying are in the Value engineering section of the design decisions register.
 
 - **R9 at risk on small poles.** The 114.3 x 3.6 mm post meets the stress target at 45 % of yield, and a 1,800 mm embedment in a 500 mm footing is a screening size. On new posts the M10 through-bolt stops the sign rotating with a wide margin. On existing poles the keyed saddles hold on poles of about 70 mm and larger at an assumed grip friction of 0.4; below that the sign could still slip. A third band on small poles is proposed, awaiting Amish (CRS-DDR-002, N1). On existing poles the host pole must carry about 2.5 kN·m more at the sidewalk, which the owner must confirm.
 - **R8 met on paper after the sun shield (CRS-DDR-002).** Unshielded, a dusty enclosure ran 14.7 K above ambient and reached 64.7 °C at 50 °C ambient; with the ventilated shield the rise is 3.9 K and the interior 53.9 °C, below the typical 60 °C discharge limit. The shield factor is borrowed, not measured.

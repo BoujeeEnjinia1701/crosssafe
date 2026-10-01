@@ -3,9 +3,9 @@ doc_id: CRS-PRC-001
 title: CrossSafe design precis
 project: CrossSafe
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: Constructable design (CRS-DDR-003) with keyed saddles and bands for every part on the pole, mounting plate, radar arm, panel bracket and rails; numbers from CRS-CAL-001 v0.3
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target
 ---
 
 # CrossSafe design precis
@@ -111,7 +115,7 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 - **Heat.** Unshielded, the enclosure would run 9.6 K (clean) to 14.7 K (dusty) above ambient in full sun and a dusty box would reach 64.7 °C at 50 °C ambient. With the sun shield the rise is 3.9 K: 53.9 °C inside at 50 °C ambient, and charging continues up to 41.1 °C ambient (R8 met on paper).
 - **Latency and link.** 48 ms side to side, 244 ms with two retries; about 60 dB of link margin across the road with a bus in the way.
 - **Wind.** A 40 m/s gust gives 3.52 kN·m at the base. The 114.3 x 3.6 mm post reaches 105 MPa, 45 % of S235 yield; an 88.9 x 4 mm post would reach 65 %. The sign's 175 N·m of torsion is carried by the through-bolt on new posts (12 % of bearing) and by keyed saddles on existing poles of about 70 mm and larger; smaller poles remain at risk (R9). A 500 mm footing needs about 1.8 m of embedment in clay (screening).
-- **Cost.** $360.00 per assembly on an existing pole ($350 budget, so R15 is not met on paper) and $720.00 per crossing; $433.00 and $866.00 with new posts (see `bom/bom.csv`). Raising the budget to $375 is proposed, awaiting Amish (`docs/06-design-decisions.md`). The $750 budget for a two-sided site trial is accepted and applies when a trial starts (on hold with TRL 4).
+- **Cost.** Value-engineering target: $350 per assembly on an existing pole (a hypothetical control target, not a limit). Estimated cost of the constructable design: $360.00 per assembly ($10.00 over the target) and $720.00 per crossing ($20.00 over the $700 target); $433.00 and $866.00 with new posts (see `bom/bom.csv`). Cost drivers and savings worth trying are in the Value engineering section of `docs/06-design-decisions.md`. The $750 value-engineering target for a two-sided site trial applies when a trial starts (on hold with TRL 4).
 
 ## Safety
 

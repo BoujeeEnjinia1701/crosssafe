@@ -3,9 +3,9 @@ doc_id: CRS-DDR-003
 title: CrossSafe design for construction
 project: CrossSafe
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target
 ---
 
 # 0003: Design for construction
@@ -48,24 +52,24 @@ The changes keep what CrossSafe does: the same sign, light bar, LED heads, flash
 
 | Item | Change | Reason |
 | --- | --- | --- |
-| Wind | Along the road, the enclosure group now includes the mounting plate's edges beside the shield and its two tabs: base moment 3,521 N·m (was 3,434), the 114.3 mm post at 45 % of yield (was 44 %), embedment needed 1,791 mm (1,800 modelled), moment added to an existing pole 2,601 N·m (was 2,514). R9's status is unchanged. | Follows the model (CRS-CAL-001 v0.3, [G1] to [G8]). |
-| Cost | Lines 1, 7, 13, 15, 19 and 20 changed and lines 21 to 23 added: $360.00 per assembly on an existing pole (was $332.00), $433.00 with a new post (was $405.00); $720.00 and $866.00 per crossing. **R15 is now not met on paper: $10.00 over the $350 budget, and $20.00 over its $700 per crossing.** | Parts that every buildable version needs; see Table 3, A1. |
+| Wind | Along the road, the enclosure group now includes the mounting plate's edges beside the shield and its two tabs: base moment 3,521 N·m (was 3,434), the 114.3 mm post at 45 % of yield (was 44 %), embedment needed 1,791 mm (1,800 modelled), moment added to an existing pole 2,601 N·m (was 2,514). R9's status is unchanged. | Follows the model (CRS-CAL-001 v0.4, [G1] to [G8]). |
+| Cost | Lines 1, 7, 13, 15, 19 and 20 changed and lines 21 to 23 added: $360.00 per assembly on an existing pole (was $332.00), $433.00 with a new post (was $405.00); $720.00 and $866.00 per crossing. **R15 is now over the value-engineering target on paper: $10.00 over the $350 target, and $20.00 over its $700 per crossing.** | Parts that every buildable version needs; see the Value engineering section of the design decisions register. |
 | Heights | PIR underside 2,515 mm (was 2,520 mm). Everything else unchanged. | P7. |
 | Drawing | CRS-DWG-001 Rev P4; making sketches CRS-DWG-101 to 109 added. | Follows the model. |
-| Documents | CRS-CAL-001 v0.3, CRS-PRC-001 v0.5, CRS-REQ-001 v0.5, `bom/bom.csv` (23 lines), `bom/bom-notes.md`. | Follows the model. |
+| Documents | CRS-CAL-001 v0.4, CRS-PRC-001 v0.6, CRS-REQ-001 v0.6, `bom/bom.csv` (23 lines), `bom/bom-notes.md`. | Follows the model. |
 | Heat, energy, radio, light | Unchanged. The enclosure, shield and air gaps keep their sizes; nothing electrical changed. | |
 
 *Table 3. Proposed, awaiting Amish.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | The parts that make the design buildable take one assembly on an existing pole to $360.00, $10.00 over `budget_usd` ($350), so R15 is not met on paper. | (a) raise `budget_usd` to $375; (b) look for $10.00 of savings now (for example a cheaper box or sign quote); (c) keep $350 and accept R15 not met until prices are quoted at TRL 4. | (a): the added parts are needed for any buildable version, and the prices are indicative either way. |
 | A2 | The post-top socket fits poles of about 114 mm with an open or capped top. Existing poles in R10's range (60 to 114.3 mm), or poles that are taller or carry a luminaire, cannot take it. | (a) reducing sleeves for 76 and 89 mm poles; (b) a side-of-pole panel arm on two more saddles; (c) limit the existing-pole kit to free-topped poles of about 114 mm. | (b), designed when the pilot site's poles are known (O1); the prototype uses (c). |
 | A3 | The changes in Table 1 are visible: the sign sits nearer the pole, the light bar stands proud of it, the saddles, bands, plate and bracket are new. | (a) accept them; (b) ask for a different arrangement of any of them. | (a). The photoreal renders and the appearance model then need updating on Amish's Mac. |
 
 ## Consequences
 
 - `design_state: constructable` in `project.yaml`. The build plan CRS-BLD-001 (`docs/05-build-plan.md`) shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
-- Requirement status: one not met (R15, cost, Table 3 A1), one at risk (R9, small poles, unchanged), three not verifiable at TRL 3, four met on paper, six met by design (CRS-CAL-001 v0.3).
+- Cost is reported against the value-engineering target: USD 350 (a hypothetical control target, not a limit) against an estimated USD 360.00 for the constructable design, USD 10.00 over; cost drivers and savings worth trying are in the register.
+- Requirement status: one over its value-engineering target (R15, cost), one at risk (R9, small poles, unchanged), three not verifiable at TRL 3, four met on paper, six met by design (CRS-CAL-001 v0.4).
 - The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept sign stand-off, clamps and bracket; they are stale until regenerated on Amish's Mac, where Blender is.
 - The keyed saddle's grip friction (0.4) and the band tension (1,000 N) remain assumptions to be measured at TRL 4, which is on hold.

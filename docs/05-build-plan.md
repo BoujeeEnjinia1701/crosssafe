@@ -3,9 +3,9 @@ doc_id: CRS-BLD-001
 title: CrossSafe prototype build plan
 project: CrossSafe
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-09-30'
     author: Amish Chadha
     change: First build plan; design made constructable (CRS-DDR-003)
+  - version: "0.2"
+    date: '2026-10-01'
+    author: Amish Chadha
+    change: Budget treated as a value-engineering target; cross-references updated
 ---
 
 # CrossSafe prototype build plan
@@ -519,7 +523,7 @@ Stop at each point. Carry on only when everything listed is true.
 - Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`); STEP and STL exports in `cad/step/` and `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/CRS-DWG-101` to `CRS-DWG-109`.
 - General arrangement: `cad/drawings/CRS-DWG-001.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (CRS-CAL-001 v0.3) and `docs/04-calcs/sizing.py`; heights [F1], pole range [F2], wind and clamps [G1] to [G8], cost [H1] to [H3].
+- Calculations: `docs/04-calcs/01-sizing.md` (CRS-CAL-001 v0.4) and `docs/04-calcs/sizing.py`; heights [F1], pole range [F2], wind and clamps [G1] to [G8], cost [H1] to [H3].
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (CRS-DDR-003), with CRS-DDR-001 and CRS-DDR-002; open decisions in `docs/06-design-decisions.md` (CRS-DEC-001).
-- Requirements: `docs/03-requirements.md` (CRS-REQ-001 v0.5).
+- Requirements: `docs/03-requirements.md` (CRS-REQ-001 v0.6).

@@ -241,12 +241,12 @@ Under Amish's 2026-09-30 approval of the build plan format ("this is the correct
 
 ### Key results
 
-- Requirement status (CRS-CAL-001 v0.3): **R15 not met on paper**: $360.00 per assembly on an existing pole against $350, and $720.00 per crossing against $700 (was $332.00 and $664.00). R9 at risk on poles under about 70 mm (unchanged); R2, R5, R10 not verifiable at TRL 3; R3, R6, R7, R8 met on paper; R1, R4, R11 to R14 met by design.
+- Requirement status (CRS-CAL-001 v0.3): **R15 over the value-engineering target on paper**: $360.00 per assembly on an existing pole against a $350 target ($10.00 over), and $720.00 per crossing against $700 ($20.00 over) (was $332.00 and $664.00). R9 at risk on poles under about 70 mm (unchanged); R2, R5, R10 not verifiable at TRL 3; R3, R6, R7, R8 met on paper; R1, R4, R11 to R14 met by design.
 - Wind: base moment 3,521 N·m (was 3,434), 114.3 mm post at 45 % of yield (was 44 %), embedment 1,791 mm needed (1,800 modelled), 2,601 N·m added to an existing pole.
 
 ### Proposed, awaiting Amish
 
-All listed in `docs/06-design-decisions.md`: (1) raise `budget_usd` to $375 (recommended) or accept R15 not met; (2) accept the CRS-DDR-003 changes; (3) panel mount for existing poles the socket does not fit (recommended: a side-of-pole arm, designed for the pilot site); and, carried over, N1 (third saddle and band on poles under 76 mm), O1 (pilot partner and jurisdiction) and the four appearance items of 2026-09-26.
+All listed in `docs/06-design-decisions.md`: (1) accept the CRS-DDR-003 changes; (2) panel mount for existing poles the socket does not fit (recommended: a side-of-pole arm, designed for the pilot site); and, carried over, N1 (third saddle and band on poles under 76 mm), O1 (pilot partner and jurisdiction) and the four appearance items of 2026-09-26.
 
 ### Stale until regenerated on Amish's Mac
 
@@ -260,4 +260,4 @@ The design changed visibly (sign nearer the pole, saddles and bands, mounting pl
 
 ### Recommended next step
 
-Amish reviews the register, chiefly the budget (item 1) and the CRS-DDR-003 changes (item 2). TRL 4 stays on hold.
+Amish reviews the register, chiefly the CRS-DDR-003 changes (item 1) and the Value engineering section. TRL 4 stays on hold.

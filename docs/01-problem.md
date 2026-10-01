@@ -3,9 +3,9 @@ doc_id: CRS-PRB-001
 title: CrossSafe problem statement
 project: CrossSafe
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: TRL 3 update; budget scope per CRS-DDR-001 D1, IA-21 details checked, open questions linked to CRS-DDR-001
+- version: "0.4"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target
 ---
 
 # CrossSafe problem statement
@@ -61,7 +65,7 @@ There is good evidence that an active, pedestrian-triggered warning works. The U
 
 ## Constraints
 
-- Garage-buildable prototype of one beacon assembly on an existing pole, $350 USD in parts (`project.yaml`; scope adopted for TRL 3 in CRS-DDR-001 D1, open for Amish's review). A crossing needs two assemblies; a budget for a two-sided site trial is awaiting Amish (CRS-DDR-001 O2).
+- Garage-buildable prototype of one beacon assembly on an existing pole, a value-engineering target of $350 USD in parts (`project.yaml`; scope adopted for TRL 3 in CRS-DDR-001 D1, open for Amish's review). A crossing needs two assemblies; a value-engineering target of $750 applies to a two-sided site trial when one starts (CRS-DDR-002, O2).
 - Built from off-the-shelf parts: standard signs, LED modules, a small solar kit, a LiFePO4 battery, an IP65 box and a common microcontroller.
 - Needs road authority approval before any use on a public road. Local rules on colors, flash patterns, sign design and mounting heights take precedence over anything in this repo.
 - Privacy: counts and activation events only; no images or audio are recorded or leave the device.
