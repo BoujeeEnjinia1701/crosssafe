@@ -3,9 +3,9 @@ doc_id: CRS-DDR-002
 title: CrossSafe recommendations accepted
 project: CrossSafe
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "O1 and N1 decided by Amish on 2026-10-02 (N1 on a changed recommendation: 76 mm and up until a slip-torque test)"
 ---
 
 # 0002: Recommendations accepted
@@ -54,8 +58,8 @@ The options for each item are those listed in `docs/REVIEW.md` (sessions 2026-09
 
 | # | Item | Status |
 | --- | --- | --- |
-| O1 | Pilot partner, site and jurisdiction, including a road authority. No preference stated | Proposed, awaiting Amish |
-| N1 | New from CRS-CAL-001 v0.2: keyed saddles hold only on poles of about 70 mm and larger at the assumed grip friction. Options: (a) a third band at the sign on poles under 76 mm; (b) limit the existing-pole range to 76 mm and up; (c) a through-bolt on existing poles where the owner allows drilling. Recommendation: (a), because it keeps small poles usable at about $5 more on those sites | Proposed, awaiting Amish |
+| O1 | Pilot partner, site and jurisdiction, including a road authority. No preference stated | Decided by Amish, 2026-10-02: a United States city traffic engineering department with a Safe Routes to School or Vision Zero programme; first candidate to approach, a North Texas city near the team (CRS-DEC-001) |
+| N1 | New from CRS-CAL-001 v0.2: keyed saddles hold only on poles of about 70 mm and larger at the assumed grip friction. Options: (a) a third band at the sign on poles under 76 mm; (b) limit the existing-pole range to 76 mm and up; (c) a through-bolt on existing poles where the owner allows drilling. Recommendation: (a), because it keeps small poles usable at about $5 more on those sites | Decided by Amish, 2026-10-02, on a changed recommendation: (b) for now, the existing-pole kit limited to 76 mm and larger until a slip-torque test on the keyed saddle confirms the assumed grip; then (a) brings 60 to 75 mm poles back (CRS-DEC-001) |
 
 ## Consequences
 

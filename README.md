@@ -71,7 +71,7 @@ TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 3
 - 20 W solar panel, MPPT charger and 12.8 V 12 Ah LiFePO4 battery
 - Controller on the FieldNode radio core, with LED drivers and a LoRa link that keeps both sides in step
 - IP65 pole-top enclosure under a ventilated sun shield
-- Eight identical keyed pole saddles with stainless bands for an existing pole, or a 114.3 mm post with an anti-rotation bolt where none exists
+- Eight identical keyed pole saddles with stainless bands for an existing pole of 76 mm or larger (smaller poles wait for a slip-torque test of the saddle's grip), or a 114.3 mm post with an anti-rotation bolt where none exists
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 

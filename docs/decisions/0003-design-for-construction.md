@@ -3,9 +3,9 @@ doc_id: CRS-DDR-003
 title: CrossSafe design for construction
 project: CrossSafe
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Accepted by Amish on 2026-10-02, including the recommendations for A2 and A3"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-09-30
-- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The items in Table 3 are "Proposed, awaiting Amish" and are listed as open decisions in the design decisions register (`docs/06-design-decisions.md`, CRS-DEC-001).
+- **Status:** accepted. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the recommendations for A2 and A3 in Table 3, which are now decided as recommended and recorded in the design decisions register (`docs/06-design-decisions.md`, CRS-DEC-001).
 
 ## Context
 
@@ -59,12 +63,12 @@ The changes keep what CrossSafe does: the same sign, light bar, LED heads, flash
 | Documents | CRS-CAL-001 v0.4, CRS-PRC-001 v0.6, CRS-REQ-001 v0.6, `bom/bom.csv` (23 lines), `bom/bom-notes.md`. | Follows the model. |
 | Heat, energy, radio, light | Unchanged. The enclosure, shield and air gaps keep their sizes; nothing electrical changed. | |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Proposed, then accepted by Amish as recommended on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A2 | The post-top socket fits poles of about 114 mm with an open or capped top. Existing poles in R10's range (60 to 114.3 mm), or poles that are taller or carry a luminaire, cannot take it. | (a) reducing sleeves for 76 and 89 mm poles; (b) a side-of-pole panel arm on two more saddles; (c) limit the existing-pole kit to free-topped poles of about 114 mm. | (b), designed when the pilot site's poles are known (O1); the prototype uses (c). |
-| A3 | The changes in Table 1 are visible: the sign sits nearer the pole, the light bar stands proud of it, the saddles, bands, plate and bracket are new. | (a) accept them; (b) ask for a different arrangement of any of them. | (a). The photoreal renders and the appearance model then need updating on Amish's Mac. |
+| A2 | The post-top socket fits poles of about 114 mm with an open or capped top. Existing poles in R10's range (60 to 114.3 mm), or poles that are taller or carry a luminaire, cannot take it. | (a) reducing sleeves for 76 and 89 mm poles; (b) a side-of-pole panel arm on two more saddles; (c) limit the existing-pole kit to free-topped poles of about 114 mm. | (b), designed when the pilot site's poles are known (O1); the prototype uses (c). Accepted 2026-10-02. |
+| A3 | The changes in Table 1 are visible: the sign sits nearer the pole, the light bar stands proud of it, the saddles, bands, plate and bracket are new. | (a) accept them; (b) ask for a different arrangement of any of them. | (a). The photoreal renders and the appearance model then need updating on Amish's Mac. Accepted 2026-10-02. |
 
 ## Consequences
 
@@ -72,4 +76,5 @@ The changes keep what CrossSafe does: the same sign, light bar, LED heads, flash
 - Cost is reported against the value-engineering target: USD 350 (a hypothetical control target, not a limit) against an estimated USD 360.00 for the constructable design, USD 10.00 over; cost drivers and savings worth trying are in the register.
 - Requirement status: one over its value-engineering target (R15, cost), one at risk (R9, small poles, unchanged), three not verifiable at TRL 3, four met on paper, six met by design (CRS-CAL-001 v0.4).
 - The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept sign stand-off, clamps and bracket; they are stale until regenerated on Amish's Mac, where Blender is.
-- The keyed saddle's grip friction (0.4) and the band tension (1,000 N) remain assumptions to be measured at TRL 4, which is on hold.
+- The keyed saddle's grip friction (0.4) and the band tension (1,000 N) remain assumptions to be measured at TRL 4, which is on hold. Until a slip-torque test confirms them, the existing-pole kit is limited to poles of 76 mm and larger (CRS-DDR-002, N1, decided 2026-10-02).
+- With A2 accepted, the prototype's panel socket is for free-topped poles of about 114 mm; a side-of-pole panel arm is designed once the pilot site's poles are known.

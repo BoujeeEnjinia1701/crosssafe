@@ -3,9 +3,9 @@ doc_id: CRS-PRB-001
 title: CrossSafe problem statement
 project: CrossSafe
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Pilot partner open question answered with the selection rule and first candidate decided on 2026-10-02"
 ---
 
 # CrossSafe problem statement
@@ -85,7 +89,7 @@ There is good evidence that an active, pedestrian-triggered warning works. The U
 
 ## Open questions
 
-- [ ] Which pilot country and road authority, and which rules apply there (colors, flash pattern, sign type, mounting height)? Open, awaiting Amish (CRS-DDR-001 O1).
+- [ ] Which pilot country and road authority, and which rules apply there (colors, flash pattern, sign type, mounting height)? Decided 2026-10-02 as a selection rule: a United States city traffic engineering department with a Safe Routes to School or Vision Zero programme; first candidate to approach, a North Texas city near the team (CRS-DEC-001).
 - [ ] Is passive detection allowed and trusted locally, or should the button be the only trigger?
 - [ ] How many activations per day at the candidate sites, and how dark are they at the busy times?
 - [ ] How much theft and vandalism should the design expect, and at what mounting height is the battery safe?

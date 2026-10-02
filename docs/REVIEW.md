@@ -261,3 +261,39 @@ The design changed visibly (sign nearer the pole, saddles and bands, mounting pl
 ### Recommended next step
 
 Amish reviews the register, chiefly the CRS-DDR-003 changes (item 1) and the Value engineering section. TRL 4 stays on hold.
+
+## Session 2026-10-02: open decisions decided
+
+On 2026-10-02 Amish approved the recommendations for every open decision: "i approve your recommendations for all 555 open decisions." The 8 open decisions of the design decisions register are now in its Decisions made table, dated 2026-10-02.
+
+CRS-DDR-003 (design for construction) is accepted, with A2 and A3 decided as recommended. Item 3 was decided on a changed recommendation: the existing-pole kit is limited to poles of 76 mm and larger until a slip-torque test confirms the keyed saddle's grip, so R10 is restated. CRS-DDR-002 items O1 and N1 are recorded as decided. Also noted: `bom/bom-notes.md` still says raising `budget_usd` to $375 is proposed, which the value-engineering wording of 2026-10-01 superseded; it was left for the next BOM revision.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (CRS-DEC-001 v0.3)
+- `docs/decisions/0003-design-for-construction.md` (CRS-DDR-003 v0.3)
+- `docs/decisions/0002-recommendations-accepted.md` (CRS-DDR-002 v0.2)
+- `docs/01-problem.md` (CRS-PRB-001 v0.5)
+- `docs/02-concept.md` (CRS-PRC-001 v0.7)
+- `docs/03-requirements.md` (CRS-REQ-001 v0.7)
+- `docs/04-calcs/01-sizing.md` (CRS-CAL-001 v0.5)
+- `bom/bom-notes.md` (not a controlled document)
+- `README.md` (not a controlled document)
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2: Model and drawings: design the side-of-pole panel arm on two more saddles once the pilot site's poles are known (not for the prototype).
+2. Decision 3: Calculations: change R10's range in `docs/04-calcs/sizing.py` and `results.csv` to 76 to 114.3 mm for the existing-pole kit, and restate R9's status for that range.
+3. Decision 3: Plan a slip-torque test of the keyed saddle and band (TRL 4, on hold) before 60 to 75 mm poles return with a third saddle and band; then add that saddle and band to the model and the BOM as a small-pole variant.
+4. Decision 3: BOM: change line 13's description from 60 to 114.3 mm poles to the 76 to 114.3 mm range of the existing-pole kit.
+5. Decision 5: Model: add the visors and bezels to the LED heads in `cad/src/model.py`.
+6. Decision 5: Calculations: add the visors to the light bar wind area at the next CRS-CAL-001 revision and recheck R9.
+7. Decision 5: BOM: state on line 3 that the LED heads are bought with visors.
+8. Decision 1: Renders: regenerate the photoreal renders, `media/card.png`, `media/social-preview.png` and the appearance model on Amish's Mac to show the accepted design for construction (items 7 and 8 follow with them).
+
+### Points found in the review
+
+1. R10 claims a fit on existing 60 to 114 mm poles, but the panel socket fits only about 114 mm free-topped poles (item 2) and the sign can slip on poles under about 70 mm (item 3); the 'fit met' status overstates what the prototype does.
+2. The saddle grip friction (0.4) and band tension (1,000 N) behind R9 on existing poles are assumptions with no planned test until TRL 4, which is on hold.
+
+No CAD model, BOM quantity or price, calculation result or picture was changed. TRL stays at 3; TRL 4 remains on hold.

@@ -3,9 +3,9 @@ doc_id: CRS-CAL-001
 title: CrossSafe sizing calculations
 project: CrossSafe
 doc_type: Calculation
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "N1 recorded as decided on 2026-10-02 (existing-pole kit 76 mm and up until a slip-torque test); text only, no number changed"
 ---
 
 # CrossSafe sizing calculations
@@ -135,7 +139,7 @@ The TRL 2 figures (169 MPa and 72 % on the 88.9 mm post) counted the panel face-
 
 - **Clamps.** A gust whose pressure centre sits a quarter of the sign's width off the pole axis twists the sign clamps with 175 N·m. Two bands at the assumed 1,000 N tension resist about 144 N·m by friction on a 114.3 mm pole and only 75 N·m on a 60 mm pole [G6]. With plain saddles the sign could rotate on its pole in a storm. Amish accepted the recommended anti-rotation detail on 2026-09-25 (CRS-DDR-002):
   - **New posts:** an M10 through-bolt in place of the upper sign saddle's upper sign bolt (part 19), through the sign, the saddle and both post walls. The 175 N·m couple puts 1,535 N on each post wall: 8 % of the bolt's shear resistance and 12 % of the wall's bearing resistance [G6b]. Met.
-  - **Existing poles:** keyed saddles with serrated grip faces (part 20). At an assumed grip friction of 0.4 two bands resist 287 N·m on a 114.3 mm pole and 151 N·m on a 60 mm pole, so the sign holds on poles of about 70 mm and larger [G6c]. Smaller poles remain at risk, and the friction and band tension must be measured (TRL 4, on hold). A third band on small poles is proposed, awaiting Amish (CRS-DDR-002, N1).
+  - **Existing poles:** keyed saddles with serrated grip faces (part 20). At an assumed grip friction of 0.4 two bands resist 287 N·m on a 114.3 mm pole and 151 N·m on a 60 mm pole, so the sign holds on poles of about 70 mm and larger [G6c]. Smaller poles remain at risk, and the friction and band tension must be measured (TRL 4, on hold). Decided 2026-10-02 (CRS-DDR-002, N1): the existing-pole kit is limited to poles of 76 mm and larger until a slip-torque test confirms the grip, then a third saddle and band brings 60 to 75 mm poles back. The R10 row below and `results.csv` still state the 60 to 114.3 mm clamp range until `sizing.py` is updated.
 - **Footing.** The resultant of 1,448 N (326 lbf) acts 2.43 m (8.0 ft) above the sidewalk. The non-constrained pole formula gives 1,791 mm of embedment for a 500 mm footing in clay, so the model uses 1,800 mm [G7]. This is a screening size; the local code and soil govern.
 - **Existing poles.** An assembly adds 2,601 N·m at the sidewalk to the host pole [G8]. The pole owner must confirm the pole and its foundation can carry it; that check is outside this repo.
 

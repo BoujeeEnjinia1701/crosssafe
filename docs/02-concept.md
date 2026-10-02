@@ -3,9 +3,9 @@ doc_id: CRS-PRC-001
 title: CrossSafe design precis
 project: CrossSafe
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Decisions of 2026-10-02: existing-pole kit limited to 76 mm and up until a slip-torque test; panel socket for free-topped 114 mm poles; first pilot partner candidate"
 ---
 
 # CrossSafe design precis
@@ -98,7 +102,7 @@ Each choice below was decided by Amish on 2026-09-25 by accepting the recommenda
 - **Button plus passive detection, gated by a PIR (D2, D5).** The button is the reliable, accessible trigger; radar catches people who do not press it and can be switched off where passive detection is not allowed. The PIR keeps the radar off when nothing moves, which is what brings autonomy above 5 days. The radar reports presence only, which keeps images and audio off the device.
 - **Radio sync instead of a cable (D6).** A LoRa point-to-point link avoids cutting the road. If the link drops, each side still flashes on its own trigger and reports a fault.
 - **Own 12 V power system, FieldNode radio core (D7).** The LED load (up to about 26 W at the instant all four heads are lit) is far beyond the FieldNode power stage (6 W panel, 3.2 V cell), so CrossSafe uses a 12.8 V LiFePO4 battery with a built-in BMS. The controller reuses FieldNode's STM32WL-class radio and logging design. CellGuard, the lab's open BMS for 4 to 16 LiFePO4 cells, is a later option in place of the drop-in battery's closed BMS.
-- **Existing poles first; 114.3 mm where a new post is needed (D3).** Band clamps fit 60 to 114.3 mm poles; the new-post variant meets the wind target with margin.
+- **Existing poles first; 114.3 mm where a new post is needed (D3).** Band clamps fit 60 to 114.3 mm poles, but the existing-pole kit is used only on poles of 76 mm and larger until a slip-torque test confirms the keyed saddle's grip; a third saddle and band at the sign then brings 60 to 75 mm poles back (decided 2026-10-02). The prototype's panel socket fits free-topped poles of about 114 mm; a side-of-pole panel arm is designed once the pilot site's poles are known. The new-post variant meets the wind target with margin.
 - **Pedestrian pilot light (D8).** IA-21 permits a small pilot light on the beacon or push button; it is included where local rules allow.
 - **Sun shield on the enclosure (CRS-DDR-002).** A ventilated white shield cuts the enclosure's rise in full sun from 14.7 to 3.9 K when dusty, so the battery stays below its discharge limit and keeps charging on hot days. Placing the enclosure in the panel's shadow is to be considered when the bracket is detailed.
 - **Anti-rotation detail (CRS-DDR-002).** An M10 through-bolt locks the sign and its upper saddle to a new post; on existing poles, where drilling needs the owner's consent, keyed saddles with serrated grip faces raise the clamp friction. Band tension and grip are to be measured at TRL 4, which is on hold.
@@ -129,10 +133,10 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 
 ## Open questions
 
-- [ ] Pilot jurisdiction and its rules for beacon color, flash pattern, sign design and mounting height.
+- [ ] Pilot jurisdiction and its rules for beacon color, flash pattern, sign design and mounting height. First candidate to approach (2026-10-02): a United States city traffic engineering department with a Safe Routes to School or Vision Zero programme, in a North Texas city near the team; nothing is agreed.
 - [ ] Measured LED head power and intensity for the chosen modules, and whether 6 W per head is enough in full sun.
 - [ ] Radar false-trigger rate with passing pedestrians, cyclists, animals and rain.
 - [ ] Radio range and reliability across the road with parked vehicles and buses in the path, and licence-free band rules in the pilot country.
 - [ ] Measured enclosure temperature in full sun with the shield fitted, and whether the enclosure can sit in the panel's shadow (CRS-CAL-001, section C).
-- [ ] Measured band tension and keyed saddle grip, and the fix for poles under about 70 mm (R9; CRS-DDR-002, N1); host pole checks by the owner; local foundation design.
+- [ ] Measured band tension and keyed saddle grip (a slip-torque test), which must pass before the existing-pole kit is used below 76 mm with a third saddle and band (R9; CRS-DDR-002, N1, decided 2026-10-02); host pole checks by the owner; local foundation design.
 - [ ] Whether the pedestrian-facing confirmation light is allowed locally.
