@@ -1,4 +1,4 @@
-"""CrossSafe sizing calculations, CRS-CAL-001 v0.3 (TRL 3, constructable design of CRS-DDR-003, with the CRS-DDR-002 sun shield and anti-rotation detail).
+"""CrossSafe sizing calculations, CRS-CAL-001 v0.6 (TRL 3, constructable design of CRS-DDR-003, with the CRS-DDR-002 sun shield and anti-rotation detail).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md (tags in brackets, for example [B3]) and
@@ -227,8 +227,8 @@ install = {"clamps, saddles and bar with sign": 30, "enclosure (shield fitted on
            "button, radar, PIR and cable cover": 20, "setup and radio pairing": 15}
 t_inst = sum(install.values())
 out("F3", f"installation estimate, two-person crew on an existing pole: {t_inst} min ({', '.join(f'{k} {v}' for k, v in install.items())})")
-res("R10", "Mounting", f"60 to 114.3 mm poles; bar at {P['bar_bottom'] / 1000:.1f} m; about {t_inst} min estimate",
-    "fit; 2.1 m; 2 h", "Not verifiable at TRL 3")
+res("R10", "Mounting", f"76 to 114.3 mm poles; bar at {P['bar_bottom'] / 1000:.1f} m; about {t_inst} min estimate",
+    "fit; 2.1 m; 2 h", "Not verifiable at TRL 3")   # range restated 2026-10-02: 76 mm and up (CRS-DEC-001)
 res("R11", "Accessibility", f"button {P['button_z'] / 1000:.2f} m; piezo; tone, tactile arrow, pilot light",
     "0.9 to 1.1 m; 22 N or less", "Met by design")
 res("R12", "Fail-safe", "timer-limited flashing; local flashing without link; fault log", "never continuous",
@@ -285,7 +285,7 @@ t_sign = Fx["sign"] * ECC * sign_w
 r = P["post_od"] / 2000
 t_band = MU * 2 * math.pi * BAND_T * r
 out("G6", f"sign torsion with {ECC:.2f} x width eccentricity: {t_sign:.0f} N m; two bands at {BAND_T:.0f} N resist "
-          f"{2 * t_band:.0f} N m on 114.3 mm and {2 * MU * 2 * math.pi * BAND_T * 0.030:.0f} N m on a 60 mm pole")
+          f"{2 * t_band:.0f} N m on 114.3 mm and {2 * MU * 2 * math.pi * BAND_T * 0.030:.0f} N m on a 60 mm pole (a plain saddle, friction {MU}; shown for comparison)")
 # footing depth, non-constrained pole (screening, after IBC 1807.3.2.1)
 Pl = sum(Fx.values()) * 0.2248                     # lbf
 h_ft = mx / sum(Fx.values()) * 3.281               # height of the resultant, ft
@@ -306,7 +306,7 @@ out("G6b", f"new post, M10 through-bolt: {f_bear:.0f} N per wall; bolt shear {v_
 key_tq = lambda od: 2 * MU_KEY * 2 * math.pi * BAND_T * od / 2000
 od_min = t_sign / (2 * MU_KEY * 2 * math.pi * BAND_T) * 2000
 out("G6c", f"existing poles, keyed saddles at friction {MU_KEY}: two bands resist {key_tq(P['pole_max_od']):.0f} N m on "
-           f"114.3 mm and {key_tq(P['pole_min_od']):.0f} N m on 60 mm against {t_sign:.0f} N m; holds on poles of "
+           f"114.3 mm and {key_tq(P['pole_min_od']):.0f} N m on {P['pole_min_od']:.0f} mm against {t_sign:.0f} N m; holds on poles of "
            f"{od_min:.0f} mm and up")
 added = mx - Mx["post"]
 out("G8", f"moment added to an existing pole at the sidewalk: {added:.0f} N m")

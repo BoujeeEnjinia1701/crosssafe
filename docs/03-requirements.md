@@ -3,7 +3,7 @@ doc_id: CRS-REQ-001
 title: CrossSafe requirements
 project: CrossSafe
 doc_type: Requirements
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "R10 restated on 2026-10-02: existing-pole kit 76 to 114 mm until a slip-torque test, panel socket for free-topped poles of about 114 mm; no status changed"
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: R9 met on paper for 76 to 114.3 mm poles; R10 and R15 figures updated (cost $364.00 per assembly)
 ---
 
 # CrossSafe requirements
@@ -57,21 +61,21 @@ Table 1. Requirements and status at TRL 3 (CRS-CAL-001 v0.4, Table 5).
 | R6 | Autonomy without sun | 5 days or more of design-case use from a full battery | Energy calculation | Met on paper (7.7 days; 5.4 at -20 °C) |
 | R7 | Energy balance | Energy neutral at 2.5 peak sun hours; recover from 20 % to full in 3 days or fewer at 5 peak sun hours | Solar yield calculation | Met on paper (break-even 1.05 h; recovery 2.1 days) |
 | R8 | Environment | Enclosures and connectors IP65 or better; operate -20 to +50 °C ambient; battery charges only at 0 to 45 °C cell temperature | Datasheets and heat balance; later spray and thermal tests | Met on paper with the sun shield (53.9 °C inside at 50 °C ambient when dusty; charging to 41.1 °C ambient) |
-| R9 | Structure | Post and clamps carry the sign and panel in a 40 m/s gust with stress 60 % or less of yield; new posts are 114.3 x 3.6 mm (CRS-DDR-001 D3); the sign cannot rotate on its pole (anti-rotation bolt on new posts, keyed saddles on existing poles, CRS-DDR-002) | Wind load calculation | **At risk on poles under about 70 mm only: post 45 % of yield and bolt 12 % of bearing (met); keyed saddles resist 151 N·m on a 60 mm pole against 175 N·m** |
+| R9 | Structure | Post and clamps carry the sign and panel in a 40 m/s gust with stress 60 % or less of yield; new posts are 114.3 x 3.6 mm (CRS-DDR-001 D3); the sign cannot rotate on its pole (anti-rotation bolt on new posts, keyed saddles on existing poles, CRS-DDR-002) | Wind load calculation | **Met on paper for poles of 76 to 114.3 mm: post 45 % of yield and bolt 12 % of bearing; keyed saddles resist 191 N·m on a 76 mm pole against 175 N·m, at assumed friction and band tension** |
 | R10 | Mounting | Fits the project's own post or an existing 76 to 114 mm pole with band clamps (60 to 75 mm poles only after a slip-torque test confirms the keyed saddle's grip, with a third saddle and band at the sign); the prototype's panel socket fits free-topped poles of about 114 mm; sign bottom at 2.1 m or more (or local rule); two-person crew installs one assembly in 2 h or less | Design review; later timed trial | Not verifiable at TRL 3 (fit met on free-topped poles of about 114 mm; install estimate 120 min, at the limit) |
 | R11 | Accessibility | Push button 0.9 to 1.1 m above the walking surface, operable with 22 N or less, with an audible and tactile acknowledgement and a pedestrian-facing pilot light | Design review with disability groups | Met by design (button at 1.05 m), to be checked in co-design |
 | R12 | Fail-safe behavior | Never flashes continuously; a fault (low battery, open LED, lost radio link) is shown on a maintenance indicator and logged; with the link lost, each side still flashes on a local trigger | Firmware review; fault injection later | Met by design |
 | R13 | Privacy | No images or audio are recorded or leave the device; only activation counts, faults and battery state are logged or sent | Design review | Met by design |
 | R14 | Theft and vandal resistance | Battery, charger and controller 2.8 m or more above the walking surface; security fasteners; no exposed cables below 2.5 m | Design review | Met by design (enclosure bottom 2.85 m; sensing head 2.515 m and up) |
-| R15 | Affordable | Parts for one assembly on an existing pole $350 or less (the prototype `budget_usd` covers, CRS-DDR-001 D1); parts for a two-sided crossing on existing poles $700 or less. Crossings that need new posts are costed and reported, not held to this target | Priced BOM (`bom/bom.csv`) | **Over the value-engineering target by $10.00 per assembly ($360.00 against $350) and $20.00 per crossing ($720.00 against $700)**; new posts $433.00 and $866.00 |
+| R15 | Affordable | Parts for one assembly on an existing pole $350 or less (the prototype `budget_usd` covers, CRS-DDR-001 D1); parts for a two-sided crossing on existing poles $700 or less. Crossings that need new posts are costed and reported, not held to this target | Priced BOM (`bom/bom.csv`) | **Over the value-engineering target by $14.00 per assembly ($364.00 against $350) and $28.00 per crossing ($728.00 against $700)**; new posts $437.00 and $874.00 |
 
 ## Requirements at risk or not verifiable
 
-One requirement is over its value-engineering target on paper (R15, cost), one is at risk and three need evidence that a paper study cannot give.
+One requirement is over its value-engineering target on paper (R15, cost) and three need evidence that a paper study cannot give.
 
-- **R15 over the value-engineering target after the design for construction (CRS-DDR-003).** The saddles, mounting plate, panel bracket, radar arm, battery strap and fixings that make every part buildable and fixed add $28.00: the estimated cost of one assembly on an existing pole is $360.00 against the $350 target ($10.00 over), and of a crossing $720.00 against $700 ($20.00 over). The target is a hypothetical control target, not a limit; cost drivers and savings worth trying are in the Value engineering section of the design decisions register.
+- **R15 over the value-engineering target after the design for construction (CRS-DDR-003).** The saddles, mounting plate, panel bracket, radar arm, battery strap and fixings that make every part buildable and fixed add $28.00, and the bezels and visors on the four LED heads add $4.00: the estimated cost of one assembly on an existing pole is $364.00 against the $350 target ($14.00 over), and of a crossing $728.00 against $700 ($28.00 over). The target is a hypothetical control target, not a limit; cost drivers and savings worth trying are in the Value engineering section of the design decisions register.
 
-- **R9 at risk on small poles.** The 114.3 x 3.6 mm post meets the stress target at 45 % of yield, and a 1,800 mm embedment in a 500 mm footing is a screening size. On new posts the M10 through-bolt stops the sign rotating with a wide margin. On existing poles the keyed saddles hold on poles of about 70 mm and larger at an assumed grip friction of 0.4; below that the sign could still slip. Decided 2026-10-02 (CRS-DDR-002, N1): the existing-pole kit is limited to poles of 76 mm and larger until a slip-torque test on the keyed saddle confirms the grip; a third saddle and band then brings 60 to 75 mm poles back. On existing poles the host pole must carry about 2.5 kN·m more at the sidewalk, which the owner must confirm.
+- **R9 met on paper on poles of 76 mm and larger.** The 114.3 x 3.6 mm post meets the stress target at 45 % of yield, and a 1,800 mm embedment in a 500 mm footing is a screening size. On new posts the M10 through-bolt stops the sign rotating with a wide margin. On existing poles the keyed saddles hold on poles of about 70 mm and larger at an assumed grip friction of 0.4, so R9 is met on paper for the 76 to 114.3 mm range the existing-pole kit is now limited to (decided 2026-10-02, CRS-DDR-002, N1). The friction and band tension are assumptions, and the 191 N·m resistance on a 76 mm pole is only 9 % above the 175 N·m load. A slip-torque test on the keyed saddle must confirm the grip before the kit is used below 76 mm, when a third saddle and band would bring 60 to 75 mm poles back. On existing poles the host pole must carry about 2.5 kN·m more at the sidewalk, which the owner must confirm.
 - **R8 met on paper after the sun shield (CRS-DDR-002).** Unshielded, a dusty enclosure ran 14.7 K above ambient and reached 64.7 °C at 50 °C ambient; with the ventilated shield the rise is 3.9 K and the interior 53.9 °C, below the typical 60 °C discharge limit. The shield factor is borrowed, not measured.
 - **R2, R5 and R10 are not verifiable at TRL 3.** R2 and R5 decide whether drivers respond and whether passive detection is trusted.
 - **R6, not met at TRL 2, is now met on paper** after the PIR gating (D2).

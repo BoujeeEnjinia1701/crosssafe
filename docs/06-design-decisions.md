@@ -3,7 +3,7 @@ doc_id: CRS-DEC-001
 title: CrossSafe design decisions register
 project: CrossSafe
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Amish approved the recommendations for all open decisions 1 to 8 on 2026-10-02 (CRS-DDR-003 accepted; existing-pole kit limited to 76 mm and up); moved to decisions made"
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Value engineering figures updated for the head bezels and visors: USD 364.00, USD 14.00 over the target"
 ---
 
 # CrossSafe design decisions register
@@ -46,11 +50,11 @@ None. All open decisions were decided on 2026-10-02.
 
 ## Value engineering
 
-Value-engineering target: USD 350 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 360.00 (USD 10.00 over the target). A crossing needs two assemblies: USD 720.00 against a target of USD 700; with new posts USD 433.00 and USD 866.00, which are costed and reported, not held to the target.
+Value-engineering target: USD 350 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 364.00 (USD 14.00 over the target). A crossing needs two assemblies: USD 728.00 against a target of USD 700; with new posts USD 437.00 and USD 874.00, which are costed and reported, not held to the target.
 
-Main cost drivers: the eight keyed saddles in place of two (USD 18.00 more), the enclosure mounting plate (USD 8.00), the panel bracket (USD 6.00 more), the radar arm and battery strap (USD 3.00) and the fixings (USD 4.00 more), less the sign maker's brackets (USD 5.00) and the bought band brackets (USD 6.00). All prices are indicative until quoted at TRL 4.
+Main cost drivers: the eight keyed saddles in place of two (USD 18.00 more), the enclosure mounting plate (USD 8.00), the panel bracket (USD 6.00 more), the radar arm and battery strap (USD 3.00) and the fixings (USD 4.00 more) and the bezels and visors bought with the LED heads (USD 4.00), less the sign maker's brackets (USD 5.00) and the bought band brackets (USD 6.00). All prices are indicative until quoted at TRL 4.
 
-Savings worth trying: a cheaper enclosure or sign quote, aiming at the USD 10.00 gap. The site-trial target of USD 750 for a two-sided crossing applies when a trial starts (on hold with TRL 4).
+Savings worth trying: a cheaper enclosure or sign quote, aiming at the USD 14.00 gap. The site-trial target of USD 750 for a two-sided crossing applies when a trial starts (on hold with TRL 4).
 
 ## Decisions made
 
@@ -66,7 +70,7 @@ Savings worth trying: a cheaper enclosure or sign quote, aiming at the USD 10.00
 | 2026-10-02 | Panel mount on existing poles: the prototype is built for free-topped poles of about 114 mm (option c); a side-of-pole panel arm on two more saddles (option b) is designed once the pilot site's poles are known | Amish: "i approve your recommendations for all 555 open decisions." | CRS-DDR-003, A2 |
 | 2026-10-02 | Sign rotation on small poles: the existing-pole kit is limited to poles of 76 mm and larger (option b) until a slip-torque test on the keyed saddle confirms the assumed grip; then a third saddle and band at the sign (option a) brings 60 to 75 mm poles back. This changes the earlier recommendation of (a) | Amish: "i approve your recommendations for all 555 open decisions." | CRS-DDR-002, N1 |
 | 2026-10-02 | Pilot partner: a United States city traffic engineering department with a Safe Routes to School or Vision Zero programme, since the design follows FHWA IA-21. First candidate to approach: a North Texas city near the team | Amish: "i approve your recommendations for all 555 open decisions." | CRS-DDR-001, O1; CRS-DDR-002 |
-| 2026-10-02 | Visors and bezels on the LED heads: added to the model, and the light bar wind area, at the next calculation revision; head modules are bought with visors | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 2 |
+| 2026-10-02 | Visors and bezels on the LED heads: added to the model (CRS-CAL-001 v0.6 includes them in the light bar wind area); head modules are bought with visors | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 2 |
 | 2026-10-02 | Louvre slots in the sun shield: appearance only until the shield is measured; the shield stays plain sheet | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 3 |
 | 2026-10-02 | Sign colour: fluorescent yellow-green in the renders; the sheeting is bought to the local road authority's design | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 4 |
 | 2026-10-02 | Small appearance differences in the renders (pilot light housing, saddle flange at the sign, band screw housings) accepted as appearance detail | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 5 |

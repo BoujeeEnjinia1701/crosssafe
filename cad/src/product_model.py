@@ -257,8 +257,10 @@ def product_parts(P=PARAMS):
     visors = []
     for y in (-P["head_dy"], P["head_dy"]):
         for s in (1, -1):
-            v = _box(bxc + s * (bx / 2 + 13), y, bzc + hh / 2 + 9, 26, hw + 18, 3)
-            v += _box(bxc + s * (bx / 2 + 26 - 1.5), y, bzc + hh / 2 + 3, 3, hw + 18, 15)
+            vw = hw + 2 * P["bezel_w"] + 2 * P["visor_over"]             # visor and bezel sizes from model.py
+            za = bzc + hh / 2 + P["bezel_w"]
+            v = _box(bxc + s * (bx / 2 + P["visor_d"] / 2), y, za + P["visor_t"] / 2, P["visor_d"], vw, P["visor_t"])
+            v += _box(bxc + s * (bx / 2 + P["visor_d"] - P["visor_t"] / 2), y, za - P["visor_lip"] / 2, P["visor_t"], vw, P["visor_lip"])
             visors.append(v)
     add("Head visors", _union(visors), C_BAR, "painted", 2, "shell", EB)
     add("Light bar post saddle", _box(r + 8, 0, bzc, 16, 80, 100), C_STEEL, "metal", 2, "shell", EB)
@@ -268,7 +270,7 @@ def product_parts(P=PARAMS):
         for s in (1, -1):
             fx = bxc + s * bx / 2                                   # housing face
             EH = (EB[0] + s * 110, 0, EB[2])
-            bez = _box(fx + s * 4, y, bzc, 8, hw + 14, hh + 14)
+            bez = _box(fx + s * P["head_flange"] / 2, y, bzc, P["head_flange"], hw + 2 * P["bezel_w"], hh + 2 * P["bezel_w"])
             bez = _fillet_try(bez, _edges_par(bez, Axis.X), [5.0, 3.0])
             bez -= _box(fx + s * 4, y, bzc, 10, hw, hh)
             face = "front" if s > 0 else "back"

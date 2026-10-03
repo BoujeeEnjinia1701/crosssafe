@@ -3,7 +3,7 @@ doc_id: CRS-CAL-001
 title: CrossSafe sizing calculations
 project: CrossSafe
 doc_type: Calculation
-version: "0.5"
+version: "0.6"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -29,17 +29,21 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "N1 recorded as decided on 2026-10-02 (existing-pole kit 76 mm and up until a slip-torque test); text only, no number changed"
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Re-run for the approved decisions: R10 range 76 to 114.3 mm and R9 restated (met on paper for that range); visors in the light bar wind area; line 3 re-priced; cost $364.00"
 ---
 
 # CrossSafe sizing calculations
 
-On paper, CrossSafe meets ten of its fifteen requirements (four by calculation, six by design), has one at risk and one over its value-engineering target, and leaves three that only photometry, a site trial or a timed installation can settle. The one over target is cost (R15): the saddles, mounting plate, panel bracket and fixings that make the design buildable (CRS-DDR-003, 2026-09-30) take the estimated cost of one assembly $10.00 over its $350 value-engineering target. The fixes Amish accepted on 2026-09-25 (CRS-DDR-001 and CRS-DDR-002) do their job. Gating the radar with a PIR sensor, together with the IA-21 flash sequence (each head lit 25 % of the time, not the 35 % assumed at TRL 2), cuts the daily load from about 29.8 to 16.0 Wh and lifts autonomy from about 4.1 to 7.7 days (R6 met, 5.4 days at -20 °C). The ventilated sun shield cuts the enclosure's rise in full sun from 14.7 to 3.9 K when dusty, so the interior stays at 53.9 °C at 50 °C ambient and charging continues up to 41.1 °C ambient (R8 met on paper). The 114.3 x 3.6 mm post reaches 45 % of yield in a 40 m/s gust (R9 target 60 %). An eccentric gust on the sign twists it with 175 N·m; on new posts an M10 through-bolt carries this at 12 % of its bearing resistance, and on existing poles keyed saddles hold on poles of about 70 mm and larger, so R9 stays at risk only on smaller poles. The estimated cost of one assembly on an existing pole is $360.00 against the $350 value-engineering target, and of a two-sided crossing on existing poles $720.00 against $700 (R15 over the target by $10.00 and $20.00; cost drivers and savings are in the design decisions register). Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B4], is the line of that script's output that carries it.
+On paper, CrossSafe meets eleven of its fifteen requirements (five by calculation, six by design), has one over its value-engineering target, and leaves three that only photometry, a site trial or a timed installation can settle. The one over target is cost (R15): the saddles, mounting plate, panel bracket and fixings that make the design buildable (CRS-DDR-003, 2026-09-30) and the bezels and visors on the LED heads take the estimated cost of one assembly $14.00 over its $350 value-engineering target. The fixes Amish accepted on 2026-09-25 (CRS-DDR-001 and CRS-DDR-002) do their job. Gating the radar with a PIR sensor, together with the IA-21 flash sequence (each head lit 25 % of the time, not the 35 % assumed at TRL 2), cuts the daily load from about 29.8 to 16.0 Wh and lifts autonomy from about 4.1 to 7.7 days (R6 met, 5.4 days at -20 °C). The ventilated sun shield cuts the enclosure's rise in full sun from 14.7 to 3.9 K when dusty, so the interior stays at 53.9 °C at 50 °C ambient and charging continues up to 41.1 °C ambient (R8 met on paper). The 114.3 x 3.6 mm post reaches 45 % of yield in a 40 m/s gust (R9 target 60 %). An eccentric gust on the sign twists it with 175 N·m; on new posts an M10 through-bolt carries this at 12 % of its bearing resistance, and on existing poles keyed saddles hold on poles of about 70 mm and larger, so R9 is met on paper for the 76 to 114.3 mm range of the existing-pole kit (it was at risk on 60 mm poles, which the kit no longer covers). The estimated cost of one assembly on an existing pole is $364.00 against the $350 value-engineering target, and of a two-sided crossing on existing poles $728.00 against $700 (R15 over the target by $14.00 and $28.00; cost drivers and savings are in the design decisions register). Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B4], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles estimates for a paper proof of concept. They do not show that the device is safe to put beside a road. Photometry, detection, the battery in a sun-heated box, clamp preload and the foundation must be checked on hardware and by a qualified engineer, and the device needs road authority approval before any use on a public road. See CRS-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in CRS-REQ-001 v0.6 against the design in CRS-PRC-001 v0.6 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS` and `derived()`, so heights, wind areas, the post section and the footing are those of the STEP files and drawing CRS-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`; it also writes `docs/04-calcs/results.csv`.
+The note checks every requirement in CRS-REQ-001 v0.8 against the design in CRS-PRC-001 v0.8 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS` and `derived()`, so heights, wind areas, the post section and the footing are those of the STEP files and drawing CRS-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`; it also writes `docs/04-calcs/results.csv`.
 
 The design case is CRS-REQ-001's: a marked crossing on a two-lane road 7 m kerb to kerb, one assembly on each side, 300 activations of 20 s per day, 2.5 peak sun hours in the worst month and -20 to +50 °C ambient. Decisions referred to as D1 to D9 are in CRS-DDR-001; the sun shield and anti-rotation detail (E1, E2) are in CRS-DDR-002.
 
@@ -120,12 +124,12 @@ A 6 W amber head with the assumed efficacy and a 20° x 10° beam gives about 3,
 ## F. Heights, mounting and installation (R10, R11, R14)
 
 - **Heights.** Button center 1,050 mm (R11: 0.9 to 1.1 m); light bar bottom 2,100 mm; enclosure bottom 2,850 mm (R14: 2.8 m), with the shield open at the bottom; radar at 2,600 mm on its arm with the PIR underside at 2,515 mm, so no part or cable of the sensing head is below 2.5 m; overall height 4,031 mm [F1].
-- **Poles.** The band clamps fit 60 to 114.3 mm poles; the new-post variant uses 114.3 x 3.6 mm [F2].
+- **Poles.** The band clamps and saddles are used on 76 to 114.3 mm poles (decided 2026-10-02); the new-post variant uses 114.3 x 3.6 mm [F2].
 - **Installation.** A task estimate for a two-person crew on an existing pole comes to 120 min, exactly the 2 h limit of R10, with the sun shield fitted to the enclosure on the ground and the keyed saddles in place of plain ones [F3]. Only a timed trial can settle it; Amish accepted that trial on 2026-09-25, and it is on hold with TRL 4.
 
 ## G. Wind, clamps and footing (R9)
 
-- **Loads.** The dynamic pressure at 40 m/s is 980 Pa. Wind along the road, on the sign face, gives 1,448 N and a base moment of 3,521 N·m (sign 1,839, post 920, shielded enclosure with its mounting plate 449, light bar 238 N·m) [G1]. The shield, and the mounting plate's edges and saddle tabs beside it (CRS-DDR-003), enlarge the enclosure's wind area. Wind across the road gives 759 N and 1,644 N·m, of which the panel is 416 N·m [G2]. Along the road governs.
+- **Loads.** The dynamic pressure at 40 m/s is 980 Pa. Wind along the road, on the sign face, gives 1,448 N and a base moment of 3,521 N·m (sign 1,839, post 920, shielded enclosure with its mounting plate 449, light bar 238 N·m) [G1]. The shield, and the mounting plate's edges and saddle tabs beside it (CRS-DDR-003), enlarge the enclosure's wind area. The four visors on the LED heads (26 mm deep, with a 15 mm drip lip) lie inside the light bar's outline along the road and add only about 0.0005 m² across it, so no base moment changes by more than 2 N·m. Wind across the road gives 760 N and 1,646 N·m, of which the panel is 416 N·m [G2]. Along the road governs.
 - **Post.** *Table 4. Post stress in the 40 m/s gust [G3, G4].*
 
 | Post | Section modulus | Stress | Share of S235 yield | R9 (60 %) |
@@ -139,13 +143,13 @@ The TRL 2 figures (169 MPa and 72 % on the 88.9 mm post) counted the panel face-
 
 - **Clamps.** A gust whose pressure centre sits a quarter of the sign's width off the pole axis twists the sign clamps with 175 N·m. Two bands at the assumed 1,000 N tension resist about 144 N·m by friction on a 114.3 mm pole and only 75 N·m on a 60 mm pole [G6]. With plain saddles the sign could rotate on its pole in a storm. Amish accepted the recommended anti-rotation detail on 2026-09-25 (CRS-DDR-002):
   - **New posts:** an M10 through-bolt in place of the upper sign saddle's upper sign bolt (part 19), through the sign, the saddle and both post walls. The 175 N·m couple puts 1,535 N on each post wall: 8 % of the bolt's shear resistance and 12 % of the wall's bearing resistance [G6b]. Met.
-  - **Existing poles:** keyed saddles with serrated grip faces (part 20). At an assumed grip friction of 0.4 two bands resist 287 N·m on a 114.3 mm pole and 151 N·m on a 60 mm pole, so the sign holds on poles of about 70 mm and larger [G6c]. Smaller poles remain at risk, and the friction and band tension must be measured (TRL 4, on hold). Decided 2026-10-02 (CRS-DDR-002, N1): the existing-pole kit is limited to poles of 76 mm and larger until a slip-torque test confirms the grip, then a third saddle and band brings 60 to 75 mm poles back. The R10 row below and `results.csv` still state the 60 to 114.3 mm clamp range until `sizing.py` is updated.
+  - **Existing poles:** keyed saddles with serrated grip faces (part 20). At an assumed grip friction of 0.4 two bands resist 287 N·m on a 114.3 mm pole and 191 N·m on a 76 mm pole, so the sign holds on poles of about 70 mm and larger, which covers the 76 to 114.3 mm range of the existing-pole kit with a 9 % margin on the 76 mm pole [G6c]. The friction and band tension are assumptions that must be measured (TRL 4, on hold). Decided 2026-10-02 (CRS-DDR-002, N1): the existing-pole kit is limited to poles of 76 mm and larger until a slip-torque test confirms the grip, then a third saddle and band brings 60 to 75 mm poles back.
 - **Footing.** The resultant of 1,448 N (326 lbf) acts 2.43 m (8.0 ft) above the sidewalk. The non-constrained pole formula gives 1,791 mm of embedment for a 500 mm footing in clay, so the model uses 1,800 mm [G7]. This is a screening size; the local code and soil govern.
 - **Existing poles.** An assembly adds 2,601 N·m at the sidewalk to the host pole [G8]. The pole owner must confirm the pole and its foundation can carry it; that check is outside this repo.
 
 ## H. Cost (R15)
 
-The BOM has 23 lines, all priced. One assembly on an existing pole costs $360.00 and $433.00 with its own post and anti-rotation bolt, footing concrete excluded [H1]. The design for construction (CRS-DDR-003) added $28.00: eight keyed saddles in place of two ($18.00 more), the enclosure mounting plate ($8.00), the radar arm and battery strap ($3.00), a fuller panel bracket ($6.00 more) and more fixings ($4.00 more), less the sign maker's brackets ($5.00) and the bought band brackets ($6.00). Against the value-engineering target of $350 (`budget_usd`, a hypothetical control target, not a limit) that is $10.00 over on an existing pole and $83.00 over with a new post [H2]. Under D1 the target covers the existing-pole assembly, so R15 is over the target on paper; cost drivers and savings worth trying are in the Value engineering section of `docs/06-design-decisions.md`. A two-sided crossing costs $720.00 on existing poles ($20.00 over R15's $700) and $866.00 with new posts: $30.00 under and $116.00 over the $750 site-trial value-engineering target, which Amish accepted on 2026-09-25 for when a site trial starts (on hold with TRL 4) [H3].
+The BOM has 23 lines, all priced. One assembly on an existing pole costs $364.00 and $437.00 with its own post and anti-rotation bolt, footing concrete excluded [H1]. The design for construction (CRS-DDR-003) added $28.00 and the visors and bezels on the heads $4.00 (line 3, $1.00 a head): eight keyed saddles in place of two ($18.00 more), the enclosure mounting plate ($8.00), the radar arm and battery strap ($3.00), a fuller panel bracket ($6.00 more) and more fixings ($4.00 more), less the sign maker's brackets ($5.00) and the bought band brackets ($6.00). Against the value-engineering target of $350 (`budget_usd`, a hypothetical control target, not a limit) that is $14.00 over on an existing pole and $87.00 over with a new post [H2]. Under D1 the target covers the existing-pole assembly, so R15 is over the target on paper; cost drivers and savings worth trying are in the Value engineering section of `docs/06-design-decisions.md`. A two-sided crossing costs $728.00 on existing poles ($28.00 over R15's $700) and $874.00 with new posts: $22.00 under and $124.00 over the $750 site-trial value-engineering target, which Amish accepted on 2026-09-25 for when a site trial starts (on hold with TRL 4) [H3].
 
 ## L. Results against every requirement
 
@@ -153,15 +157,15 @@ The BOM has 23 lines, all priced. One assembly on an existing pole costs $360.00
 
 | ID | Requirement | Value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R15 | Affordable | $360.00 per assembly; $720.00 per crossing on existing poles | $350; $700 per crossing | **Over the value-engineering target by $10.00** ($20.00 per crossing) |
-| R9 | Structure | 45 % of yield on the 114.3 mm post; bolt 12 % of bearing; keyed saddles hold on poles of 70 mm and up | 60 % of yield or less; no sign rotation | **At risk** (poles under about 70 mm) |
+| R15 | Affordable | $364.00 per assembly; $728.00 per crossing on existing poles | $350; $700 per crossing | **Over the value-engineering target by $14.00** ($28.00 per crossing) |
 | R2 | Visibility | About 3,939 cd per head (screening) | Seen at 100 m in sun; dimmed at night | Not verifiable at TRL 3 |
 | R5 | Detection quality | PIR wakes the radar; 1 s dwell | 5 % false, 2 % missed | Not verifiable at TRL 3 |
-| R10 | Mounting | Fits 60 to 114.3 mm poles; bar at 2.1 m; about 120 min estimate | Fit; 2.1 m; 2 h | Not verifiable at TRL 3 (install time) |
+| R10 | Mounting | Fits 76 to 114.3 mm poles; bar at 2.1 m; about 120 min estimate | Fit; 2.1 m; 2 h | Not verifiable at TRL 3 (install time) |
 | R3 | Activation and sync | 48 ms; 244 ms with two retries | 0.5 s or less | Met on paper |
 | R6 | Autonomy | 7.7 days (5.4 at -20 °C; 6.2 at end of life) | 5 days or more | Met on paper |
 | R7 | Energy balance | Break-even 1.05 peak sun hours; recovery 2.1 days | Neutral at 2.5 h; 3 days or fewer | Met on paper |
 | R8 | Environment | 53.9 °C inside at 50 °C ambient (dusty, shielded); charging to 41.1 °C ambient | IP65; -20 to +50 °C; charge 0 to 45 °C | Met on paper |
+| R9 | Structure | 45 % of yield on the 114.3 mm post; bolt 12 % of bearing; keyed saddles hold on poles of 70 mm and up | 60 % of yield or less; no sign rotation | Met on paper (76 to 114.3 mm poles; friction and band tension assumed) |
 | R1 | Light geometry and pattern | 140 x 62 mm lenses; IA-21 pattern; bar under the sign | 127 x 51 mm min.; IA-21 | Met by design |
 | R4 | Flash duration | 12.8 s for 7 m; 20 s energy case | L/0.9 + 5 s; 10 to 40 s | Met by design |
 | R11 | Accessibility | Button 1.05 m; piezo; tone, tactile arrow, pilot light | 0.9 to 1.1 m; 22 N or less | Met by design |
@@ -184,6 +188,6 @@ The BOM has 23 lines, all priced. One assembly on an existing pole costs $360.00
 | Base moment | About 3.7 kN·m | 3.52 kN·m | Panel and sign loads in different wind directions; shielded enclosure and its mounting plate |
 | 88.9 x 4 mm post | 169 MPa, 72 % | 153 MPa, 65 % | As above; still not met |
 | 114.3 x 3.6 mm post | 110 MPa, 47 % | 105 MPa, 45 % | As above |
-| Cost per assembly | $361 own post; $311 existing pole | $433.00; $360.00 | PIR, pilot light, larger post, sun shield, saddles, bolt, parts added for construction (CRS-DDR-003) |
+| Cost per assembly | $361 own post; $311 existing pole | $437.00; $364.00 | PIR, pilot light, larger post, sun shield, saddles, bolt, parts added for construction (CRS-DDR-003) |
 
 CRS-PRC-001, CRS-REQ-001 and `README.md` have been brought in line with the TRL 3 column.

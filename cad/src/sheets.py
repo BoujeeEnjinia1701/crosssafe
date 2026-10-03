@@ -1,4 +1,4 @@
-"""CrossSafe general arrangement sheet CRS-DWG-001, Rev P4 (TRL 3; constructable design, CRS-DDR-003).
+"""CrossSafe general arrangement sheet CRS-DWG-001, Rev P5 (TRL 3; constructable design, CRS-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/CRS-DWG-001.svg, .pdf and .png from the parametric model in cad/src/model.py
@@ -16,6 +16,7 @@ from model import PARAMS as P, assembly, derived  # noqa: E402
 
 DATE = "2026-09-25"
 DATE_P4 = "2026-09-30"
+DATE_P5 = "2026-10-02"
 
 
 def safe_project_views(part, workdir, line_weight=0.35):
@@ -97,13 +98,14 @@ def main():
     asm = assembly(own_post=True)
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="CrossSafe", title="General arrangement, one beacon assembly", dwg_no="CRS-DWG-001", rev="P4",
-              author="Amish Chadha", date=DATE_P4, scale=None, theme="technical",
+    s = Sheet(project="CrossSafe", title="General arrangement, one beacon assembly", dwg_no="CRS-DWG-001", rev="P5",
+              author="Amish Chadha", date=DATE_P5, scale=None, theme="technical",
               material="Galvanized steel post; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
                          ("P2", "Sun shield, keyed saddles, anti-rotation bolt (DDR-002)", DATE, "AC"),
                          ("P3", "Layout and labels tidied", DATE, "AC"),
-                         ("P4", "Constructable design: saddles, bands, plate, bracket (DDR-003)", DATE_P4, "AC")])
+                         ("P4", "Constructable design: saddles, bands, plate, bracket (DDR-003)", DATE_P4, "AC"),
+                         ("P5", "Bezels and visors on the LED heads; kit limited to 76 to 114.3 mm poles", DATE_P5, "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -150,14 +152,14 @@ def main():
         f"Post {P['post_od']} x {P['post_wall']} galvanized, {P['post_h']:.0f} above sidewalk, {P['embed']:.0f} in a {P['footing_d']:.0f} footing",
         f"Existing-pole kit: 8 keyed saddles and bands, {P['pole_min_od']:.0f} to {P['pole_max_od']:.1f} mm poles",
         f"Sign {P['sign_side']:.0f} diamond, {D['sign_bot']:.0f} to {D['sign_top']:.0f}; faces traffic on +X",
-        f"Light bar {P['bar'][1]:.0f} x {P['bar'][0]:.0f} x {P['bar'][2]:.0f}, bottom {P['bar_bottom']:.0f}; two {P['head'][0]:.0f} x {P['head'][1]:.0f} heads per face",
+        f"Light bar {P['bar'][1]:.0f} x {P['bar'][0]:.0f} x {P['bar'][2]:.0f}, bottom {P['bar_bottom']:.0f}; two {P['head'][0]:.0f} x {P['head'][1]:.0f} heads per face, each with bezel and {P['visor_d']:.0f} visor",
         f"Pilot light on the kerb end of the bar; button centre {P['button_z']:.0f}",
         f"Radar and PIR on a {P['arm_l']:.0f} arm at {P['radar_z']:.0f}, toward the kerb",
         f"Enclosure IP65 {P['enc'][0]:.0f} x {P['enc'][1]:.0f} x {P['enc'][2]:.0f}, bottom {D['enc_bot']:.0f}, on a mounting plate",
         f"Ventilated sun shield, {P['shield_gap']:.0f} air gap, roof and three walls, open bottom",
         f"Sign flat on two saddles; new post: M{P['bolt_d']:.0f} bolt through sign, saddle and post",
         f"Panel 20 W {P['panel'][0]:.0f} x {P['panel'][1]:.0f} on rails and a welded bracket, tilt {P['panel_tilt']:.0f} deg",
-        "Wind case 40 m/s gust: 45 % of S235 yield (CRS-CAL-001 v0.3)",
+        "Wind case 40 m/s gust: 45 % of S235 yield (CRS-CAL-001 v0.6)",
         "Third-angle; front view from -Y; post on the Z axis",
     ], x=276, y=150, width=146)
     out = s.save(ROOT / "cad" / "drawings" / "CRS-DWG-001")

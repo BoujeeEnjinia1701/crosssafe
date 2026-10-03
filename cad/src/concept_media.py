@@ -88,7 +88,7 @@ render_all(
                  "Button plus PIR-gated radar; LoRa link syncs both sides",
                  "20 W panel, 12.8 V 12 Ah LiFePO4; 16.0 Wh/day at 300 uses (CRS-CAL-001)",
                  "7.7 days without sun; sun shield keeps the battery below 60 C",
-                 "$360 per side on an existing pole (CRS-DDR-003)"],
+                 "$364 per side on an existing pole (CRS-CAL-001)"],
     context=context,
     cut=False,
     flow={"title": "daily energy per assembly, Wh per day (CRS-CAL-001 estimates: 2.5 peak sun hours, 300 activations of 20 s)",

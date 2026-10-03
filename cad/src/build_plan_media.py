@@ -24,7 +24,7 @@ from model import PARAMS as P, build_components, derived, pole_context, saddle_l
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-09-30"
+DATE = "2026-10-02"
 D = derived(P)
 C = {k: v[0] for k, v in build_components(P, own_post=False).items()}
 R = D["post_r"]
@@ -82,7 +82,7 @@ def bands(names):
 def made():
     return {
         "bar": part("Light bar housing", G("bar_channel", "bar_cover", "bar_caps"), COL["bar"]),
-        "heads": part("Amber LED heads (4)", C["heads"], COL["heads"]),
+        "heads": part("Amber LED heads with bezels and visors (4)", G("heads", "head_bezels", "head_visors"), COL["heads"]),
         "pilot": part("Pilot light", C["pilot"], COL["pilot"]),
         "body": part("Enclosure body, drilled", S("enc_body", "vent"), COL["body"]),
         "pens": part("Glands and antenna", G("glands", "antenna"), COL["pens"]),
@@ -397,14 +397,14 @@ def joints(only=None):
 
     # 01 LED head in the light bar wall, cut through the head centres
     if want(1):
-        bx_ = (XF - 12, XF + 82, 120, 200, zb - 70, zb + 70)
+        bx_ = (XF - 40, XF + 110, 110, 215, zb - 70, zb + 70)
         out.append(bv.joint([
             part("Light bar channel", win(C["bar_channel"], *bx_), COL["bar"]),
             part("Bottom cover", win(C["bar_cover"], *bx_), COL["cover"]),
-            part("LED head, traffic face", win(split(C["heads"], x_min=XF + 35), *bx_), COL["heads"]),
-            part("LED head, far face", win(split(C["heads"], x_max=XF + 35), *bx_), "#D97706")],
-            OUT / "joint-01.png", "Joint 1: LED heads in the light bar walls (cut through two heads)",
-            subtitle="Each head's flange sits on the outside of its wall over the 128 x 50 mm cut-out, held by four M4 screws",
+            part("LED head, traffic face", win(split(G("heads", "head_bezels", "head_visors"), x_min=XF + 35), *bx_), COL["heads"]),
+            part("LED head, far face", win(split(G("heads", "head_bezels", "head_visors"), x_max=XF + 35), *bx_), "#D97706")],
+            OUT / "joint-01.png", "Joint 1: LED heads, bezels and visors on the light bar walls (cut through two heads)",
+            subtitle="Each head's flange sits on its wall over the 128 x 50 mm cut-out, four M4 screws; bezel and visor come fitted",
             elev=18, azim=62, size=(8, 6)))
     # 02 light bar on its saddle, cut on the centre line
     if want(2):
@@ -578,15 +578,16 @@ def steps(only=None):
         return Part(p.name, p.shape, p.color, None, tuple(e), p.alpha)
     M = made()
     zb = D["bar_zc"]
-    front = split(C["heads"], x_min=XF + 35)
-    back = split(C["heads"], x_max=XF + 35)
+    HV = G("heads", "head_bezels", "head_visors")
+    front = split(HV, x_min=XF + 35)
+    back = split(HV, x_max=XF + 35)
     st(1, [part("Channel and end caps", G("bar_channel", "bar_caps"), COL["bar"])],
        [mv(part("Heads, traffic face", front, COL["heads"]), (120, 0, 0)), mv(part("Heads, far face", back, "#D97706"), (-120, 0, 0)),
         mv(part("Pilot light", C["pilot"], COL["pilot"]), (0, 90, 0))],
        "LED heads and pilot light into the light bar",
-       "End caps riveted on first. Each head from outside through its cut-out, four M4 screws; pilot light through the kerb-end cap",
+       "End caps first; each head (bezel and visor fitted) through its cut-out, four M4 screws; pilot light in the kerb end",
        elev=22, azim=-50, label_done=True, size=(9, 5.5))
-    st(2, [part("Light bar", G("bar_channel", "bar_caps", "heads", "pilot"), COL["bar"])],
+    st(2, [part("Light bar", G("bar_channel", "bar_caps", "heads", "head_bezels", "head_visors", "pilot"), COL["bar"])],
        [mv(part("Bottom cover with cable gland", G("bar_cover", "bar_gland"), COL["cover"]), (0, 0, -90))],
        "close the light bar",
        "Lead the head and pilot wires out through the gland; gasket on the lips; cover on with M4 screws (it comes off again in step 9)",
@@ -638,7 +639,7 @@ def steps(only=None):
        "Heights in Table 2 of the plan (mm above the sidewalk). Band round the pole and across the saddle's front in its groove; snug",
        elev=12, azim=-35, label_done=False, size=(8, 10))
     near = lambda names: [part("Saddles and bands", b.Compound(children=[C[f"saddle_{n}"] for n in names] + [C[f"band_{n}"] for n in names]), COL["saddle"])]  # noqa: E731
-    bar_all = part("Light bar", G("bar_channel", "bar_caps", "bar_cover", "heads", "pilot", "bar_gland"), COL["bar"])
+    bar_all = part("Light bar", G("bar_channel", "bar_caps", "bar_cover", "heads", "head_bezels", "head_visors", "pilot", "bar_gland"), COL["bar"])
     st(9, [pole(1950, 2450)] + near(["bar"]), [mv(bar_all, (220, 0, 0))],
        "light bar onto its saddle",
        "Cover off; back wall flat on the saddle; two M8 bolts from inside; cover back on. The bar is level and square to the road",

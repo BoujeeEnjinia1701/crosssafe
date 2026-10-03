@@ -297,3 +297,32 @@ CRS-DDR-003 (design for construction) is accepted, with A2 and A3 decided as rec
 2. The saddle grip friction (0.4) and band tension (1,000 N) behind R9 on existing poles are assumptions with no planned test until TRL 4, which is on hold.
 
 No CAD model, BOM quantity or price, calculation result or picture was changed. TRL stays at 3; TRL 4 remains on hold.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved on 2026-10-02 that every follow-up action from the open-decision sign-off be carried out. Results for the 8 follow-ups listed above:
+
+1. Decision 2, side-of-pole panel arm: not done, it waits for the pilot site's poles (not for the prototype).
+2. Decision 3, R10 range: done. `docs/04-calcs/sizing.py` and `results.csv` now state 76 to 114.3 mm; R9 is restated from At risk to Met on paper for that range (keyed saddles resist 191 N·m on a 76 mm pole against 175 N·m, a 9 % margin, at assumed friction and band tension).
+3. Decision 3, slip-torque test and third saddle: not done, TRL 4 work (on hold); the small-pole variant is added to the model and BOM only after the test.
+4. Decision 3, BOM line 13: done, now 76 to 114.3 mm.
+5. Decision 5, model: done. Bezel frames and hood visors (26 mm deep, 15 mm drip lip) added to the four LED heads in `cad/src/model.py`; constructability checks pass (107 and 109 checks, with new touch and clearance checks); STEP and STL regenerated.
+6. Decision 5, calculations: done. The four visors add about 0.0005 m² across the road to the light bar wind area (none along the road); R9 rechecked.
+7. Decision 5, BOM line 3: done. Bought with bezels and visors, re-priced from USD 10.00 to USD 11.00 a head (an allowance of USD 1.00 a head, to be quoted at TRL 4).
+8. Decision 1, renders: the appearance model (`cad/src/product_model.py`) now takes the visor and bezel sizes from `model.py` and the render scenes are exported to `/home/claude/renders/crosssafe` (hero, exploded, detail). Photoreal renders, `media/card.png` and `media/social-preview.png` are made on Amish's Mac next and are not done here.
+
+Requirement status changes: R9 At risk to Met on paper (76 to 114.3 mm poles). R10 range restated to 76 to 114.3 mm, still Not verifiable at TRL 3. R15 stays over the target.
+
+Cost: Value-engineering target: USD 350. Estimated cost of the constructable design: USD 364.00 (USD 14.00 over the target). A crossing is USD 728.00 against USD 700; with new posts USD 437.00 and USD 874.00. `budget_usd` is unchanged. The BOM has no mass column, so no mass is reported.
+
+Pictures regenerated: general arrangement CRS-DWG-001 (Rev P5), making sketch CRS-DWG-101, build plan overview, joint 1, steps 1, 2, 9 and 10, and the concept media (hero, blueprint, exploded, cutaway, flow, model.glb and viewer). `drawing.py --check-text` reports no hits.
+
+Documents changed: CRS-CAL-001 v0.6, CRS-REQ-001 v0.8, CRS-PRC-001 v0.8, CRS-BLD-001 v0.3, CRS-DEC-001 v0.4, `bom/bom.csv`, `bom/bom-notes.md` (the superseded $375 proposal text is removed), `README.md`.
+
+### Cross-repo actions
+
+None for this repo.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

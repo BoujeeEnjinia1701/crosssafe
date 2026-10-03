@@ -3,9 +3,9 @@ doc_id: CRS-BLD-001
 title: CrossSafe prototype build plan
 project: CrossSafe
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,11 +17,15 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: Budget treated as a value-engineering target; cross-references updated
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Bezels and visors on the LED heads, cost $364, pole range 76 to 114.3 mm, no open decisions; pictures of joint 1, steps 1, 2, 9 and 10, the overview and CRS-DWG-101 regenerated
 ---
 
 # CrossSafe prototype build plan
 
-**Plan, not yet built.** How to build the first proof-of-concept prototype, component by component. Building and testing to it is TRL 4 work. Decisions still to be made are kept in the design decisions register ([docs/06-design-decisions.md](06-design-decisions.md)), not here.
+**Plan, not yet built.** How to build the first proof-of-concept prototype, component by component. Building and testing to it is TRL 4 work. Decisions are recorded in the design decisions register ([docs/06-design-decisions.md](06-design-decisions.md)), not here.
 
 ## 1. What you are building
 
@@ -29,7 +33,7 @@ revisions:
 
 *Figure 1. Every component pulled apart, numbered in build order and laid out by group.*
 
-The prototype is one CrossSafe assembly, the existing-pole kit, built on a 3.7 m test post of 114.3 x 3.6 mm steel tube that stands in for a site's pole. A crossing warning sign with an amber light bar under it faces the traffic; a push-button station and a radar on a short arm face the kerb; a grey plastic enclosure holding the battery, charger and controller hangs on the back of the pole under a white sun shield; and a solar panel sits on a bracket on the post top. Figure 1 shows the 24 components in the order you make or fit them. Nine are made in a small workshop: the light bar housing, the battery strap, the enclosure mounting plate, two panel rails, eight identical pole saddles, the radar arm, the welded panel bracket and the folded sun shield; the bought enclosure is drilled. Everything else is bought and fitted: the sign, LED heads, pilot light, push-button station and its plate, radar, PIR sensor, panel, battery, charger, controller, glands and stainless bands. The work is sawing, drilling, tapping, filing and folding aluminium bar and sheet, one small steel weldment, drilling a plastic box, and wiring bought modules together with screw terminals. The parts cost about $360 from the bill of materials.
+The prototype is one CrossSafe assembly, the existing-pole kit, built on a 3.7 m test post of 114.3 x 3.6 mm steel tube that stands in for a site's pole. A crossing warning sign with an amber light bar under it faces the traffic; a push-button station and a radar on a short arm face the kerb; a grey plastic enclosure holding the battery, charger and controller hangs on the back of the pole under a white sun shield; and a solar panel sits on a bracket on the post top. Figure 1 shows the 24 components in the order you make or fit them. Nine are made in a small workshop: the light bar housing, the battery strap, the enclosure mounting plate, two panel rails, eight identical pole saddles, the radar arm, the welded panel bracket and the folded sun shield; the bought enclosure is drilled. Everything else is bought and fitted: the sign, LED heads, pilot light, push-button station and its plate, radar, PIR sensor, panel, battery, charger, controller, glands and stainless bands. The work is sawing, drilling, tapping, filing and folding aluminium bar and sheet, one small steel weldment, drilling a plastic box, and wiring bought modules together with screw terminals. The parts cost about $364 from the bill of materials.
 
 Every part on the pole is held the same way: a saddle with a V in its back sits on the pole, a stainless band runs round the pole and across the saddle's front, and the part bolts to the saddle over the band.
 
@@ -37,13 +41,13 @@ Every part on the pole is held the same way: a saddle with a V in its back sits 
 
 ## 2. What changed to make it buildable
 
-The concept showed what the beacon does; most of its parts were not fixed to anything. Each change below keeps what CrossSafe does, at the same heights, and all of them are recorded in decision record CRS-DDR-003, open for Amish's review.
+The concept showed what the beacon does; most of its parts were not fixed to anything. Each change below keeps what CrossSafe does, at the same heights, and all of them are recorded in decision record CRS-DDR-003, which Amish accepted on 2 October 2026.
 
 *Table 1. Changes from the concept.*
 
 | Component | The concept had | The buildable design has | Why |
 | --- | --- | --- | --- |
-| Pole clamps | Rings 8 mm thick drawn through every bracket; each bracket touched the round pole on one line | Eight identical keyed saddles with a V in the back, and a 19 mm stainless band round the pole and across each saddle's front (Figures 15 and 16) | The band pulls the V onto the pole; one saddle fits poles from 60 to 114.3 mm |
+| Pole clamps | Rings 8 mm thick drawn through every bracket; each bracket touched the round pole on one line | Eight identical keyed saddles with a V in the back, and a 19 mm stainless band round the pole and across each saddle's front (Figures 15 and 16) | The band pulls the V onto the pole; one saddle fits poles from 76 to 114.3 mm, the range this kit is used on |
 | Sign | Standing 92 mm in front of the pole on two solid blocks | Flat on the front of its two saddles, 63 mm nearer the pole, two bolts into each (Figure 18) | The saddle is the stand-off |
 | Light bar | A solid box on a block touching the pole on one line; heads stuck on its faces | A folded channel with a screwed bottom cover and riveted end caps; heads through cut-outs; bolted to its saddle from inside (Figures 2, 3 and 17) | A housing that can be made, opened and sealed |
 | Enclosure | Held off the pole by a block touching it on one line; battery, charger and controller floating inside | Hung by its lugs on a mounting plate bolted to two saddles; modules on the box's internal plate; battery under a strap (Figures 4 to 11) | Every part has a fixing; the box back stays sealed |
@@ -54,7 +58,7 @@ The concept showed what the beacon does; most of its parts were not fixed to any
 | Button and its plate | Touching the pole on one line; the plate with no fixing | Each on its own saddle | The eighth saddle |
 | Enclosure bottom | No gland positions; gland nuts under the battery | Four glands in two rows beside the battery; the vent at the lid end (Figures 5 and 6) | Room for every nut |
 
-The parts added for construction take the parts cost from $332 to $360.
+The parts added for construction and the bezels and visors on the LED heads take the parts cost from $332 to $364.
 
 ## 3. Making the components
 
@@ -66,7 +70,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 2. Light bar housing making sketch (CRS-DWG-101).*
 
-**What it is and what it is made from.** The double-sided box under the sign that carries two amber LED heads on each face and the pilot light on its kerb end. Aluminium sheet 2 mm, 5052 class, in three parts: a folded channel, a bottom cover and two end caps. Outside size 720 long, 70 deep and 130 tall.
+**What it is and what it is made from.** The double-sided box under the sign that carries two amber LED heads on each face, each with a bezel frame and a hood visor, and the pilot light on its kerb end. Aluminium sheet 2 mm, 5052 class, in three parts: a folded channel, a bottom cover and two end caps. Outside size 720 long, 70 deep and 130 tall.
 
 **How to make it.**
 
@@ -80,11 +84,11 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 **How it fits the parts next to it.**
 
-![Figure 3. Joint 1: the LED heads in the light bar walls](05-build-plan/joint-01.png)
+![Figure 3. Joint 1: the LED heads, bezels and visors on the light bar walls](05-build-plan/joint-01.png)
 
-*Figure 3. Each head's flange sits on the outside of its wall over the window; its body goes inside.*
+*Figure 3. Each head's flange sits on the outside of its wall over the window; its body goes inside, and its bezel and visor are already on it.*
 
-Each head's flange, 140 x 62, sits flat on the outside of its wall and overlaps the 128 x 50 window by 6 all round; four M4 screws through the flange and the wall hold it. The two bodies facing each other inside the bar are 16 apart. The back wall sits flat on its saddle (Figure 17); the cover seats on both lips with a foam gasket and comes off to reach the two saddle bolts.
+Each head's flange, 140 x 62, sits flat on the outside of its wall and overlaps the 128 x 50 window by 6 all round; four M4 screws through the flange and the wall hold it. The bezel frame is 7 wide round the flange, and the visor sits on top of it and reaches 26 out from the wall, with a 15 high lip at its outer edge that sheds rain from the lens. The two bodies facing each other inside the bar are 16 apart. The back wall sits flat on its saddle (Figure 17); the cover seats on both lips with a foam gasket and comes off to reach the two saddle bolts.
 
 **Check before moving on.** The channel is square along its length within 1 mm; the cover seats on both lips without gaps; each head flange covers its window all round.
 
@@ -337,7 +341,7 @@ The flanges lie flat on the mounting plate either side of the box and take four 
 Buy to specification, not brand. Line numbers are those of the bill of materials.
 
 - **Crossing warning sign (line 1).** 750 diamond, 3 aluminium, retroreflective sheeting to the local sign design, without the maker's brackets. Drill four 9 holes on its vertical centre line, 260, 300, 760 and 800 up from its bottom point.
-- **LED heads (line 3).** Four amber modules, lens 140 x 62 (at least 127 x 51 lit), about 6 W at 12 V, dimmable, each with a flange that covers a 128 x 50 window and a body no deeper than 25 behind it.
+- **LED heads (line 3).** Four amber modules, lens 140 x 62 (at least 127 x 51 lit), about 6 W at 12 V, dimmable, each with a flange that covers a 128 x 50 window and a body no deeper than 25 behind it, bought with a snap-on bezel frame and a moulded hood visor 26 deep with a drip lip.
 - **Push-button station and instruction plate (line 4).** Vandal-resistant piezo button with tone, tactile arrow and LED, in a housing about 70 x 60 x 160 that fixes to a flat face with two bolts; an instruction plate 230 x 300 x 4. Drill two 9 holes in the plate on its centre line, 130 and 170 up from its bottom edge.
 - **Radar (line 5) and PIR sensor (line 16).** 24 GHz presence radar in a housing about 80 x 80 x 80 with two screws 50 apart in its base; low-power PIR with a threaded neck of 12 or less.
 - **Solar panel (line 6).** 20 W monocrystalline, about 500 x 360 x 25, aluminium frame with a flat back lip at least 15 wide on the long edges.
@@ -358,7 +362,7 @@ In each picture the parts already fitted are grey and the part being fitted is i
 
 ![Step 1](05-build-plan/step-01.png)
 
-End caps riveted on first. Each head from outside through its window, four M4 screws. The pilot light through the kerb-end cap, its nut inside. Lead every wire to the cable gland's position.
+End caps riveted on first. Each head, with its bezel and visor already on it, from outside through its window, four M4 screws. The pilot light through the kerb-end cap, its nut inside. Lead every wire to the cable gland's position.
 
 ### Step 2: close the light bar
 
@@ -525,5 +529,5 @@ Stop at each point. Carry on only when everything listed is true.
 - General arrangement: `cad/drawings/CRS-DWG-001.pdf`, Rev P4.
 - Calculations: `docs/04-calcs/01-sizing.md` (CRS-CAL-001 v0.4) and `docs/04-calcs/sizing.py`; heights [F1], pole range [F2], wind and clamps [G1] to [G8], cost [H1] to [H3].
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0003-design-for-construction.md` (CRS-DDR-003), with CRS-DDR-001 and CRS-DDR-002; open decisions in `docs/06-design-decisions.md` (CRS-DEC-001).
+- Decisions: `docs/decisions/0003-design-for-construction.md` (CRS-DDR-003), with CRS-DDR-001 and CRS-DDR-002; decisions made in `docs/06-design-decisions.md` (CRS-DEC-001).
 - Requirements: `docs/03-requirements.md` (CRS-REQ-001 v0.6).

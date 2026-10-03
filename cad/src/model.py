@@ -37,7 +37,8 @@ PARAMS = {
     # 14 post: 114.3 x 3.6 mm galvanized steel (CRS-DDR-001 D3), height above the sidewalk, embedment
     "post_od": 114.3, "post_wall": 3.6, "post_h": 3700.0, "embed": 1800.0, "footing_d": 500.0,
     # existing poles the saddles and bands must fit (R10)
-    "pole_min_od": 60.0, "pole_max_od": 114.3,
+    # (existing-pole kit limited to 76 mm and up until a slip-torque test, decision 2026-10-02)
+    "pole_min_od": 76.0, "pole_max_od": 114.3,
     # 1 crossing warning sign: square side (diamond), thickness; bolted flat on its two saddles (CRS-DDR-003)
     "sign_side": 750.0, "sign_t": 3.0, "sign_gap": 0.0,
     # 2 light bar housing (X depth, Y length, Z height), bottom height, gap to the sign point, sheet thickness
@@ -46,6 +47,9 @@ PARAMS = {
     #   flange depth, body (Y, Z, X depth) behind the flange, wall cut-out (Y, Z)
     "head": (140.0, 62.0), "head_dy": 200.0, "head_flange": 8.0, "head_body": (120.0, 44.0, 25.0),
     "head_cut": (128.0, 50.0),
+    #   bezel frame width around the lens, visor depth from the bar wall, visor sheet thickness, drip lip height,
+    #   visor overhang beyond the bezel each side (visors and bezels bought with the heads, decision 2026-10-02)
+    "bezel_w": 7.0, "visor_d": 26.0, "visor_t": 3.0, "visor_lip": 15.0, "visor_over": 2.0,
     # 17 pedestrian pilot light on the kerb end of the light bar
     "pilot_d": 30.0,
     # 4 push-button station: body center height, body (X, Y, Z), instruction plate (X width, Z height)
@@ -148,13 +152,14 @@ def derived(p=PARAMS):
         "panel_zc": panel_zc, "overall_h": panel_top,
         "panel_area_m2": px * py / 1e6,
         # wind areas (m2) normal to X (traffic direction) and to Y (across the road); along the road the
+        # the four visors lie inside the light bar's face outline along the road, so they add area only across the road;
         # enclosure group is the shield, the strips of mounting plate beside it and the two saddle tabs
         "area_x": {"sign": p["sign_side"] ** 2 / 1e6, "bar": by * bz / 1e6,
                    "enc": (shy * shz + max(pw - shy, 0) * ph + 2 * p["tab"][0] * p["tab"][1] - p["tab"][0] * (g + st)) / 1e6,
                    "panel": py * pt / 1e6,                     # panel edge-on to X wind
                    "button": p["button"][1] * p["button"][2] / 1e6, "radar": p["radar"] ** 2 / 1e6,
                    "post": p["post_od"] * p["post_h"] / 1e6},
-        "area_y": {"sign": p["sign_side"] * math.sqrt(2) * p["sign_t"] / 1e6, "bar": bx * bz / 1e6,
+        "area_y": {"sign": p["sign_side"] * math.sqrt(2) * p["sign_t"] / 1e6, "bar": (bx * bz + 4 * (p["visor_d"] * p["visor_t"] + p["visor_t"] * p["visor_lip"])) / 1e6,
                    "enc": ex * ez / 1e6, "panel": px * py * math.sin(tilt) / 1e6,
                    "button": p["plate"][0] * p["plate"][1] / 1e6, "radar": p["radar"] ** 2 / 1e6,
                    "post": p["post_od"] * p["post_h"] / 1e6},
@@ -356,6 +361,22 @@ def build_components(p=PARAMS, own_post=False):
         heads.append(box(x0 - fl, x0, y - hfw / 2, y + hfw / 2, zc - hfh / 2, zc + hfh / 2)
                      + box(x0, x0 + t + bd_, y - bw_ / 2, y + bw_ / 2, zc - bh_ / 2, zc + bh_ / 2))
     C["heads"] = (group(heads), 3)
+    # 3 bezels and visors, bought with the heads: a frame round each flange and a hood with a drip lip on top of it
+    bw_f, vd, vt, vl, vo = p["bezel_w"], p["visor_d"], p["visor_t"], p["visor_lip"], p["visor_over"]
+    bezels, visors = [], []
+    for y in (-p["head_dy"], p["head_dy"]):
+        for xw, sgn in ((x1, 1), (x0, -1)):
+            xa, xb2 = sorted((xw, xw + sgn * fl))
+            bezels.append(box(xa, xb2, y - hfw / 2 - bw_f, y + hfw / 2 + bw_f, zc - hfh / 2 - bw_f, zc + hfh / 2 + bw_f)
+                          - box(xa - 1, xb2 + 1, y - hfw / 2, y + hfw / 2, zc - hfh / 2, zc + hfh / 2))
+            za = zc + hfh / 2 + bw_f
+            xa, xb2 = sorted((xw, xw + sgn * vd))
+            vis = box(xa, xb2, y - hfw / 2 - bw_f - vo, y + hfw / 2 + bw_f + vo, za, za + vt)
+            xl0, xl1 = sorted((xw + sgn * (vd - vt), xw + sgn * vd))
+            vis = vis + box(xl0, xl1, y - hfw / 2 - bw_f - vo, y + hfw / 2 + bw_f + vo, za - vl, za)
+            visors.append(vis)
+    C["head_bezels"] = (group(bezels), 3)
+    C["head_visors"] = (group(visors), 3)
     # 17 pilot light: lens outside the kerb end cap, threaded body through it
     C["pilot"] = (rod(((x0 + x1) / 2, by / 2, zc), ((x0 + x1) / 2, by / 2 + 20, zc), p["pilot_d"] / 2)
                   + rod(((x0 + x1) / 2, by / 2 - t - 15, zc), ((x0 + x1) / 2, by / 2, zc), 10.0), 17)
@@ -665,7 +686,8 @@ def checks(p=PARAMS, own_post=False, verbose=True):
         touch += [(f"saddle_{n}", pole), (f"band_{n}", pole), (f"band_{n}", f"saddle_{n}")]
     touch += [("sign", "saddle_sign_low"), ("sign", "saddle_sign_up"), ("sign_bolts", "sign"),
               ("bar_channel", "saddle_bar"), ("bar_cover", "bar_channel"), ("bar_caps", "bar_channel"),
-              ("bar_bolts", "bar_channel"), ("heads", "bar_channel"), ("pilot", "bar_caps"), ("bar_gland", "bar_cover"),
+              ("bar_bolts", "bar_channel"), ("heads", "bar_channel"), ("head_bezels", "bar_channel"), ("head_bezels", "heads"),
+              ("head_visors", "head_bezels"), ("pilot", "bar_caps"), ("bar_gland", "bar_cover"),
               ("button", "saddle_button"), ("inst_plate", "saddle_plate"), ("plate_bolts", "inst_plate"),
               ("radar_arm", "saddle_radar"), ("arm_bolts", "radar_arm"), ("radar", "radar_arm"), ("pir", "radar_arm"),
               ("enc_plate", "saddle_enc_low"), ("enc_plate", "saddle_enc_up"), ("enc_plate_bolts", "enc_plate"),
@@ -683,7 +705,7 @@ def checks(p=PARAMS, own_post=False, verbose=True):
     # 3. clearances that must hold (mm)
     clear = [("shield", "enc_body", 20.0), ("shield", "lid", 20.0), ("shield", "lugs", 2.0), ("shield", "lug_screws", 2.0),
              ("shield", "antenna", 2.0), ("shield", "enc_plate_bolts", 2.0),
-             ("sign", "bar_channel", 15.0), ("sign", "heads", 15.0), ("sign", "radar", 30.0), ("sign", "radar_arm", 30.0),
+             ("sign", "bar_channel", 15.0), ("sign", "heads", 15.0), ("sign", "head_visors", 15.0), ("head_visors", "pilot", 5.0), ("head_visors", pole, 20.0), ("sign", "radar", 30.0), ("sign", "radar_arm", 30.0),
              ("sign", "band_radar", 20.0), ("sign", "band_enc_up", 15.0), ("sign", "saddle_radar", 30.0),
              ("saddle_radar", "saddle_sign_low", 2.0), ("band_radar", "saddle_sign_low", 5.0),
              ("band_sign_low", "saddle_radar", 5.0), ("button", "inst_plate", 10.0),

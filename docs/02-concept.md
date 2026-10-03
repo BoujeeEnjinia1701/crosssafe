@@ -3,7 +3,7 @@ doc_id: CRS-PRC-001
 title: CrossSafe design precis
 project: CrossSafe
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Decisions of 2026-10-02: existing-pole kit limited to 76 mm and up until a slip-torque test; panel socket for free-topped 114 mm poles; first pilot partner candidate"
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Bezels and visors on the LED heads; pole range 76 to 114.3 mm; cost $364.00 per assembly
 ---
 
 # CrossSafe design precis
@@ -71,7 +75,7 @@ Table 1. Components of one assembly. Numbers match the exploded view and `bom/bo
 | --- | --- | --- |
 | 1 | Crossing warning sign | 750 mm diamond, retroreflective, local sign design |
 | 2 | Light bar housing | Folded 2 mm aluminium channel with a screwed bottom cover and riveted end caps, double sided, 720 x 130 x 70 mm, bottom at 2.1 m |
-| 3 | LED heads (4) | Amber, 140 x 62 mm lens (127 x 51 mm minimum), two per face, with daylight and night levels |
+| 3 | LED heads (4) | Amber, 140 x 62 mm lens (127 x 51 mm minimum), two per face, with daylight and night levels; each has a bezel frame and a 26 mm hood visor with a drip lip, bought with the head |
 | 4 | Push-button station | Vandal-resistant piezo button with acknowledgement tone and tactile arrow, instruction plate, at about 1.0 m |
 | 5 | Presence radar | 24 GHz presence sensor on the radar arm (22) at 2.6 m, aimed at the waiting zone, powered only when the PIR sees motion |
 | 6 | Solar panel | 20 W monocrystalline, about 500 x 360 mm, tilted about 30 degrees toward the equator |
@@ -87,7 +91,7 @@ Table 1. Components of one assembly. Numbers match the exploded view and `bom/bo
 | 17 | Pedestrian pilot light | Small amber light on the kerb end of the light bar, where local rules allow |
 | 18 | Sun shield | Ventilated white aluminium shield over the enclosure roof and three walls, 25 mm air gap, open at the bottom |
 | 19 | Anti-rotation bolt | M10 stainless bolt through the sign, the upper sign saddle and the post; new posts only |
-| 20 | Keyed pole saddles | Eight identical aluminium blocks with a keyed 120 degree V, a band groove and two M8 holes; every part on the pole bolts to one; fit 60 to 114.3 mm poles |
+| 20 | Keyed pole saddles | Eight identical aluminium blocks with a keyed 120 degree V, a band groove and two M8 holes; every part on the pole bolts to one; fit 76 to 114.3 mm poles (60 to 75 mm only after a slip-torque test) |
 | 21 | Enclosure mounting plate | 4 mm aluminium, 350 x 300 mm with saddle tabs above and below; carries the enclosure lugs and the sun shield |
 | 22 | Radar arm | 40 x 5 mm aluminium bar bent to an L, on its own saddle; radar on top, PIR underneath |
 | 23 | Battery strap | Bent aluminium strip holding the battery on the enclosure floor |
@@ -102,7 +106,7 @@ Each choice below was decided by Amish on 2026-09-25 by accepting the recommenda
 - **Button plus passive detection, gated by a PIR (D2, D5).** The button is the reliable, accessible trigger; radar catches people who do not press it and can be switched off where passive detection is not allowed. The PIR keeps the radar off when nothing moves, which is what brings autonomy above 5 days. The radar reports presence only, which keeps images and audio off the device.
 - **Radio sync instead of a cable (D6).** A LoRa point-to-point link avoids cutting the road. If the link drops, each side still flashes on its own trigger and reports a fault.
 - **Own 12 V power system, FieldNode radio core (D7).** The LED load (up to about 26 W at the instant all four heads are lit) is far beyond the FieldNode power stage (6 W panel, 3.2 V cell), so CrossSafe uses a 12.8 V LiFePO4 battery with a built-in BMS. The controller reuses FieldNode's STM32WL-class radio and logging design. CellGuard, the lab's open BMS for 4 to 16 LiFePO4 cells, is a later option in place of the drop-in battery's closed BMS.
-- **Existing poles first; 114.3 mm where a new post is needed (D3).** Band clamps fit 60 to 114.3 mm poles, but the existing-pole kit is used only on poles of 76 mm and larger until a slip-torque test confirms the keyed saddle's grip; a third saddle and band at the sign then brings 60 to 75 mm poles back (decided 2026-10-02). The prototype's panel socket fits free-topped poles of about 114 mm; a side-of-pole panel arm is designed once the pilot site's poles are known. The new-post variant meets the wind target with margin.
+- **Existing poles first; 114.3 mm where a new post is needed (D3).** The band clamps and saddles are used only on poles of 76 to 114.3 mm until a slip-torque test confirms the keyed saddle's grip; a third saddle and band at the sign then brings 60 to 75 mm poles back (decided 2026-10-02). The prototype's panel socket fits free-topped poles of about 114 mm; a side-of-pole panel arm is designed once the pilot site's poles are known. The new-post variant meets the wind target with margin.
 - **Pedestrian pilot light (D8).** IA-21 permits a small pilot light on the beacon or push button; it is included where local rules allow.
 - **Sun shield on the enclosure (CRS-DDR-002).** A ventilated white shield cuts the enclosure's rise in full sun from 14.7 to 3.9 K when dusty, so the battery stays below its discharge limit and keeps charging on hot days. Placing the enclosure in the panel's shadow is to be considered when the bracket is detailed.
 - **Anti-rotation detail (CRS-DDR-002).** An M10 through-bolt locks the sign and its upper saddle to a new post; on existing poles, where drilling needs the owner's consent, keyed saddles with serrated grip faces raise the clamp friction. Band tension and grip are to be measured at TRL 4, which is on hold.
@@ -118,8 +122,8 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 - **Autonomy.** 122.9 Wh usable gives 7.7 days without sun, 5.4 days at -20 °C and 6.2 days at end of life.
 - **Heat.** Unshielded, the enclosure would run 9.6 K (clean) to 14.7 K (dusty) above ambient in full sun and a dusty box would reach 64.7 °C at 50 °C ambient. With the sun shield the rise is 3.9 K: 53.9 °C inside at 50 °C ambient, and charging continues up to 41.1 °C ambient (R8 met on paper).
 - **Latency and link.** 48 ms side to side, 244 ms with two retries; about 60 dB of link margin across the road with a bus in the way.
-- **Wind.** A 40 m/s gust gives 3.52 kN·m at the base. The 114.3 x 3.6 mm post reaches 105 MPa, 45 % of S235 yield; an 88.9 x 4 mm post would reach 65 %. The sign's 175 N·m of torsion is carried by the through-bolt on new posts (12 % of bearing) and by keyed saddles on existing poles of about 70 mm and larger; smaller poles remain at risk (R9). A 500 mm footing needs about 1.8 m of embedment in clay (screening).
-- **Cost.** Value-engineering target: $350 per assembly on an existing pole (a hypothetical control target, not a limit). Estimated cost of the constructable design: $360.00 per assembly ($10.00 over the target) and $720.00 per crossing ($20.00 over the $700 target); $433.00 and $866.00 with new posts (see `bom/bom.csv`). Cost drivers and savings worth trying are in the Value engineering section of `docs/06-design-decisions.md`. The $750 value-engineering target for a two-sided site trial applies when a trial starts (on hold with TRL 4).
+- **Wind.** A 40 m/s gust gives 3.52 kN·m at the base. The 114.3 x 3.6 mm post reaches 105 MPa, 45 % of S235 yield; an 88.9 x 4 mm post would reach 65 %. The sign's 175 N·m of torsion is carried by the through-bolt on new posts (12 % of bearing) and by keyed saddles on existing poles of 76 mm and larger, which hold at an assumed grip friction of 0.4 (R9); smaller poles wait for a slip-torque test. A 500 mm footing needs about 1.8 m of embedment in clay (screening).
+- **Cost.** Value-engineering target: $350 per assembly on an existing pole (a hypothetical control target, not a limit). Estimated cost of the constructable design: $364.00 per assembly ($14.00 over the target) and $728.00 per crossing ($28.00 over the $700 target); $437.00 and $874.00 with new posts (see `bom/bom.csv`). Cost drivers and savings worth trying are in the Value engineering section of `docs/06-design-decisions.md`. The $750 value-engineering target for a two-sided site trial applies when a trial starts (on hold with TRL 4).
 
 ## Safety
 
