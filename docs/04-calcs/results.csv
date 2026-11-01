@@ -4,13 +4,17 @@ R2,Visibility,"about 3,939 cd per head (screening)",seen at 100 m in sun; dimmed
 R3,Activation and sync,"48 ms, 244 ms with retries",0.5 s or less,Met on paper
 R4,Flash duration,12.8 s for 7 m; energy case 20 s,"L/0.9 + 5 s, 10 to 40 s",Met by design
 R5,Detection quality,PIR wakes radar; 1 s dwell,"5 % false, 2 % missed",Not verifiable at TRL 3
-R6,Autonomy,7.7 days (5.4 at -20 C; 6.2 at end of life),5 days or more,Met on paper
+R6,Autonomy,7.7 days (5.4 at -20 C; 6.2 at end of life; 4.3 at both),5 days or more,At risk
 R7,Energy balance,break-even 1.05 PSH; recovery 2.1 days,neutral at 2.5 PSH; 3 days or fewer,Met on paper
-R8,Environment,"interior 53.9 C at 50 C (dusty, shielded); no charge above 41.1 C ambient",IP65; -20 to +50 C; charge 0 to 45 C,Met on paper
-R9,Structure,45 % of yield on 114.3 mm; bolt 12 % of bearing; keyed saddles hold on poles of 70 mm and up,60 % of yield or less,Met on paper
+R8,Environment,"interior 53.9 C at 50 C (dusty, shielded); charging to 51.1 C ambient; light bar 70.8 C",IP65; -20 to +50 C; charge 0 to 55 C,Met on paper
+R9,Structure,"45 % of yield on 114.3 mm; bolt 12 % of bearing; keyed saddles hold on poles of 70 mm and up; existing poles need S of 18,447 mm3 or more (owner verifies)",60 % of yield or less,Met on paper
 R10,Mounting,76 to 114.3 mm poles; bar at 2.1 m; about 120 min estimate,fit; 2.1 m; 2 h,Not verifiable at TRL 3
 R11,Accessibility,"button 1.05 m; piezo; tone, tactile arrow, pilot light",0.9 to 1.1 m; 22 N or less,Met by design
 R12,Fail-safe,timer-limited flashing; local flashing without link; fault log,never continuous,Met by design
 R13,Privacy,presence and counts only,no images or audio,Met by design
 R14,Theft and vandal resistance,enclosure bottom 2.85 m; lowest arm part 2.52 m,2.8 m; no cables below 2.5 m,Met by design
 R15,Affordable,$364.00 per assembly; $728.00 per crossing (existing poles),$350; $700 per crossing,Not met
+R16,Flash area,7.72 msr at 1.5 m,6 msr or less (analogue),At risk
+R17,Light bar temperature,"64.3 C at 50 C ambient (dusty, 70 deg sun); 70.8 C worst case",74 C or less,Met on paper
+R18,Warning in time to stop,83 m stopping distance at 60 km/h against the 100 m seeing distance of PR-002,stopping distance at 60 km/h within 100 m,Met on paper
+R19,Buildable and repairable,"BLD-001: stock sections, bought parts, hand tools; 117 modelled parts, none bare",ordinary tools only,Met by design

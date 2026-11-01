@@ -3,9 +3,9 @@ doc_id: CRS-PRB-001
 title: CrossSafe problem statement
 project: CrossSafe
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-31'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Pilot partner open question answered with the selection rule and first candidate decided on 2026-10-02"
+- version: "0.6"
+  date: '2026-10-31'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: users and needs table and stakeholders table added (source of CRS-URS-001)"
 ---
 
 # CrossSafe problem statement
@@ -58,6 +62,31 @@ There is good evidence that an active, pedestrian-triggered warning works. The U
 | School or market community | A safer crossing without waiting years for a signal | Parent groups, school boards, market associations as local champions |
 | Road authority or municipal engineer | A device that meets local rules, is reliable, and costs little to maintain | Approval, installation permits, asset registers |
 | Local technician | Install, service and repair with ordinary tools and parts | Hand tools, a ladder or bucket truck, a multimeter |
+
+### Users and needs
+
+*Table 1a. Users and needs (source of the user requirements in CRS-URS-001).*
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Pedestrian, including children, older people and people with disabilities | Cross with drivers stopping; know the warning is on; reach and press the button | Waiting at a marked crossing on the school run, at a market or a bus stop, often at dusk | Drivers who do not yield; a button that is out of reach or silent; not knowing if the call was registered |
+| Driver | Early, unmistakable warning only when someone is waiting | Driving 30 to 60 km/h on an urban or peri-urban road in glare or rain | Beacons that flash all day and are ignored; warnings seen too late to stop |
+| School or market community | A safer crossing without years of waiting; low cost; works without mains | Parent groups and market associations raising money and finding a site | Cost and approval of a full signal; theft and vandalism; nobody to maintain it |
+| Road authority or municipal engineer | A device that meets local rules, is reliable and cheap to maintain | Approval, installation permit, asset register, yearly inspection | Closed products that cannot be repaired; unproven devices; liability |
+| Local technician | Make, install and repair with ordinary tools and parts | A workshop or a municipal crew with hand tools, a ladder and a multimeter | Special parts, no documents, a battery in a hot box |
+
+### Stakeholders
+
+*Table 1b. Stakeholders.*
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Road authority (traffic engineering department) | Approves any use on a public road; sets colours, flash pattern, sign type and mounting height | Pilot partner selection rule decided 2026-10-02; early review of the design against local rules (TRL 4) |
+| School boards, parent groups, market associations | Local champions who fund and host a crossing | Co-design sessions on the button, the warning time and the site (TRL 4) |
+| Disability and older-adult groups | Accessibility of the button, the sound, the tactile arrow and the light | Review of PR-011 and the button station in co-design |
+| Workshops and makerspaces | Build the made parts and service the device | Review of the build plan CRS-BLD-001 for local skills and tools |
+| Utility owner of an existing pole | Owns poles the kit may clamp to | Permission and pole condition check per site, to assess |
+| Amish Chadha (Design Molecule) | Decides scope, budget, pitch and safety trade-offs | Decisions listed in CRS-DEC-001 |
 
 ### Operating environment
 

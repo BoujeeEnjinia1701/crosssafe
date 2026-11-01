@@ -1,142 +1,114 @@
-"""CrossSafe concept media (TRL 3, constructable design CRS-DDR-003), built from the parametric model in cad/src/model.py.
+"""CrossSafe concept media from the TRL 3 model (option A, constructable design, CRS-DDR-003; kit 1.9.1).
 
-Run from the repo root:  python cad/src/concept_media.py
-Proportions and main parts only; not for fabrication.
+Run from the repo root:  python cad/src/concept_media.py [hero|cutaway|exploded|flow|web|blueprint|all ...]
+With no argument it draws everything with .kit/concept.py render_all and then replaces the cutaway with a section
+through the enclosure zone. On a small machine run one picture per process; "web" alone rewrites media/model.glb
+and media/viewer.html from the model without redrawing anything (keeps the .glb under about 20 MB).
+Geometry is components(CHOSEN) of cad/src/model.py as it is: every part, bolt, washer and weld bead. The flow values
+come from CRS-CAL-001 (docs/04-calcs/sizing.py).
 
-Coordinates in mm. The road runs along X, the crossing runs across it along Y, Z is up.
-Sidewalk top at Z = 0, road surface at Z = -150. One beacon assembly (the BOM) stands on the
-near sidewalk; the matching far-side assembly and the street are grey context in the hero only.
-The street is drawn for left-hand traffic so the near-side sign faces the camera; for
-right-hand traffic the assemblies mirror.
+Axes as model.py: post axis Z, sidewalk top z = 0, sign faces approaching traffic on +X, kerb on +Y. The existing
+pole is cut at the sidewalk so the 1.75 m person stands on the same floor as the beacon.
+CONCEPT, NOT FOR FABRICATION.
 """
+import csv
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / ".kit"))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build123d import Box, Cylinder, Pos, Rot
-from concept import Part, render_all, cutaway_parts, _render
-from model import PARAMS as MP, build_parts, derived
 
-PX, PY = 1900.0, -4300.0     # post axis in the street scene, 800 mm back from the kerb (kerb at Y = -3500)
-DM = derived(MP)
-POLE_R = MP["post_od"] / 2
-ENC_Z = MP["enc_z"]
+ROOT = Path(__file__).resolve().parents[2]
+sys.path[:0] = [str(ROOT / ".kit"), str(ROOT / "cad/src"), str(ROOT / "docs/04-calcs")]
+import concept as K  # noqa: E402
+from concept import Part  # noqa: E402
+from build123d import Box, Pos  # noqa: E402
+import model as M  # noqa: E402
 
-# Parts come from the parametric model (cad/src/model.py), moved from its local frame (post on the Z axis,
-# sign facing +X, kerb on +Y) into the scene. The embedded part of the post and the footing are left out
-# of the media so the scale figure stands on the sidewalk.
-local = build_parts(MP, own_post=True)
-local[14] = Pos(0, 0, MP["post_h"] / 2) * (Cylinder(POLE_R, MP["post_h"]) - Cylinder(POLE_R - MP["post_wall"], MP["post_h"] + 2))
-M = {k: Pos(PX, PY, 0) * v for k, v in local.items() if k != "footing"}
+PROJECT, TITLE, DWG, DATE = "CrossSafe", "Solar crossing beacon concept", "CRS-DWG-010", "2026-10-31"
+MD = ROOT / "media"
+GREY = "#9CA3AF"
 
-parts = [
-    Part("Crossing warning sign, 750 mm", M[1], "#FACC15", 1, (500, 0, 250)),
-    Part("Light bar housing, double sided", M[2], "#374151", 2, (900, 0, -150)),
-    Part("Amber LED heads (4)", M[3], "#F59E0B", 3, (1400, 0, -350)),
-    Part("Push-button station", M[4], "#2563EB", 4, (0, -600, 0)),
-    Part("Presence radar on arm", M[5], "#7C3AED", 5, (-500, 0, -250)),
-    Part("Solar panel, 20 W", M[6], "#1E3A8A", 6, (0, -500, 600)),
-    Part("Panel bracket", M[7], "#6B7280", 7, (0, 0, 300)),
-    Part("Enclosure, IP65", M[8], "#CBD5E1", 8, (-600, 0, 450), 1.0),
-    Part("LiFePO4 battery 12.8 V 12 Ah", M[9], "#C2410C", 9, (-1400, -700, -300)),
-    Part("MPPT charge controller", M[10], "#16A34A", 10, (-1500, 500, 150)),
-    Part("Controller and radio board", M[11], "#0F766E", 11, (-900, 200, 750)),
-    Part("Antenna", M[12], "#111827", 12, (-400, 900, 500)),
-    Part("Band clamps (8)", M[13], "#94A3B8", 13, (500, 700, 0)),
-    Part("Post, 114.3 mm (or existing pole)", M[14], "#9CA3AF", 14, (0, 0, 0)),
-    Part("PIR wake sensor", M[16], "#DB2777", 16, (-500, 300, -500)),
-    Part("Pedestrian pilot light", M[17], "#EAB308", 17, (900, 500, -300)),
-    Part("Ventilated sun shield", M[18], "#F8FAFC", 18, (-600, 0, 900)),
-    Part("Anti-rotation bolt (new post)", M[19], "#111827", 19, (-700, 0, 0)),
-    Part("Keyed pole saddles (8)", M[20], "#475569", 20, (300, 0, 0)),
-    Part("Enclosure mounting plate", M[21], "#94A3B8", 21, (-400, 0, 450)),
-    Part("Radar arm", M[22], "#64748B", 22, (-300, 300, -250)),
-    Part("Battery strap", M[23], "#A3A3A3", 23, (-1400, -700, 0)),
-]
 
-# ---------------- street context (hero and isometric only) ----------------
-ROAD_W = 7000.0
-road = Pos(0, 0, -200) * Box(8000, ROAD_W, 100)
-walks = Pos(0, -ROAD_W / 2 - 1250, -125) * Box(8000, 2500, 250) + Pos(0, ROAD_W / 2 + 1250, -125) * Box(8000, 2500, 250)
-stripes = None
-for k in range(7):
-    y = -3000 + k * 1000
-    s = Pos(0, y, -148) * Box(3000, 500, 4)
-    stripes = s if stripes is None else stripes + s
-centre = None
-for x in range(-3500, 3501, 2000):
-    if abs(x) < 2200:
-        continue
-    d = Pos(x, 0, -148) * Box(1000, 120, 4)
-    centre = d if centre is None else centre + d
-far = [Part(f"Far-side {p.name}", Rot(0, 0, 180) * p.shape, p.color, None) for p in parts]
-far_shape = far[0].shape
-for p in far[1:]:
-    far_shape = far_shape + p.shape
-context = [
-    Part("Road", road, "#4B5563"),
-    Part("Sidewalks", walks, "#D6D3D1"),
-    Part("Zebra markings", stripes, "#F9FAFB"),
-    Part("Centre line", centre, "#FDE68A"),
-    Part("Far-side assembly", far_shape, "#A8A29E"),
-]
+def _bom_names():
+    out = {}
+    for r in csv.DictReader((ROOT / "bom/bom.csv").open()):
+        n, _, name = r["Item"].partition(" ")
+        out[int(n)] = name
+    return out
 
-render_all(
-    parts, project="CrossSafe", title="Solar crossing beacon concept", dwg_no="CRS-DWG-010",
-    key_figures=["One assembly per side of a 7 m two-lane crossing (two per crossing)",
-                 "Two amber heads per face, 140 x 62 mm lens, IA-21 wig-wag flash",
-                 "Button plus PIR-gated radar; LoRa link syncs both sides",
-                 "20 W panel, 12.8 V 12 Ah LiFePO4; 16.0 Wh/day at 300 uses (CRS-CAL-001)",
-                 "7.7 days without sun; sun shield keeps the battery below 60 C",
-                 "$364 per side on an existing pole (CRS-CAL-001)"],
-    context=context,
-    cut=False,
-    flow={"title": "daily energy per assembly, Wh per day (CRS-CAL-001 estimates: 2.5 peak sun hours, 300 activations of 20 s)",
-          "unit": "Wh",
-          "stages": [("Sun on 20 W panel", 50), ("Panel output", 42.5), ("Charger output", 40),
-                     ("Available to store", 38), ("Load demand", 16), ("LED flashing", 11)],
-          "losses": [(0, "Heat, dust, wiring", 7.5), (1, "MPPT", 2.5), (2, "Cell charging", 2),
-                     (3, "Surplus, battery full", 22), (4, "Standby and pilot light", 5)]},
-)
 
-# Cutaway of the enclosure zone only (the full 3.7 m post would make the inside unreadable).
-# A 700 mm length of post is drawn so the enclosure is not shown floating.
-stub = Pos(PX, PY, ENC_Z) * Cylinder(POLE_R, 700)
-from model import station  # noqa: E402
-_st = [station(n, MP) for n in ("enc_low", "enc_up")]
-zone = [p for p in parts if p.bom in (8, 9, 10, 11, 12, 18, 21, 23)] + [
-    Part("Post (section of)", stub, "#9CA3AF", 14),
-    Part("Keyed saddles", Pos(PX, PY, 0) * (_st[0]["saddle"] + _st[1]["saddle"]), "#475569", 20),
-    Part("Band clamps", Pos(PX, PY, 0) * (_st[0]["band"] + _st[1]["band"]), "#94A3B8", 13)]
-# cutaway_parts centres its cutter at X = Z = 0, so move the zone to the origin first
-zone = [Part(p.name, Pos(-PX, -PY, -ENC_Z) * p.shape, p.color, p.bom) for p in zone]
-_render(cutaway_parts(zone), Path.cwd() / "media" / "cutaway.png", azim=-90, elev=18, labels=True,
-        title="CrossSafe: cutaway of the pole-top enclosure and sun shield",
-        note="Enclosure and shield cut on the pole axis; battery low, charger and controller above, antenna through the shield roof")
+def parts(context=True):
+    names = _bom_names()
+    above = Pos(0, 0, 3000) * Box(1000, 1000, 6000)          # keeps what is above the sidewalk
+    out = []
+    for p in M.components(M.CHOSEN):
+        if p["kind"] == "context":
+            if context:
+                out.append(Part("Existing pole 114.3 mm", p["shape"] & above, GREY, 14, (0, 0, 0)))
+            continue
+        out.append(Part(names.get(p["bom"], p["name"]) if p["bom"] else p["name"], p["shape"], p["color"], p["bom"], tuple(p["explode"])))
+    return out
 
-# Exploded view, rebuilt so small parts stay readable: the post is shortened to its upper 2 m and
-# the push-button station is moved up 700 mm for this view only. Numbers match bom/bom.csv.
-EXPLODE = {1: (600, 0, 200), 2: (900, 0, -250), 3: (1200, 0, -400), 4: (0, -700, -100),
-           5: (-500, 0, -750), 6: (0, -400, 700), 7: (0, 0, 350), 8: (-700, 0, 300),
-           9: (-1500, 0, -500), 10: (-1500, 0, -100), 11: (-1500, 0, 300), 12: (-1500, 0, 800),
-           13: (1400, 900, 400), 14: (0, 0, 0), 16: (-600, 0, -1600), 17: (800, 0, -1100),
-           18: (-700, 0, 1100), 19: (-300, 0, -500), 20: (500, -700, 0), 21: (-350, 0, 300),
-           22: (-900, 0, -900), 23: (-1200, -700, -700)}
-xp = []
-for p in parts:
-    shape, name = p.shape, p.name
-    if p.bom == 14:
-        shape, name = Pos(PX, PY, 2700) * Cylinder(POLE_R, 2000), "Post, 114.3 mm (shortened in this view)"
-    if p.bom == 4:
-        shape = Pos(0, 0, 700) * shape
-    if p.bom == 19:  # rebuilt at three times size (scaling the located rod would move it)
-        c = shape.bounding_box().center()
-        bl = shape.bounding_box().size.X
-        shape = Pos(c.X, c.Y, c.Z) * Rot(0, 90, 0) * Cylinder(3 * MP["bolt_d"] / 2, 3 * bl)
-    if p.bom in (16, 17):  # drawn at three times size so they show at this scale
-        c = shape.bounding_box().center()
-        shape = Pos(c.X, c.Y, c.Z) * (Pos(-c.X, -c.Y, -c.Z) * shape).scale(3.0)
-    xp.append(Part(name, shape, p.color, p.bom, EXPLODE[p.bom]))
-_render(xp, Path.cwd() / "media" / "exploded.png", offsets=True, labels=True, size=(11, 11),
-        title="CrossSafe: exploded view (one assembly)",
-        note="Post shortened, push button moved up, PIR (16), pilot light (17) and bolt (19, new posts only) drawn at three times size; numbers match bom/bom.csv")
+
+def street():
+    """Sidewalk, kerb and road, grey, for the hero only."""
+    return [Part("Sidewalk", Pos(-700, -200, -40) * Box(3400, 2000, 80), "#D6D3D1"),
+            Part("Kerb", Pos(-700, 800, -40) * Box(3400, 150, 80), "#B9B6B0"),
+            Part("Road", Pos(-700, 2050, -190) * Box(3400, 2500, 100), "#4B5563")]
+
+
+def key_figures():
+    return ["One assembly per side of a 7 m two-lane crossing (two per crossing)",
+            "Two amber heads per face, 140 x 62 mm lens, IA-21 wig-wag flash",
+            "Button plus PIR-gated radar; LoRa link syncs both sides",
+            "20 W panel, 12.8 V 12 Ah LiFePO4; 16.0 Wh/day at 300 uses (CRS-CAL-001 v0.7)",
+            "7.7 days without sun; sun shield keeps the box at 53.9 C at 50 C ambient",
+            "117 modelled parts, 27.6 kg; $364 per side on an existing pole"]
+
+
+def flow_spec():
+    return {"title": "daily energy per assembly, Wh per day (CRS-CAL-001 estimates: 2.5 peak sun hours, 300 activations of 20 s)",
+            "unit": "Wh",
+            "stages": [("Sun on 20 W panel", 50), ("Panel output", 42.5), ("Charger output", 40),
+                       ("Available to store", 38), ("Load demand", 16), ("LED flashing", 11)],
+            "losses": [(0, "Heat, dust, wiring", 7.5), (1, "MPPT", 2.5), (2, "Cell charging", 2),
+                       (3, "Surplus, battery full", 22), (4, "Standby and pilot light", 5)]}
+
+
+def cutaway():
+    """Enclosure zone cut on the pole axis (front half removed), from the front and above."""
+    zone = [p for p in parts(context=False)
+            if p.shape.bounding_box().min.Z > 2700 and p.shape.bounding_box().max.Z < 3300]
+    pole = [p for p in parts(context=True) if p.bom == 14]
+    box = Pos(0, 0, 3000) * Box(1000, 1000, 700)
+    zone += [Part(p.name + " (section of)", p.shape & box, GREY, 14) for p in pole]
+    keep = Pos(0, 2000, 3000) * Box(4000, 4000, 4000)             # the half with y >= 0: the pole axis is the cut plane
+    cut = []
+    for p in zone:
+        try:
+            sh = p.shape & keep
+            if sh.volume > 1e-6:
+                cut.append(Part(p.name, sh, p.color, p.bom))
+        except Exception:
+            cut.append(p)
+    return K._render(cut, MD / "cutaway.png", azim=-90, elev=18, labels=True,
+                     title="CrossSafe: cutaway of the pole-top enclosure and sun shield",
+                     note="Enclosure and shield cut on the pole axis; battery low, charger and controller above, antenna through the shield roof")
+
+
+def everything():
+    outs = K.render_all(parts(context=True), PROJECT, TITLE, DWG, key_figures(), date=DATE, rev="P3", cut=False, web_model=False,
+                        flow=flow_spec(), context=street())
+    outs["cutaway"] = cutaway()
+    return outs
+
+
+if __name__ == "__main__":
+    fns = {"hero": lambda: K._render(K.with_scale_figure(parts()) + street(), MD / "hero.png", title=PROJECT,
+                                     note="Seen from the front right and above, 24 deg elevation. Grey figure: 1.75 m person for scale"),
+           "cutaway": cutaway,
+           "exploded": lambda: K._render(parts(context=True), MD / "exploded.png", offsets=True, labels=True, title=f"{PROJECT}: exploded view",
+                                         note="Seen from the front right and above, 24 deg elevation; numbers match bom/bom.csv"),
+           "flow": lambda: K.flow_diagram(flow_spec()["stages"], MD / "flow.png", f"{PROJECT}: {flow_spec()['title']}", "Wh", flow_spec()["losses"]),
+           "web": lambda: K.export_web_model(parts(context=True), "media", title=f"{PROJECT}: {TITLE}"),
+           "all": everything}
+    for w in sys.argv[1:] or ["all"]:
+        print(w, "->", fns[w]())

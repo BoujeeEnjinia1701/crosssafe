@@ -1,0 +1,47 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "e9684959f759c6d7",
+ "options": {
+  "A": {
+   "title": "Pole-top flashing beacon",
+   "parts": 117,
+   "made_or_bought": 65,
+   "fasteners": 47,
+   "welds": 5,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 27.6,
+   "step_files": 65
+  },
+  "B": {
+   "title": "Kerbside solar bollard with in-road studs",
+   "parts": 156,
+   "made_or_bought": 68,
+   "fasteners": 68,
+   "welds": 20,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 45.5,
+   "step_files": 0
+  },
+  "C": {
+   "title": "Pull-up retroreflective panel",
+   "parts": 40,
+   "made_or_bought": 19,
+   "fasteners": 15,
+   "welds": 6,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 10.9,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 46.3
+}

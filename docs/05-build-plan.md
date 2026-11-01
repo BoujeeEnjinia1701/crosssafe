@@ -3,9 +3,9 @@ doc_id: CRS-BLD-001
 title: CrossSafe prototype build plan
 project: CrossSafe
 doc_type: Build plan
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-31'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Bezels and visors on the LED heads, cost $364, pole range 76 to 114.3 mm, no open decisions; pictures of joint 1, steps 1, 2, 9 and 10, the overview and CRS-DWG-101 regenerated
+  - version: "0.4"
+    date: '2026-10-31'
+    author: Amish Chadha
+    change: "Kit 1.9.1 upgrade: bench charge limits stated as bench limits (the field limit is the cell rating, CRS-DDR-005); requirements reference moved to CRS-PRS-001"
 ---
 
 # CrossSafe prototype build plan
@@ -37,7 +41,7 @@ The prototype is one CrossSafe assembly, the existing-pole kit, built on a 3.7 m
 
 Every part on the pole is held the same way: a saddle with a V in its back sits on the pole, a stainless band runs round the pole and across the saddle's front, and the part bolts to the saddle over the band.
 
-> **Safety:** The prototype holds a 12.8 V lithium iron phosphate battery of about 154 Wh. Keep the battery out of the enclosure and its fuse out of the fuse block until section 6 says otherwise, never charge it below 0 °C or above 45 °C, and never leave a first build charging unattended. The test post weighs about 37 kg and the finished assembly about 30 kg more: build it lying on trestles, and stand it up only as section 6 allows. Sign, sheet and panel edges are sharp: deburr everything and wear gloves. Welding and hot-dip galvanizing are for a trained welder and a galvanizer; never weld galvanized steel indoors.
+> **Safety:** The prototype holds a 12.8 V lithium iron phosphate battery of about 154 Wh. Keep the battery out of the enclosure and its fuse out of the fuse block until section 6 says otherwise, never charge it below 0 °C or, on the bench, above 45 °C (a bench limit; the field limit is the cell's own 55 °C rating, CRS-DDR-005), and never leave a first build charging unattended. The test post weighs about 37 kg and the finished assembly about 30 kg more: build it lying on trestles, and stand it up only as section 6 allows. Sign, sheet and panel edges are sharp: deburr everything and wear gloves. Welding and hot-dip galvanizing are for a trained welder and a galvanizer; never weld galvanized steel indoors.
 
 ## 2. What changed to make it buildable
 
@@ -530,4 +534,4 @@ Stop at each point. Carry on only when everything listed is true.
 - Calculations: `docs/04-calcs/01-sizing.md` (CRS-CAL-001 v0.4) and `docs/04-calcs/sizing.py`; heights [F1], pole range [F2], wind and clamps [G1] to [G8], cost [H1] to [H3].
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (CRS-DDR-003), with CRS-DDR-001 and CRS-DDR-002; decisions made in `docs/06-design-decisions.md` (CRS-DEC-001).
-- Requirements: `docs/03-requirements.md` (CRS-REQ-001 v0.6).
+- Requirements: `docs/03-requirements.md` (CRS-PRS-001, formerly CRS-REQ-001; R numbers are in its Was column).

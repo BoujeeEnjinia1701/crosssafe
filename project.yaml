@@ -6,6 +6,10 @@ area: Smart Cities
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
 design_state: constructable   # STANDARDS section 18; CRS-DDR-003
+stage: P3
+stem_check: open         # CRS-STM-001: 11 within, 12 plausible, 1 fails with a fix proposed (S15, flash area, for Amish); S3, S5, S22 fixed (CRS-DDR-005)
+concept_options: [A, B, C]   # CRS-OPT-001: pole-top beacon, kerbside bollard with studs, pull-up panel
+# concept_chosen is left unset: A (138) and C (128) are within 10 %, both go to Amish (CRS-DDR-004, Proposed, awaiting Amish); A continues meanwhile
 trl_evidence:
   - docs/01-problem.md
   - docs/02-concept.md
@@ -22,6 +26,27 @@ trl_evidence:
   - bom/bom.csv
   - docs/05-build-plan.md
   - docs/06-design-decisions.md
+  - docs/01b-stem-check.md
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
+  - docs/03b-traceability.md
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
+  - docs/decisions/0004-concept-selection.md
+  - docs/decisions/0005-stem-check-fixes.md
+  - cad/src/crs_parts.py
+  - cad/src/crs_options.py
+  - cad/src/product_model.py
+  - cad/src/concept_media.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
+  - cad/step/C-assembly.step
 shortlisted: false
 pitch: >-
   A solar crossing beacon that detects a waiting pedestrian and flashes high-visibility lights to warn drivers at unsignalized crossings near schools and markets.

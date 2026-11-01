@@ -3,9 +3,9 @@ doc_id: CRS-DEC-001
 title: CrossSafe design decisions register
 project: CrossSafe
 doc_type: Design decisions register
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-31'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Value engineering figures updated for the head bezels and visors: USD 364.00, USD 14.00 over the target"
+- version: "0.5"
+  date: '2026-10-31'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: open decisions O1 to O5 (concept choice, 55 C charge limit, flash area review, cost and cold autonomy, existing-pole check); STEM check fixes F1 to F3 recorded as decided under the standing instruction of 2026-10-23 (CRS-DDR-005); concept selection CRS-DDR-004"
 ---
 
 # CrossSafe design decisions register
@@ -33,7 +37,15 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. All open decisions were decided on 2026-10-02.
+*Table 0. Decisions awaiting Amish (kit 1.9.1 upgrade, 2026-10-31).*
+
+| # | Decision needed | Options | Recommendation | Affects in the build | Source |
+| --- | --- | --- | --- | --- | --- |
+| O1 | Concept: keep A (pole-top beacon), take C (pull-up panel), or both | A; B; C; A and C as two tiers | Proposed, awaiting Amish: A and C are within 10 % (138 against 128), so no pick is made; the author leans to A, with C as a low-cost tier | Nothing changes if A stays; C would need its own BOM, build plan and calculations at TRL 3, and a changed pitch | CRS-DDR-004, CRS-OPT-001 |
+| O2 | Confirm the 55 C battery charge limit (cell and BMS rated for it) | Keep 45 C (the battery starves on 48 to 50 C days); 55 C; another fix | Proposed, awaiting Amish: 55 C against the cell datasheet; it is a safety limit even though the fix was made under the standing instruction | BOM line 9; PR-008 | CRS-DDR-005, CRS-STM-001 S3 |
+| O3 | Flash area at the button (PR-016 At risk: 7.7 msr at 1.5 m against a 6 msr analogue) | Accept; move the button further from the bar; a diffuser or dimmer; get a clinical-safety review | Proposed, awaiting Amish: ask the pilot road authority and a clinical-safety reviewer; moving the bar is a safety trade-off | Light bar and button heights | CRS-RSK-001 H5 |
+| O4 | Cost over the value-engineering target ($364.00 against $350), and autonomy at -20 C with an end-of-life battery (4.3 days, PR-006 At risk) | Accept both; cheaper quotes for the sign and enclosure; drop the pilot light; for autonomy the 18 Ah pack (11.5 days nominal, price to quote, above $364) or a heater | Proposed, awaiting Amish: accept the cost gap and keep the 12 Ah pack for a warm-climate pilot; use the 18 Ah pack for a cold one | BOM line 9 | CRS-CAL-001 H and C7 |
+| O5 | Existing poles: the 76 mm limit decided on 2026-10-02 covers sign grip only; the 2,601 N m the kit adds needs a pole section modulus of 18,447 mm3 or more (a 76.1 x 3.2 mm pole has 12,820) | Keep 76 mm and make the pole owner verify; raise the limit to poles of 88.9 x 4.0 mm and up; own post only | Proposed, awaiting Amish: keep the kit and require owner verification of the pole, stated in the build plan and PR-009 | PR-009, R10 scope | CRS-CAL-001 G9, CRS-STM-001 review |
 
 ## To confirm when parts are bought
 
@@ -74,3 +86,6 @@ Savings worth trying: a cheaper enclosure or sign quote, aiming at the USD 14.00
 | 2026-10-02 | Louvre slots in the sun shield: appearance only until the shield is measured; the shield stays plain sheet | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 3 |
 | 2026-10-02 | Sign colour: fluorescent yellow-green in the renders; the sheeting is bought to the local road authority's design | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 4 |
 | 2026-10-02 | Small appearance differences in the renders (pilot light housing, saddle flange at the sign, band screw housings) accepted as appearance detail | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, item 5 |
+| 2026-10-31 | STEM check row S3 failed (battery would not charge above 45 C cell temperature on a 50 C day): LiFePO4 pack and BMS rated for charge to 55 C specified in BOM line 9 | Decided under the standing instruction of 2026-10-23 (Amish, "when a STEM check row fails, propose and implement the best fix"); the 55 C safety limit is also open decision O2 | `docs/decisions/0005-stem-check-fixes.md` (F1) |
+| 2026-10-31 | STEM check row S5 failed in the independent review's worst case (light bar 76.0 C against 74 C): white finish specified in BOM line 2 | Decided under the standing instruction of 2026-10-23 | `docs/decisions/0005-stem-check-fixes.md` (F3) |
+| 2026-10-31 | STEM check row S22 failed (option C panel stops from a fall at about 62 g): hydraulic end-of-travel damper, bracket, two M4 screws and an EPDM pad added to option C | Decided under the standing instruction of 2026-10-23 | `docs/decisions/0005-stem-check-fixes.md` (F2) |

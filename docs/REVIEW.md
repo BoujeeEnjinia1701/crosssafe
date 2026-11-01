@@ -326,3 +326,57 @@ None for this repo.
 ## 2026-10-02: photoreal renders redone on the constructable design
 
 Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
+
+## Session 2026-10-24: kit 1.9.1 upgrade
+
+Done on 2026-10-31 under the instruction "Kit 1.9.1 rollout" and the CAD instructions of 2026-10-24 ("I want detailed TRL3 CAD" and "Detail every option"). The design (option A) does not change; only the record and the modelling grow. TRL stays 3, stage P3.
+
+### What was added
+
+- Pipeline documents: STEM check `docs/01b-stem-check.md` with `docs/04-calcs/stem_check.py` and `stem_results.csv`; concept options `docs/02a-concept-options.md`; user requirements `docs/03a-user-requirements.md` (14 URs); product requirements `docs/03-requirements.md` (CRS-PRS-001, replaces CRS-REQ-001, R1 to R15 kept as PR-001 to PR-015 and PR-016 to PR-019 new); the generated traceability matrix `docs/03b-traceability.md` (0 gaps); regulatory `docs/07-regulatory.md`; feasibility `docs/08-feasibility.md`; risk with hazard analysis and design FMEA `docs/09-risk.md`; market `docs/10-market.md`; plan `docs/11-plan.md`; decision records CRS-DDR-004 (concept selection) and CRS-DDR-005 (STEM fixes); the users-and-needs and stakeholders tables in CRS-PRB-001 v0.6. CRS-CAL-001 is v0.7, CRS-PRC-001 v0.9, CRS-BLD-001 v0.4, CRS-DEC-001 v0.5.
+- CAD at D3 for every option: `cad/src/model.py` now has `PARAMS`, `OPTIONS`, `PRINCIPLES`, `CHOSEN = "A"`, `OPTION_VIEWS`, `ALLOWED_CONTACTS` and `components(option)`; the legacy parametric model is kept intact beside it. Helpers `cad/src/crs_parts.py` and the three option models `cad/src/crs_options.py`. `python .kit/cad_check.py --export` passes.
+- Rebuilt from the model: the general arrangement CRS-DWG-001, the STL files (tolerance 0.15 mm), the build plan pictures and sketches, and the concept media (`hero`, `exploded`, `cutaway`, `flow`, the blueprint, `model.glb` at 4.3 MB). `cad/src/product_model.py` is rewritten from `components(CHOSEN)` plus a site.
+
+### Part counts and mass (cad/fidelity.json, D3, no bare parts)
+
+| Option | Parts | Fasteners | Welds | Mass |
+| --- | --- | --- | --- | --- |
+| A, pole-top flashing beacon | 117 | 47 | 5 | 27.6 kg |
+| B, kerbside solar bollard with in-road studs | 156 | 68 | 20 | 45.5 kg |
+| C, pull-up retroreflective panel | 40 | 15 | 6 | 10.9 kg |
+
+### STEM verdicts and fixes
+
+24 rows: 11 within known science, 12 plausible, 1 fails with a fix proposed (S15, flash area, for Amish), none fails. Fixed in the session under the standing instruction of 2026-10-23 (CRS-DDR-005): S3 (battery charge limit 45 to 55 °C, BOM line 9), S5 (light bar finish white, BOM line 2) and S22 (hydraulic damper added to option C). The independent review (Claude Opus 5.5, headless) is recorded in CRS-STM-001; it found ten items, among them the cold-day autonomy (PR-006 now At risk), the existing-pole section modulus (O5) and the thin margin of the 55 °C fix (CAL C6 sensitivity).
+
+### Option scores and recommendation
+
+A 138, C 128, B 108 of 185. A and C are within 10 % (7.2 %), so both go to Amish without a pick; A continues unchanged. Proposed, awaiting Amish (CRS-DDR-004).
+
+### Requirements not met or at risk (CRS-CAL-001 v0.7)
+
+- Not met: PR-015, cost, $364.00 per assembly against the $350 target (unchanged since 2026-10-02).
+- At risk: PR-006, autonomy, 4.3 days at -20 °C and end-of-life capacity together; PR-016, flash area, 7.7 msr at 1.5 m against a 6 msr analogue.
+- Not verifiable at TRL 3: PR-002 (visibility), PR-005 (detection quality), PR-010 (install time and fit).
+- BOM total $364.00 on an existing pole ($437.00 with its own post) against `budget_usd` 350; `budget_usd` is not raised.
+
+### Decisions proposed, awaiting Amish (CRS-DEC-001 O1 to O5)
+
+O1 concept (A, C or both); O2 confirm the 55 °C charge limit (a safety limit); O3 flash area review and mitigation; O4 cost over target and the 18 Ah pack for cold autonomy; O5 the existing-pole limit, since the added 2,601 N m needs a pole section modulus of 18,447 mm³. Also the render colour of the light bar (white finish against the charcoal of the earlier appearance model) and the earlier renders in `media/render-*.png`, which predate this model.
+
+### Safety concerns
+
+Lithium cells charged hot (H2); the flash area near the button (H5); a warning that is not working (H3); wind and pole strength (H1, O5). None is a statement that the device is safe beside a road.
+
+### Kit bugs and gaps met
+
+- `shapely` is not in the kit requirements but the legacy parametric model imports it; `pip install shapely` was needed.
+- `cad_parts.break_edges` on one solid of a compound acts on the whole parent, so a sub-solid fillet produced giant overlaps; edge breaks are applied only to single-solid parts, and concave fillets on inserted parts (vent, antenna, PIR) add material, so they use `edge=False`.
+- `concept.cutaway_parts` centres its cutter on the mean of the part centres, which removed the whole enclosure from the cutaway; the repo cuts on the pole axis itself.
+- `cad_parts.MATERIALS` has no asphalt and `photoreal.py` has no road ground; the site uses `matte_black` and `--ground=concrete` with `--ground-z=-150` (road level), the sidewalk and kerb being site slabs that reach below it.
+- `drawing.py` and the sheet script still draw the legacy parametric model, not `components(CHOSEN)`.
+
+### Recommended next step
+
+Amish decides O1 to O5; the coordinator renders `media/options.png` and the photoreal views of `RENDER_VIEWS` (hero, studio, exploded, detail). Not TRL 4 work.
+

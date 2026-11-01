@@ -1,6 +1,6 @@
 # CrossSafe
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1388475983.svg)](https://zenodo.org/badge/latestdoi/1388475983) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/crosssafe/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/crosssafe/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/crosssafe/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/crosssafe)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1388475983.svg)](https://zenodo.org/badge/latestdoi/1388475983) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/crosssafe/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/crosssafe/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/crosssafe/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/crosssafe)
 
 **Area:** Smart Cities · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** $350 USD (one assembly on an existing pole) · **Difficulty:** 3 of 5
 
@@ -8,7 +8,7 @@ A solar crossing beacon that detects a waiting pedestrian and flashes high-visib
 
 ![CrossSafe: solar crossing beacon that warns drivers when a pedestrian waits, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CRS-DWG-001 (PDF)](cad/drawings/CRS-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CRS-DWG-001 (PDF)](cad/drawings/CRS-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [Requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Risk](docs/09-risk.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -64,6 +64,16 @@ One assembly stands on each side of the road: a crossing warning sign with a dou
 
 TRL 3 calculations ([CRS-CAL-001](docs/04-calcs/01-sizing.md)): 16.0 Wh/day at 300 activations, 7.7 days without sun, energy neutral at 1.05 peak sun hours, a 114.3 mm post at 45 % of yield in a 40 m/s gust, 53.9 °C inside the sun-shielded enclosure at 50 °C ambient, and $364 in parts per assembly on an existing pole ($728 per crossing), $14 over the $350 value-engineering target after the parts that make the design buildable and the visors and bezels on the LED heads. The existing-pole kit is limited to poles of 76 mm and larger, where the sign holds on paper at the assumed grip friction; smaller poles wait for a slip-torque test. Design decisions are recorded in [CRS-DDR-001](docs/decisions/0001-trl2-review-decisions.md), [CRS-DDR-002](docs/decisions/0002-recommendations-accepted.md) and [CRS-DDR-003](docs/decisions/0003-design-for-construction.md), and open ones, with the cost drivers, in the [design decisions register](docs/06-design-decisions.md). See the [design precis](docs/02-concept.md), [requirements](docs/03-requirements.md) and [general arrangement](cad/drawings/CRS-DWG-001.pdf).
 
+## STEM check
+
+Twenty-four claims are checked across the three concept options (CRS-STM-001): eleven are within known science, twelve are plausible and named for confirmation (cell datasheet, head photometry, soil, friction, install time, sheeting), and one, the flash area at the button, fails an analogue screen with a fix proposed for Amish, so the check stays open. Three failed on first run and were fixed under Amish's standing instruction (CRS-DDR-005): with the 45 °C charge limit the battery would stop charging for most of the sun on a 50 °C day, so the cell is specified for charge to 55 °C (a safety limit that Amish is also asked to confirm); a charcoal light bar would reach 76 °C against a 74 °C limit, so it gets a white finish; and the pull-up panel of option C would stop from a fall at about 62 g, so a hydraulic damper was added. An independent review by a second model run is recorded in the check.
+
+## Concept options
+
+![Three ways to warn drivers at an unsignalized crossing, side by side at one scale](media/options.png)
+
+Option A, the pole-top flashing beacon (score 138 of 185), is the design in this repo. Option C, a pull-up retroreflective panel on a rope with no electricity (128), is within 10 % of it, so both go to Amish without a pick (Proposed, awaiting Amish; CRS-OPT-001 and CRS-DDR-004). Option B, a kerbside solar bollard with in-road studs (108), is not recommended. All three are modelled at the same level of detail (D3): A has 117 parts and 27.6 kg, B 156 parts and 45.5 kg, C 40 parts and 10.9 kg (`cad/fidelity.json`). `media/options.png` is rendered by the coordinator and is not yet in the repo.
+
 ## Key components
 
 - Crossing warning sign, 750 mm, with a double-sided amber LED light bar (two heads per face)
@@ -101,7 +111,7 @@ The [prototype build plan](docs/05-build-plan.md) (CRS-BLD-001) shows how to mak
 
 ## Documentation
 
-Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (CRS-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `CRS-PRC-001/v1.0`.
+Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). User requirements are CRS-URS-001, product requirements CRS-PRS-001 (it replaces CRS-REQ-001) and the generated traceability matrix CRS-RTM-001; the regulatory register, feasibility, risk register with hazard analysis and design FMEA, market note and project plan are CRS-REG-001, CRS-FEA-001, CRS-RSK-001, CRS-MKT-001 and CRS-PLN-001. Run `python docs/04-calcs/sizing.py`, `python docs/04-calcs/stem_check.py`, `python .kit/trace.py` and `python .kit/cad_check.py --export` to reproduce the numbers. Each carries a document ID (CRS-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `CRS-PRC-001/v1.0`.
 
 ## Credits
 

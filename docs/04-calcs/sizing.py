@@ -1,4 +1,5 @@
-"""CrossSafe sizing calculations, CRS-CAL-001 v0.6 (TRL 3, constructable design of CRS-DDR-003, with the CRS-DDR-002 sun shield and anti-rotation detail).
+"""CrossSafe sizing calculations, CRS-CAL-001 v0.7 (TRL 3, constructable design of CRS-DDR-003, with the CRS-DDR-002 sun shield and anti-rotation detail;
+STEM check fix CRS-DDR-005: battery charge limit 55 C; new sections C4, C5, I and J).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md (tags in brackets, for example [B3]) and
@@ -63,7 +64,15 @@ SUN_EL = 70.0                      # deg, high summer sun in the tropics and mid
 H_CONV = 10.0                      # W/m2K combined convection and radiation, still air
 ALPHA_CLEAN, ALPHA_DUSTY = 0.45, 0.70
 SHIELD = 0.25                      # fraction of solar gain passed by a ventilated shield (as WWT-CAL-001)
-CHG_MAX, CELL_DIS_MAX = 45.0, 60.0 # C, charge limit (R8) and typical discharge limit of LiFePO4
+CHG_MAX, CELL_DIS_MAX = 55.0, 60.0 # C, charge limit (R8, 55 C since CRS-DDR-005; 45 C before) and discharge limit of LiFePO4
+CHG_OLD = 45.0                     # C, the charge limit of CRS-REQ-001 v0.8, kept to show the hot-day failure it caused
+BAR_LIMIT = 74.0                   # C, upper operating limit of an LED traffic signal module (Current Lighting TRAF336 datasheet)
+BAR_ALPHA = {"clean": 0.30, "dusty": 0.55}   # white powder-coat finish of the light bar (CRS-DDR-005; assumed, to confirm); before: charcoal, 0.70 dusty
+BAR_ALPHA_DARK = 0.70              # the charcoal finish of the first design, kept to show the failed STEM row S5
+HEAT_LED = 0.85                    # fraction of LED electrical power leaving as heat
+SOLID_ANGLE_LIM = 0.006            # sr, WCAG 2.1 general flash area limit (analogue; 25 % of a 10 degree field)
+REACT_S, DECEL = 2.5, 3.4          # s perception-reaction time (AASHTO design value; 1.5 s in v0.7 draft) and m/s2 comfortable deceleration (assumed, to confirm)
+SPEEDS_KMH = (40.0, 50.0, 60.0)    # approach speeds, 30 to 60 km/h roads (CRS-PRB-001)
 # radio
 SF, BW, CR, NPRE, PAYLOAD = 7, 125e3, 1, 8, 8
 T_WAKE, T_PROC = 0.005, 0.006      # s, controller wake and processing each end
@@ -155,8 +164,8 @@ i_chg = PANEL_W * DERATE * ETA_MPPT / BATT_V
 i_dis = (p_led + PILOT_W + p_standby + P_RADAR * (1 - RADAR_DUTY)) / BATT_V
 out("B7", f"peak charge current {i_chg:.2f} A ({i_chg / BATT_AH:.2f} C); peak discharge {i_dis:.2f} A; LED peak "
           f"with all four heads lit {HEADS * HEAD_W / ETA_DRV / BATT_V:.2f} A; 5 A fuse")
-st6 = "At risk" if min(sens[k][1] for k in list(sens)[:3]) < AUTONOMY_REQ or aut * CAP_COLD < AUTONOMY_REQ else "Met on paper"
-res("R6", "Autonomy", f"{aut:.1f} days ({aut * CAP_COLD:.1f} at -20 C; {aut * CAP_EOL:.1f} at end of life)",
+st6 = "At risk" if min(sens[k][1] for k in list(sens)[:3]) < AUTONOMY_REQ or aut * CAP_COLD * CAP_EOL < AUTONOMY_REQ else "Met on paper"
+res("R6", "Autonomy", f"{aut:.1f} days ({aut * CAP_COLD:.1f} at -20 C; {aut * CAP_EOL:.1f} at end of life; {aut * CAP_COLD * CAP_EOL:.1f} at both)",
     "5 days or more", st6)
 res("R7", "Energy balance", f"break-even {breakeven:.2f} PSH; recovery {recover:.1f} days",
     "neutral at 2.5 PSH; 3 days or fewer", "Met on paper")
@@ -181,9 +190,67 @@ dt_d = therm["dusty, shielded"]          # design case: the sun shield is fitted
 out("C3", f"design case with the sun shield (CRS-DDR-002): interior {50 + dt_d:.1f} C at 50 C ambient against the "
           f"{CELL_DIS_MAX:.0f} C discharge limit; charging stops above {CHG_MAX - dt_d:.1f} C ambient "
           f"(unshielded, dusty: {50 + therm['dusty']:.1f} C and {CHG_MAX - therm['dusty']:.1f} C)")
-res("R8", "Environment", f"interior {50 + dt_d:.1f} C at 50 C (dusty, shielded); no charge above "
-    f"{CHG_MAX - dt_d:.1f} C ambient", f"IP65; -20 to +50 C; charge 0 to 45 C",
-    "Met on paper" if 50 + dt_d <= CELL_DIS_MAX else "At risk")
+# C4. Hot-day charging window (STEM check S3, fixed by CRS-DDR-005). Daily ambient 7.5 K either side of its mean, peak at 15:00;
+# sun a half sine from 06:00 to 18:00; the cell temperature is the ambient plus the shielded rise; no charge above the limit.
+def hot_day(peak_c, limit, psh=6.5, rise=None):
+    rise = dt_d if rise is None else rise
+    tot = ok = 0.0
+    for k in range(1440):
+        t = k / 60
+        sun = max(0.0, math.sin(math.pi * (t - 6) / 12)) if 6 <= t <= 18 else 0.0
+        amb = peak_c - 7.5 + 7.5 * math.sin(2 * math.pi * (t - 9) / 24)
+        tot += sun
+        ok += sun if amb + rise <= limit else 0.0
+    return ok / tot, PANEL_W * psh * chain * ok / tot
+for peak in (45.0, 48.0, 50.0):
+    f45, e45 = hot_day(peak, CHG_OLD)
+    f55, e55 = hot_day(peak, CHG_MAX)
+    d_old = (usable / max(e_day - e45, 1e-9)) if e45 < e_day else float("inf")
+    out("C4", f"hot day, {peak:.0f} C peak, 6.5 peak sun hours: with a {CHG_OLD:.0f} C charge limit {f45 * 100:.0f} % of the sun is usable, {e45:.1f} Wh/day stored "
+              f"against a {e_day:.1f} Wh/day load ({'battery empties in ' + format(d_old, '.0f') + ' days' if e45 < e_day else 'neutral'}); with {CHG_MAX:.0f} C: {f55 * 100:.0f} %, {e55:.1f} Wh/day")
+hot_f, hot_e = hot_day(50.0, CHG_MAX)
+hot_old_f, hot_old_e = hot_day(50.0, CHG_OLD)
+# C5. Light bar heat (PR-017): sealed 2 mm aluminium channel, same method as C1, dusty (alpha 0.70), still air, no shield.
+bx_, by_, bz_ = (v / 1000 for v in P["bar"])
+a_bar = 2 * (bx_ * by_ + bx_ * bz_ + by_ * bz_)
+a_bar_proj = bx_ * by_ * math.sin(el) + math.hypot(by_ * bz_, bx_ * bz_) * math.cos(el)
+p_bar_led = HEADS * HEAD_W * duty / ETA_DRV * HEAT_LED * (T_ENERGY * ACTS / 86400)   # day-average LED heat inside the bar, W
+bar = {}
+for name, alpha in (("clean", BAR_ALPHA["clean"]), ("dusty", BAR_ALPHA["dusty"])):
+    q = alpha * G_BEAM * (1 + DIFFUSE) * a_bar_proj + p_bar_led
+    bar[name] = q / (H_CONV * a_bar)
+    out("C5", f"light bar {name}: area {a_bar:.3f} m2, sunlit {a_bar_proj:.4f} m2, solar gain {alpha * G_BEAM * (1 + DIFFUSE) * a_bar_proj:.1f} W, "
+              f"rise {bar[name]:.1f} K, interior {50 + bar[name]:.1f} C at 50 C ambient against the {BAR_LIMIT:.0f} C module limit")
+# C6. Sensitivity of the 55 C fix (independent review of CRS-STM-001): lower sun at the hottest hour, a less effective shield, both.
+def shielded_rise(el_deg, shield):
+    e = math.radians(el_deg)
+    ap = a_top * math.sin(e) + a_side * math.cos(e)
+    return (ALPHA_DUSTY * G_BEAM * (1 + DIFFUSE) * ap * shield + p_int) / (H_CONV * a_tot)
+sens_c = {}
+for label, el_d, sh in (("sun 70 deg, shield 0.25 (design)", 70.0, SHIELD), ("sun 45 deg, shield 0.25", 45.0, SHIELD),
+                        ("sun 70 deg, shield 0.50", 70.0, 0.5), ("sun 45 deg, shield 0.50", 45.0, 0.5)):
+    rise = shielded_rise(el_d, sh)
+    f55, e55 = hot_day(50.0, CHG_MAX, rise=rise)
+    sens_c[label] = (rise, 50.0 + rise, f55, e55)
+    out("C6", f"{label}: rise {rise:.1f} K, cell {50 + rise:.1f} C at 50 C ambient, {f55 * 100:.0f} % of the sun usable at a 50 C peak with the {CHG_MAX:.0f} C limit, {e55:.1f} Wh/day stored against {e_day:.1f}")
+worst_store = min(v[3] for v in sens_c.values())
+# Cold days: the BMS stops charging below 0 C cell temperature; the cell sits at most the shielded rise above ambient.
+cold_amb = 0.0 - dt_d
+out("C7", f"cold: charging is inhibited below 0 C cell temperature, so below about {cold_amb:.1f} C ambient in full sun (and always at night) nothing is stored; "
+          f"autonomy at -20 C is {aut * CAP_COLD:.2f} days and {aut * CAP_COLD * CAP_EOL:.2f} days at end of life as well (no heater, R6)")
+# C5b. Worst case for the bar (independent review): sun at the elevation that maximises the sunlit area, dusty, and the LEDs lit continuously.
+a_bar_worst = math.hypot(bx_ * by_, math.hypot(by_ * bz_, bx_ * bz_))
+p_bar_cont = HEADS * HEAD_W * duty / ETA_DRV * HEAT_LED                      # LED heat with the sequence running continuously, W
+bar_worst = (BAR_ALPHA["dusty"] * G_BEAM * (1 + DIFFUSE) * a_bar_worst + p_bar_cont) / (H_CONV * a_bar)
+bar_worst_dark = (BAR_ALPHA_DARK * G_BEAM * (1 + DIFFUSE) * a_bar_worst + p_bar_cont) / (H_CONV * a_bar)
+out("C5", f"light bar worst case with the first (charcoal, 0.70) finish: {50 + bar_worst_dark:.1f} C at 50 C ambient (failed S5); with the white finish below")
+out("C5", f"light bar worst case: sunlit {a_bar_worst:.4f} m2 at the worst elevation, LEDs flashing continuously ({p_bar_cont:.1f} W): rise {bar_worst:.1f} K, "
+          f"interior {50 + bar_worst:.1f} C at 50 C ambient against the {BAR_LIMIT:.0f} C module limit")
+res("R8", "Environment", f"interior {50 + dt_d:.1f} C at 50 C (dusty, shielded); charging to {CHG_MAX - dt_d:.1f} C ambient; "
+    f"light bar {50 + bar_worst:.1f} C", f"IP65; -20 to +50 C; charge 0 to {CHG_MAX:.0f} C",
+    "Met on paper" if (50 + dt_d <= CELL_DIS_MAX and CHG_MAX - dt_d >= 50.0 and 50 + bar_worst <= BAR_LIMIT) else "At risk")
+res("R17", "Light bar temperature", f"{50 + bar['dusty']:.1f} C at 50 C ambient (dusty, 70 deg sun); {50 + bar_worst:.1f} C worst case", f"{BAR_LIMIT:.0f} C or less",
+    "Met on paper" if 50 + bar_worst <= BAR_LIMIT else "At risk")
 
 # =============================================================== D. radio link and latency (R3)
 tsym = 2 ** SF / BW
@@ -201,6 +268,8 @@ for dist in (7.0, 15.0):
               f"margin {prx - SENS_SF7:.1f} dB")
 air_h = PEAK_ACTS_H * PKTS * toa
 out("D4", f"busiest hour {PEAK_ACTS_H} activations: {air_h:.1f} s on air per side against {EU_DUTY * 3600:.0f} s (1 % duty)")
+checkin_s = 60 * 1 * TX_S                                                      # one 1 min check-in packet per side (PR-012 lost-link detection), s per hour
+out("D5", f"lost-link check-in, one packet a minute: {checkin_s:.1f} s on air per hour, {1440 * TX_S * TX_W / 3600 * 1000:.1f} mWh/day; with the busiest hour {air_h + checkin_s:.1f} s against {EU_DUTY * 3600:.0f} s")
 res("R3", "Activation and sync", f"{lat1 * 1000:.0f} ms, {lat_worst * 1000:.0f} ms with retries", "0.5 s or less",
     "Met on paper")
 
@@ -312,8 +381,11 @@ added = mx - Mx["post"]
 out("G8", f"moment added to an existing pole at the sidewalk: {added:.0f} N m")
 st9 = "Met on paper" if ratios[P["post_od"]] <= STRESS_LIMIT else "Not met"
 ok_rot = f_bear < min(v_rd, b_rd) and key_tq(P["pole_min_od"]) >= t_sign
+s_min = added * 1000 / (STRESS_LIMIT * FY)        # mm3, from the moment the kit adds alone (the pole's own load is on top)
+out("G9", f"existing poles: the added {added:.0f} N m alone needs a section modulus of at least {s_min:,.0f} mm3 at 60 % of yield (a 76.1 x 3.2 mm pole has "
+          f"{12820:,}); the pole owner verifies the pole, the kit is not a structural pole upgrade")
 res("R9", "Structure", f"{ratios[P['post_od']] * 100:.0f} % of yield on 114.3 mm; bolt {f_bear / b_rd * 100:.0f} % of "
-    f"bearing; keyed saddles hold on poles of {od_min:.0f} mm and up", "60 % of yield or less",
+    f"bearing; keyed saddles hold on poles of {od_min:.0f} mm and up; existing poles need S of {s_min:,.0f} mm3 or more (owner verifies)", "60 % of yield or less",
     st9 if ok_rot else "At risk")
 
 # =============================================================== H. cost (R15)
@@ -329,8 +401,27 @@ out("H3", f"two-sided crossing: existing poles ${2 * base:.2f}, new posts ${2 * 
 res("R15", "Affordable", f"${base:.2f} per assembly; ${2 * base:.2f} per crossing (existing poles)",
     "$350; $700 per crossing", "Met on paper" if base <= budget and 2 * base <= 700 else "Not met")
 
+# =============================================================== I. flash area and driver stopping distance (R16, R1, R2)
+# Lit solid angle of the two lit heads at the nearest place a pedestrian stands (button, 1 m from the pole, 2.1 m up): a screen against
+# the WCAG 2.1 general-flash area limit, used as an analogue for photosensitivity (no road standard checked; not a clinical statement).
+a_lit = 2 * hw * hh / 1e6
+for dist in (3.0, 1.5):
+    om = a_lit / dist ** 2
+    out("I1", f"two lit heads {a_lit * 1e4:.0f} cm2 seen from {dist:.1f} m subtend {om * 1000:.2f} msr against the {SOLID_ANGLE_LIM * 1000:.0f} msr analogue limit")
+res("R16", "Flash area", f"{a_lit / 1.5 ** 2 * 1000:.2f} msr at 1.5 m", f"{SOLID_ANGLE_LIM * 1000:.0f} msr or less (analogue)",
+    "Met on paper" if a_lit / 1.5 ** 2 <= SOLID_ANGLE_LIM else "At risk")
+for v in SPEEDS_KMH:
+    u = v / 3.6
+    s_stop = u * REACT_S + u ** 2 / (2 * DECEL)
+    out("I2", f"approach {v:.0f} km/h: stopping distance {s_stop:.0f} m ({u * REACT_S:.0f} m reaction + {u ** 2 / (2 * DECEL):.0f} m braking) against 100 m sight line")
+    s_stop_max = s_stop
+res("R18", "Warning in time to stop", f"{s_stop_max:.0f} m stopping distance at {SPEEDS_KMH[-1]:.0f} km/h against the 100 m seeing distance of PR-002",
+    "stopping distance at 60 km/h within 100 m", "Met on paper" if s_stop_max <= 100.0 else "Not met")   # holds only while PR-002 holds (100 m seeing distance)
+res("R19", "Buildable and repairable", "BLD-001: stock sections, bought parts, hand tools; 117 modelled parts, none bare", "ordinary tools only",
+    "Met by design")
+
 # =============================================================== results
-order = [f"R{i}" for i in range(1, 16)]
+order = [f"R{i}" for i in range(1, 20)]
 rows.sort(key=lambda r: order.index(r[0]))
 print("\nRequirement results")
 for r in rows:

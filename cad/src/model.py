@@ -736,6 +736,36 @@ def clash_check(p=PARAMS):
     return [t for ok, t in checks(p, own_post=True, verbose=False) if not ok and t.startswith("overlap")]
 
 
+# ----------------------------------------------------------------- kit 1.9 interface (STANDARDS section 24)
+# Options (CRS-OPT-001). Option A is the current design and is carried to the drawing, BOM and build plan; the others
+# are modelled to the same level (D3) for comparison. Amish has not chosen yet: CHOSEN is the design the pipeline documents
+# describe, not a decision ("Proposed, awaiting Amish", CRS-DDR-004).
+TITLE = "CrossSafe"
+OPTIONS = {"A": "Pole-top flashing beacon", "B": "Kerbside solar bollard with in-road studs", "C": "Pull-up retroreflective panel"}
+PRINCIPLES = {
+    "A": "A solar pole-top beacon detects a waiting pedestrian and flashes amber lights in the driver's line of sight "
+         "under a crossing sign, at 2.1 m and above.",
+    "B": "A kerbside solar bollard detects the pedestrian and a radio link flashes amber solar studs set in the road "
+         "surface across the crossing, at the driver's eye line along the road.",
+    "C": "The pedestrian pulls a rope and a retroreflective panel rises up a guide above the pole; a damper lets it "
+         "fall back after a few seconds. No electricity.",
+}
+CHOSEN = "A"
+OPTION_VIEWS = {"A": {"el": 18, "az": 38, "scale": "person", "keep_context": True, "ground_z": 0},
+                "B": {"el": 22, "az": 38, "scale": "person", "keep_context": True, "ground_z": 0},
+                "C": {"el": 18, "az": 38, "scale": "person", "keep_context": True, "ground_z": 0}}
+# the washer sits against the bolt head and the plate it clamps; the bush runs on its pin
+ALLOWED_CONTACTS = []
+
+
+def components(option=CHOSEN):
+    """Parts of one option as cad_parts.part() dicts (see crs_options.py)."""
+    import crs_options
+    return {"A": lambda: crs_options.option_a(sys.modules[__name__]),
+            "B": lambda: crs_options.option_b(sys.modules[__name__]),
+            "C": lambda: crs_options.option_c(sys.modules[__name__])}[option]()
+
+
 if __name__ == "__main__":
     if "--check" in sys.argv:
         r1 = checks(own_post=False)
@@ -754,7 +784,7 @@ if __name__ == "__main__":
     for name, shapes in groups.items():
         c = Compound(children=shapes)
         export_step(c, str(out / "step" / f"{name}.step"))
-        export_stl(c, str(out / "stl" / f"{name}.stl"), tolerance=0.5, angular_tolerance=0.3)
+        export_stl(c, str(out / "stl" / f"{name}.stl"), tolerance=0.15, angular_tolerance=0.2)
         bb = c.bounding_box()
         print(f"{name}: {bb.size.X:.0f} x {bb.size.Y:.0f} x {bb.size.Z:.0f} mm")
     D = derived()

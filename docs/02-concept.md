@@ -3,9 +3,9 @@ doc_id: CRS-PRC-001
 title: CrossSafe design precis
 project: CrossSafe
 doc_type: Design precis
-version: "0.8"
+version: "0.9"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-31'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -41,6 +41,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Bezels and visors on the LED heads; pole range 76 to 114.3 mm; cost $364.00 per assembly
+- version: "0.9"
+  date: '2026-10-31'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: battery charge limit 55 C and charging window to 51.1 C ambient (CRS-DDR-005); concept options and requirement documents linked"
 ---
 
 # CrossSafe design precis
@@ -120,7 +124,7 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 - **Flash time.** 12.8 s for a 7 m crossing; the energy case uses 20 s, enough for crossings up to 13.5 m.
 - **Energy.** Each head is lit 25 % of each IA-21 sequence, so the LEDs use 10.99 Wh/day at 300 activations. Standby is 187 mW (4.49 Wh/day) with the PIR gating the radar. The daily load is 16.0 Wh, against 38.0 Wh stored in the worst month; break-even is 1.05 peak sun hours, and the battery refills from 20 % in 2.05 days at 5 peak sun hours.
 - **Autonomy.** 122.9 Wh usable gives 7.7 days without sun, 5.4 days at -20 °C and 6.2 days at end of life.
-- **Heat.** Unshielded, the enclosure would run 9.6 K (clean) to 14.7 K (dusty) above ambient in full sun and a dusty box would reach 64.7 °C at 50 °C ambient. With the sun shield the rise is 3.9 K: 53.9 °C inside at 50 °C ambient, and charging continues up to 41.1 °C ambient (R8 met on paper).
+- **Heat.** Unshielded, the enclosure would run 9.6 K (clean) to 14.7 K (dusty) above ambient in full sun and a dusty box would reach 64.7 °C at 50 °C ambient. With the sun shield the rise is 3.9 K: 53.9 °C inside at 50 °C ambient, and charging continues up to 51.1 °C ambient with the 55 °C charge limit of CRS-DDR-005 (R8 met on paper).
 - **Latency and link.** 48 ms side to side, 244 ms with two retries; about 60 dB of link margin across the road with a bus in the way.
 - **Wind.** A 40 m/s gust gives 3.52 kN·m at the base. The 114.3 x 3.6 mm post reaches 105 MPa, 45 % of S235 yield; an 88.9 x 4 mm post would reach 65 %. The sign's 175 N·m of torsion is carried by the through-bolt on new posts (12 % of bearing) and by keyed saddles on existing poles of 76 mm and larger, which hold at an assumed grip friction of 0.4 (R9); smaller poles wait for a slip-torque test. A 500 mm footing needs about 1.8 m of embedment in clay (screening).
 - **Cost.** Value-engineering target: $350 per assembly on an existing pole (a hypothetical control target, not a limit). Estimated cost of the constructable design: $364.00 per assembly ($14.00 over the target) and $728.00 per crossing ($28.00 over the $700 target); $437.00 and $874.00 with new posts (see `bom/bom.csv`). Cost drivers and savings worth trying are in the Value engineering section of `docs/06-design-decisions.md`. The $750 value-engineering target for a two-sided site trial applies when a trial starts (on hold with TRL 4).
@@ -129,7 +133,7 @@ The TRL 2 first-order estimates have been replaced by the TRL 3 calculation note
 
 > **Safety:** CrossSafe is a research prototype. A traffic control device must meet local standards and have road authority approval before use on a public road. A beacon that fails dark, flashes when no one is there, or gives pedestrians false confidence can cause harm; pedestrians must still check that drivers have stopped.
 
-> **Safety:** Lithium cells can overheat, vent and burn. Use LiFePO4 with a BMS, fuse the battery output close to the terminal, charge only between 0 and 45 °C cell temperature, and shade the enclosure. Never charge a damaged or swollen battery.
+> **Safety:** Lithium cells can overheat, vent and burn. Use LiFePO4 with a BMS, fuse the battery output close to the terminal, charge only between 0 °C and the cell's rated limit (55 °C, CRS-DDR-005; awaiting Amish's confirmation), and shade the enclosure. Never charge a damaged or swollen battery.
 
 > **Safety:** Installing on a pole next to live traffic is work at height and work in the road. Use trained crews, traffic management and fall protection as local rules require, keep clear of overhead power lines, and mount only with the asset owner's permission. A post, sign or panel that falls can kill. CRS-CAL-001 is a screening check only: clamp torsion is at risk on poles under about 70 mm, and a qualified engineer must check the post, clamps, footing or host pole to the local code before installation.
 
